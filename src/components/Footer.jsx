@@ -90,13 +90,13 @@ const Footer = () => {
                                 <div className="footer-contact-icon">
                                     <MapPin />
                                 </div>
-                                <span>Modern Education District, Silicon Valley, CA</span>
+                                <span>Johar Town Lahore</span>
                             </div>
                             <div className="footer-contact-item">
                                 <div className="footer-contact-icon">
                                     <Phone />
                                 </div>
-                                <span>+1 (555) 123-4567</span>
+                                <span>+92 325 3344552</span>
                             </div>
                             <div className="footer-contact-item">
                                 <div className="footer-contact-icon">

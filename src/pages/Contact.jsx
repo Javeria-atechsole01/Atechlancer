@@ -46,7 +46,7 @@ const Contact = () => {
                                     </div>
                                     <div>
                                         <h4 className="contact-info-title-text">WhatsApp Support</h4>
-                                        <p className="contact-info-value">+1 (555) 987-6543</p>
+                                        <p className="contact-info-value">+92 325 3344552</p>
                                         <p className="contact-info-meta whatsapp">Available for verified users 24/7</p>
                                     </div>
                                 </div>
@@ -58,7 +58,7 @@ const Contact = () => {
                                     <div>
                                         <h4 className="contact-info-title-text">Operating Hours</h4>
                                         <p className="contact-info-value">Monday — Saturday</p>
-                                        <p className="contact-info-meta hours">9:00 AM — 6:00 PM EST (Main Office)</p>
+                                        <p className="contact-info-meta hours">9:00 AM — 6:00 PM PKT (Main Office)</p>
                                     </div>
                                 </div>
                             </div>
