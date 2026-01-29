@@ -34,12 +34,7 @@ const Navbar = () => {
             <div className="container">
                 <div className="navbar-content">
                     <Link to="/" className="navbar-brand">
-                        <div className="navbar-logo">
-                            <Shield />
-                        </div>
-                        <span className="navbar-title">
-                            Atech<span>Lancer</span>
-                        </span>
+                        <img src="/logo.png" alt="AtechLancer" className="navbar-logo-img" />
                     </Link>
 
                     {/* Desktop Links */}

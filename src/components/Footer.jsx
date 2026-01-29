@@ -34,12 +34,7 @@ const Footer = () => {
                         {/* Brand Section */}
                         <div className="footer-brand">
                             <Link to="/" className="footer-brand-link">
-                                <div className="footer-logo">
-                                    <Shield />
-                                </div>
-                                <span className="footer-title">
-                                    Atech<span>Lancer</span>
-                                </span>
+                                <img src="/logo.png" alt="AtechLancer" className="footer-logo-img" style={{ height: '72px', width: 'auto' }} />
                             </Link>
                             <p className="footer-description">
                                 Where Skills, Education & Freelancing Meet. The most trusted platform for verified opportunities.
