@@ -91,6 +91,14 @@ button {
 /* ===========================
    Container & Layout
    =========================== */
+.layout-main {
+  padding-top: 8rem;
+  /* Account for fixed navbar */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .container {
   max-width: 1280px;
   margin: 0 auto;
@@ -121,7 +129,6 @@ button {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background-color: rgba(255, 255, 255, 0.95);
   padding: 0;
-  height: 70px;
   display: flex;
   align-items: center;
   border-bottom: 1px solid var(--gray-100);
@@ -576,10 +583,7 @@ button {
   overflow: hidden;
 }
 
-.layout-main {
-  flex-grow: 1;
-  padding-top: 9rem;
-}
+
 
 /* ===========================
    Hero Section

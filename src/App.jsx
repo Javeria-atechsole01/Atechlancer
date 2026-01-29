@@ -7,6 +7,11 @@ import HowItWorks from './pages/HowItWorks';
 import Pricing from './pages/Pricing';
 import Contact from './pages/Contact';
 import FAQ from './pages/FAQ';
+import Signup from './pages/auth/Signup';
+import Login from './pages/auth/Login';
+import EmailVerification from './pages/auth/EmailVerification';
+import ForgotPassword from './pages/auth/ForgotPassword';
+import ResetPassword from './pages/auth/ResetPassword';
 
 function App() {
   return (
@@ -19,8 +24,11 @@ function App() {
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/faq" element={<FAQ />} />
-          {/* Placeholder for signup/login to satisfy Navbar links */}
-          <Route path="/signup" element={<div className="py-24 text-center">Signup Page Coming Soon</div>} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/verify-email" element={<EmailVerification />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
       </Layout>
     </Router>
