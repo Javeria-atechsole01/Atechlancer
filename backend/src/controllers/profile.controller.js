@@ -8,27 +8,55 @@ const { User } = require('../models/User');
  */
 const createOrUpdateProfile = async (req, res) => {
   try {
-    const { bio, skills, education, experience, portfolioLinks } = req.body;
+    const {
+      bio,
+      title,
+      location,
+      skills,
+      education,
+      experience,
+      projects,
+      certifications,
+      socialLinks
+    } = req.body;
+
     const userId = req.user.userId;
 
+    // Build profile object
     const profileFields = {
       userId,
       bio,
-      skills: Array.isArray(skills) ? skills : skills ? skills.split(',').map(skill => skill.trim()) : [],
-      education,
-      experience,
-      portfolioLinks: Array.isArray(portfolioLinks) ? portfolioLinks : portfolioLinks ? portfolioLinks.split(',').map(link => link.trim()) : []
+      title,
+      location,
+      skills: Array.isArray(skills) ? skills : [],
+      education: Array.isArray(education) ? education : [],
+      experience: Array.isArray(experience) ? experience : [],
+      projects: Array.isArray(projects) ? projects : [],
+      certifications: Array.isArray(certifications) ? certifications : [],
+      socialLinks: typeof socialLinks === 'object' ? socialLinks : {}
     };
 
     let profile = await Profile.findOne({ userId });
 
     if (profile) {
-      // Update
-      profile = await Profile.findOneAndUpdate(
-        { userId },
-        { $set: profileFields },
-        { new: true }
-      );
+      // Update by finding and saving (to trigger pre-save hook for completion score)
+      // Alternatively, we define the fields and then save.
+
+      // We manually update fields to ensure the pre('save') hook runs if we used save(), 
+      // but findOneAndUpdate implies we might need to manually calc score or just use save() method.
+      // Using findOne + save is better for the hook.
+
+      profile.bio = bio !== undefined ? bio : profile.bio;
+      profile.title = title !== undefined ? title : profile.title;
+      profile.location = location !== undefined ? location : profile.location;
+      if (skills) profile.skills = skills;
+      if (education) profile.education = education;
+      if (experience) profile.experience = experience;
+      if (projects) profile.projects = projects;
+      if (certifications) profile.certifications = certifications;
+      if (socialLinks) profile.socialLinks = socialLinks;
+
+      await profile.save();
       return res.json(profile);
     }
 
