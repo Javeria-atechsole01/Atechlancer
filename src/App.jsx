@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import PublicFreelancerProfile from './pages/public/PublicFreelancerProfile';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -67,6 +68,9 @@ function App() {
             <Route path="/verify-email" element={<Layout><EmailVerification /></Layout>} />
             <Route path="/forgot-password" element={<Layout><ForgotPassword /></Layout>} />
             <Route path="/reset-password" element={<Layout><ResetPassword /></Layout>} />
+
+            {/* Public Profile View (Shared) */}
+            <Route path="/profile/freelancer/view" element={<PublicFreelancerProfile />} />
 
             {/* Dashboard Routes with Shared Layout */}
 
