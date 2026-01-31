@@ -1,29 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { Briefcase, Clock, DollarSign, CheckCircle, Plus, X, Eye, Edit2 } from 'lucide-react';
+import { Briefcase, Clock, DollarSign, CheckCircle, Plus, X, Eye, Edit2, Trash2 } from 'lucide-react';
+import { gigsService } from '../../../services/gigsService';
 
 const FreelancerGigs = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingGig, setEditingGig] = useState(null);
     const [previewGig, setPreviewGig] = useState(null);
 
-    const [gigs, setGigs] = useState([
-        {
-            id: 1,
-            title: 'Modern React Web Development',
-            price: 250,
-            deliveryTime: '3 Days',
-            isActive: true,
-            description: 'I will build a modern, responsive React website for your business.'
-        },
-        {
-            id: 2,
-            title: 'Python AI Scripting',
-            price: 100,
-            deliveryTime: '2 Days',
-            isActive: true,
-            description: 'I will write efficient Python scripts for AI and automation tasks.'
+    const [gigs, setGigs] = useState([]);
+
+    const load = async () => {
+        try {
+            const items = await gigsService.mine();
+            setGigs(items.map(i => ({
+                ...i,
+                id: i._id,
+                deliveryTime: i.deliveryTime || '3 Days'
+            })));
+        } catch {
+            setGigs([]);
         }
-    ]);
+    };
+
+    useEffect(() => {
+        load();
+    }, []);
 
     const handleCreateNew = () => {
         setEditingGig(null);
@@ -35,16 +36,34 @@ const FreelancerGigs = () => {
         setIsModalOpen(true);
     };
 
-    const handleSaveGig = (gigData) => {
+    const handleSaveGig = async (gigData) => {
+        const payload = {
+            title: gigData.title,
+            description: gigData.description,
+            price: Number(gigData.price),
+            category: gigData.category || 'general'
+        };
         if (editingGig) {
-            // Update existing
-            setGigs(gigs.map(g => g.id === editingGig.id ? { ...g, ...gigData } : g));
+            const id = editingGig._id || editingGig.id;
+            try {
+                await gigsService.update(id, payload);
+            } catch {}
         } else {
-            // Create new
-            setGigs([...gigs, { ...gigData, id: Date.now(), isActive: true }]);
+            try {
+                await gigsService.create(payload);
+            } catch {}
         }
+        await load();
         setIsModalOpen(false);
         setEditingGig(null);
+    };
+
+    const handleDelete = async (gig) => {
+        const id = gig._id || gig.id;
+        try {
+            await gigsService.remove(id);
+        } catch {}
+        setGigs(prev => prev.filter(g => (g._id || g.id) !== id));
     };
 
     return (
@@ -66,9 +85,17 @@ const FreelancerGigs = () => {
             <div className="card-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
                 {gigs.map(gig => (
                     <div key={gig.id} className="card" style={{ padding: '0', overflow: 'hidden' }}>
-                        <div style={{ height: '160px', backgroundColor: 'var(--gray-200)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--gray-500)' }}>
-                            Gig Cover Image
-                        </div>
+                        <CoverUpload gig={gig} onUploaded={({ cover, updated }) => {
+                            setGigs(prev => prev.map(g => (
+                                g.id === gig.id
+                                  ? {
+                                      ...g,
+                                      ...(updated ? { ...updated, id: updated._id, deliveryTime: updated.deliveryTime || g.deliveryTime } : {}),
+                                      images: [cover]
+                                    }
+                                  : g
+                            )));
+                        }} />
                         <div style={{ padding: '1.5rem' }}>
                             <h3 style={{ fontSize: '1.125rem', fontWeight: '600', color: 'var(--brand-navy)', marginBottom: '0.5rem' }}>{gig.title}</h3>
 
@@ -101,6 +128,13 @@ const FreelancerGigs = () => {
                                 >
                                     <Eye size={14} /> Preview
                                 </button>
+                                <button
+                                    className="btn btn-danger"
+                                    style={{ flex: 1, padding: '0.5rem', fontSize: '0.875rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}
+                                    onClick={() => handleDelete(gig)}
+                                >
+                                    <Trash2 size={14} /> Delete
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -132,11 +166,12 @@ const GigModal = ({ onClose, onSave, initialData }) => {
     const [price, setPrice] = useState(initialData?.price || '');
     const [deliveryTime, setDeliveryTime] = useState(initialData?.deliveryTime || '3 Days');
     const [description, setDescription] = useState(initialData?.description || '');
+    const [category, setCategory] = useState(initialData?.category || '');
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!title || !price) return;
-        onSave({ title, price, deliveryTime, description });
+        onSave({ title, price, deliveryTime, description, category });
     };
 
     return (
@@ -204,6 +239,17 @@ const GigModal = ({ onClose, onSave, initialData }) => {
                             onChange={e => setDescription(e.target.value)}
                         ></textarea>
                     </div>
+                    <div>
+                        <label className="form-label" style={{ display: 'block', marginBottom: '0.5rem' }}>Category</label>
+                        <input
+                            type="text"
+                            className="search-input"
+                            placeholder="e.g. web, ai, writing"
+                            value={category}
+                            onChange={e => setCategory(e.target.value)}
+                            required
+                        />
+                    </div>
 
                     <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1rem' }}>
                         <button type="button" className="btn btn-outline" onClick={onClose}>Cancel</button>
@@ -270,3 +316,69 @@ const GigPreviewModal = ({ gig, onClose }) => {
 };
 
 export default FreelancerGigs;
+
+const CoverUpload = ({ gig, onUploaded }) => {
+    const [hover, setHover] = useState(false);
+    const [uploading, setUploading] = useState(false);
+    const inputRef = React.useRef(null);
+
+    const handleChange = async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        setUploading(true);
+        try {
+            const res = await gigsService.uploadCover(gig._id || gig.id, file);
+            let updatedGig = null;
+            try {
+                updatedGig = await gigsService.get(gig._id || gig.id);
+            } catch {}
+            onUploaded({ cover: res.cover, updated: updatedGig });
+        } finally {
+            setUploading(false);
+        }
+    };
+
+    return (
+        <label
+            style={{
+                height: '160px',
+                backgroundColor: 'var(--gray-200)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'var(--gray-500)',
+                cursor: 'pointer',
+                position: 'relative'
+            }}
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+            onClick={() => inputRef.current && inputRef.current.click()}
+        >
+            {uploading ? 'Uploading...' : (gig.images?.[0] ? '' : 'Gig Cover Image')}
+            {gig.images?.[0] && (
+                <img
+                    src={gig.images[0]}
+                    alt=""
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+            )}
+            {hover && (
+                <div
+                    style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: 'rgba(0,0,0,0.35)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: '#fff',
+                        fontWeight: 600
+                    }}
+                >
+                    Tap to upload
+                </div>
+            )}
+            <input ref={inputRef} type="file" accept="image/*" onChange={handleChange} style={{ display: 'none' }} />
+        </label>
+    );
+};

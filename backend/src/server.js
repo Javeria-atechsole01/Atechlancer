@@ -28,6 +28,8 @@ app.use(morgan('dev'));
 app.use('/api/auth', require('./routes/auth.routes'));
 app.use('/api/admin', require('./routes/admin.routes'));
 app.use('/api/profile', require('./routes/profile.routes'));
+app.use('/api/gigs', require('./routes/gig.routes'));
+app.use('/api/orders', require('./routes/order.routes'));
 
 // Base route
 app.get('/', (req, res) => {

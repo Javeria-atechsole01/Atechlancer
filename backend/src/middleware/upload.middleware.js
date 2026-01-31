@@ -39,7 +39,38 @@ const uploadDocument = multer({
   fileFilter: fileFilter
 });
 
+// Storage for Gig Images
+const gigImageStorage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'gig_images',
+    allowed_formats: ['jpg', 'png', 'jpeg']
+  }
+});
+
+const uploadGigImages = multer({
+  storage: gigImageStorage,
+  limits: { fileSize: 5 * 1024 * 1024 }
+});
+
+// Storage for Deliveries
+const deliveryStorage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'deliveries',
+    resource_type: 'raw',
+    allowed_formats: ['pdf']
+  }
+});
+
+const uploadDelivery = multer({
+  storage: deliveryStorage,
+  limits: { fileSize: 20 * 1024 * 1024 }
+});
+
 module.exports = {
   uploadPhoto,
-  uploadDocument
+  uploadDocument,
+  uploadGigImages,
+  uploadDelivery
 };

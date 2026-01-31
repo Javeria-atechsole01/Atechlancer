@@ -14,6 +14,10 @@ import EmailVerification from './pages/auth/EmailVerification';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import ResetPassword from './pages/auth/ResetPassword';
 import ProtectedRoute from './components/ProtectedRoute';
+import Gigs from './pages/Gigs';
+import GigDetails from './pages/GigDetails';
+import Orders from './pages/Orders';
+import OrderDetails from './pages/OrderDetails';
 
 // Dashboard Imports
 // Dashboard Imports
@@ -29,6 +33,7 @@ import StudentPayments from './pages/dashboard/student/StudentPayments';
 
 import FreelancerHome from './pages/dashboard/freelancer/FreelancerHome';
 import FreelancerGigs from './pages/dashboard/freelancer/FreelancerGigs';
+import FreelancerGigsManager from './pages/dashboard/freelancer/FreelancerGigsManager';
 import FreelancerOrders from './pages/dashboard/freelancer/FreelancerOrders';
 import FreelancerProfile from './pages/dashboard/freelancer/FreelancerProfile';
 import FreelancerEarnings from './pages/dashboard/freelancer/FreelancerEarnings';
@@ -64,11 +69,15 @@ function App() {
             <Route path="/pricing" element={<Layout><Pricing /></Layout>} />
             <Route path="/contact" element={<Layout><Contact /></Layout>} />
             <Route path="/faq" element={<Layout><FAQ /></Layout>} />
+            <Route path="/gigs" element={<Layout><Gigs /></Layout>} />
+            <Route path="/gigs/:id" element={<Layout><GigDetails /></Layout>} />
             <Route path="/signup" element={<Layout><Signup /></Layout>} />
             <Route path="/login" element={<Layout><Login /></Layout>} />
             <Route path="/verify-email" element={<Layout><EmailVerification /></Layout>} />
             <Route path="/forgot-password" element={<Layout><ForgotPassword /></Layout>} />
             <Route path="/reset-password" element={<Layout><ResetPassword /></Layout>} />
+            <Route path="/orders" element={<ProtectedRoute><Layout><Orders /></Layout></ProtectedRoute>} />
+            <Route path="/orders/:id" element={<ProtectedRoute><Layout><OrderDetails /></Layout></ProtectedRoute>} />
 
 
             {/* Public Profile View (Shared) */}
@@ -94,6 +103,7 @@ function App() {
               <Route path="home" element={<FreelancerHome />} />
               <Route path="profile" element={<FreelancerProfile />} />
               <Route path="gigs" element={<FreelancerGigs />} />
+              <Route path="manage-gigs" element={<FreelancerGigsManager />} />
               <Route path="orders" element={<FreelancerOrders />} />
               <Route path="assignments" element={<FreelancerAssignments />} />
               <Route path="earnings" element={<FreelancerEarnings />} />
