@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { authService } from '../../services/authService';
+import { useAuth } from '../../context/AuthContext';
 import { User, Briefcase, GraduationCap, Building2, Eye, EyeOff, Loader2 } from 'lucide-react';
 import './auth.css';
 
 const Signup = () => {
+    console.log("Signup Page: Mounting...");
     const navigate = useNavigate();
+    const { signup } = useAuth();
     const [step, setStep] = useState(1); // 1: Role, 2: Form
     const [role, setRole] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -61,7 +63,7 @@ const Signup = () => {
         setIsLoading(true);
 
         try {
-            await authService.signup({ ...formData, role });
+            await signup({ ...formData, role });
             // Redirect to email verification (simulated)
             navigate('/verify-email', { state: { email: formData.email } });
         } catch (err) {

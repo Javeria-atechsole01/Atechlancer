@@ -367,3 +367,200 @@
     color: var(--accent-text);
     border: 1px solid var(--accent-500);
 }
+
+/* NEW: Stats Grid System */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background-color: white;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--gray-200);
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.stat-icon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--brand-navy);
+    line-height: 1.2;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: var(--gray-500);
+}
+
+/* NEW: Utility Classes for Colors (Replacing Tailwind) */
+.bg-blue-100 {
+    background-color: #dbeafe;
+}
+
+.text-blue-600 {
+    color: #2563eb;
+}
+
+.tag-blue {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.bg-green-100 {
+    background-color: #dcfce7;
+}
+
+.text-green-600 {
+    color: #16a34a;
+}
+
+.tag-green {
+    background-color: #dcfce7;
+    color: #15803d;
+}
+
+.bg-orange-100 {
+    background-color: #ffedd5;
+}
+
+.text-orange-600 {
+    color: #ea580c;
+}
+
+.tag-orange {
+    background-color: #ffedd5;
+    color: #c2410c;
+}
+
+.bg-purple-100 {
+    background-color: #f3e8ff;
+}
+
+.text-purple-600 {
+    color: #9333ea;
+}
+
+.tag-purple {
+    background-color: #f3e8ff;
+    color: #7e22ce;
+}
+
+.text-accent {
+    color: var(--accent-500);
+}
+
+.text-secondary {
+    color: var(--secondary-500);
+}
+
+.text-muted {
+    color: var(--gray-500);
+}
+
+/* NEW: Flex Helpers */
+.flex-row-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flex-row-gap {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.gap-sm {
+    gap: 0.5rem;
+}
+
+.gap-md {
+    gap: 1rem;
+}
+
+.gap-lg {
+    gap: 1.5rem;
+}
+
+.mb-sm {
+    margin-bottom: 0.5rem;
+}
+
+.mb-md {
+    margin-bottom: 1rem;
+}
+
+.mb-lg {
+    margin-bottom: 1.5rem;
+}
+
+.mb-xl {
+    margin-bottom: 2rem;
+}
+
+.w-full {
+    width: 100%;
+}
+
+/* NEW: Assignments Specific */
+.assignment-card {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .assignment-card {
+        grid-template-columns: 1fr;
+    }
+}
+
+.assignment-meta {
+    display: flex;
+    gap: 1.5rem;
+    color: var(--gray-500);
+    font-size: 0.875rem;
+    margin-top: 1rem;
+}
+
+.price-tag {
+    text-align: right;
+}
+
+.price-amount {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--brand-navy);
+}
+
+.price-label {
+    font-size: 0.875rem;
+    color: var(--gray-500);
+}

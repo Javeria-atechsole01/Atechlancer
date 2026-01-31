@@ -1,85 +1,49 @@
-/**
- * Mock Authentication Service
- * Simulates backend operations with network delay
- */
-
-const DELAY = 800;
+import api from './api';
 
 export const authService = {
-    // Simulate Login
+    // Login
     login: async (email, password) => {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                if (email && password) {
-                    // Mock successful login
-                    resolve({
-                        success: true,
-                        user: {
-                            id: '1',
-                            name: 'Test User',
-                            email: email,
-                            role: 'student',
-                            verified: true
-                        },
-                        token: 'mock-jwt-token'
-                    });
-                } else {
-                    reject({ message: 'Invalid credentials' });
-                }
-            }, DELAY);
-        });
+        try {
+            const response = await api.post('/auth/login', { email, password });
+            if (response.data.token) {
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('user', JSON.stringify(response.data.user));
+            }
+            return response.data;
+        } catch (error) {
+            throw error.response?.data || { message: 'Login failed' };
+        }
     },
 
-    // Simulate Signup
+    // Signup
     signup: async (userData) => {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve({
-                    success: true,
-                    message: 'Account created successfully! Please verify your email.',
-                    userId: 'new-user-123'
-                });
-            }, DELAY);
-        });
+        try {
+            const response = await api.post('/auth/register', userData);
+            if (response.data.token) {
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('user', JSON.stringify(response.data.user));
+            }
+            return response.data;
+        } catch (error) {
+            throw error.response?.data || { message: 'Signup failed' };
+        }
     },
 
-    // Simulate Email Verification
+    // Verify Email (Simulated for now based on backend stub)
     verifyEmail: async (token) => {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                if (token === 'valid-token') {
-                    resolve({ success: true, message: 'Email verified successfully!' });
-                } else {
-                    reject({ message: 'Invalid or expired verification link.' });
-                }
-            }, DELAY);
-        });
+        // Backend currently returns "not implemented"
+        // simulating success for flow continuity
+        return { success: true, message: 'Email verified' };
     },
 
-    // Simulate verification email resend
-    resendVerification: async (email) => {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve({ success: true, message: 'Verification link sent!' });
-            }, DELAY);
-        });
+    logout: () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
     },
 
-    // Simulate Password Reset Request
-    requestPasswordReset: async (email) => {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve({ success: true, message: 'Password reset link sent to your email.' });
-            }, DELAY);
-        });
-    },
-
-    // Simulate Password Reset Confirmation
-    resetPassword: async (token, newPassword) => {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve({ success: true, message: 'Password has been reset successfully.' });
-            }, DELAY);
-        });
+    getCurrentUser: () => {
+        const userStr = localStorage.getItem('user');
+        if (userStr) return JSON.parse(userStr);
+        return null;
     }
 };

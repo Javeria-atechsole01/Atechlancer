@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { authService } from '../../services/authService';
+import { useAuth } from '../../context/AuthContext';
 import { Loader2, Eye, EyeOff } from 'lucide-react';
 import './auth.css';
 
 const Login = () => {
     const navigate = useNavigate();
+    const { login } = useAuth();
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -35,8 +36,10 @@ const Login = () => {
         setIsLoading(true);
 
         try {
-            const response = await authService.login(formData.email, formData.password);
-            navigate('/');
+            const data = await login(formData.email, formData.password);
+            // Role-based redirect
+            const role = data.user.role;
+            navigate(`/dashboard/${role}`);
         } catch (err) {
             setError(err.message || 'Login failed.');
         } finally {

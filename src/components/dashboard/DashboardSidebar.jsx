@@ -10,10 +10,21 @@ import {
     Briefcase,
     BookOpen,
     Users,
-    MessageSquare
+    MessageSquare,
+    LogOut
 } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const DashboardSidebar = ({ isOpen, role }) => {
+    const { logout } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
+    };
+
     const getNavItems = () => {
         // Shared items
         const commonItems = [
@@ -100,10 +111,14 @@ const DashboardSidebar = ({ isOpen, role }) => {
                 </nav>
 
                 <div className="dashboard-sidebar-footer">
-                    <div className="nav-item" style={{ cursor: 'pointer' }}>
-                        {/* Log out Placeholder */}
+                    <button
+                        onClick={handleLogout}
+                        className="nav-item"
+                        style={{ cursor: 'pointer', width: '100%', background: 'none', border: 'none', textAlign: 'left', font: 'inherit' }}
+                    >
+                        <LogOut size={20} />
                         <span>Log Out</span>
-                    </div>
+                    </button>
                 </div>
             </aside>
         </>
