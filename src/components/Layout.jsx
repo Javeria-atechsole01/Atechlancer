@@ -5,7 +5,6 @@ import Footer from './Footer';
 
 const Layout = ({ children }) => {
     const { pathname } = useLocation();
-    console.log("Layout Rendering, Path:", pathname);
 
     // Scroll to top on route change
     useEffect(() => {

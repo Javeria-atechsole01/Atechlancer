@@ -5,7 +5,6 @@ import { User, Briefcase, GraduationCap, Building2, Eye, EyeOff, Loader2 } from 
 import './auth.css';
 
 const Signup = () => {
-    console.log("Signup Page: Mounting...");
     const navigate = useNavigate();
     const { signup } = useAuth();
     const [step, setStep] = useState(1); // 1: Role, 2: Form

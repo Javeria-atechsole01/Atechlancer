@@ -11,7 +11,6 @@ export const AuthProvider = ({ children }) => {
         const initAuth = async () => {
             try {
                 const currentUser = authService.getCurrentUser();
-                console.log("AuthContext: user initialized", currentUser);
                 // Ideally verify token validity with backend here via /api/auth/me
                 setUser(currentUser);
             } catch (error) {

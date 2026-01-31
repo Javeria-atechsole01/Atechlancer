@@ -49,7 +49,6 @@ import EmployerPayments from './pages/dashboard/employer/EmployerPayments';
 import { AuthProvider } from './context/AuthContext';
 
 function App() {
-  console.log("App Component Rendering...");
   return (
     <AuthProvider>
       <Router>
