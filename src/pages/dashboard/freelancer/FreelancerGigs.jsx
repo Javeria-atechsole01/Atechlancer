@@ -222,7 +222,7 @@ const GigPreviewModal = ({ gig, onClose }) => {
             backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1000,
             display: 'flex', alignItems: 'center', justifyContent: 'center'
         }}>
-            <div className="card" style={{ width: '100%', maxWidth: '800px', maxHeight: '90vh', overflowY: 'auto', padding: '0', overflow: 'hidden' }}>
+            <div className="card" style={{ width: '100%', maxWidth: '800px', maxHeight: '90vh', overflowY: 'auto', padding: '0' }}>
                 <div style={{ padding: '1.5rem', borderBottom: '1px solid var(--gray-200)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <h3 className="card-title">Gig Preview</h3>
                     <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--gray-500)' }}>
