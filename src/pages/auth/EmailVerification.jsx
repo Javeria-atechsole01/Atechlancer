@@ -33,14 +33,19 @@ const EmailVerification = () => {
             const response = await authService.verifyEmail(verificationToken);
             setStatus('success');
             
+            setMessage(`Welcome ${response.user.name || email.split('@')[0]}! Your email is now verified.`);
+            
             // If backend returns token/user, we could auto login here
             if (response.token && response.user) {
                 localStorage.setItem('token', response.token);
                 localStorage.setItem('user', JSON.stringify(response.user));
                 
                 // Optional: Reload page or update context to reflect logged in state
+                window.location.reload();
+            } else {
                 // For now, let's just show success and a button to go to dashboard
                 setTimeout(() => {
+                    setMessage('Successfully verified! Redirecting to dashboard...');
                     // Redirect based on role (App routes use /dashboard/<role>)
                     switch(response.user.role) {
                         case 'employer':
@@ -118,7 +123,7 @@ const EmailVerification = () => {
                                     Click to resend
                                 </button>
                                 {message && <p style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: 'var(--accent-500)' }}>{message}</p>}
-                            </div>
+                            </div>  
                         </div>
                     )}
 

@@ -13,7 +13,6 @@ import Login from './pages/auth/Login';
 import EmailVerification from './pages/auth/EmailVerification';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import ResetPassword from './pages/auth/ResetPassword';
-import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // Dashboard Imports
@@ -55,7 +54,6 @@ import { SearchProvider } from './context/SearchContext';
 function App() {
   return (
     <AuthProvider>
-<<<<<<< Updated upstream
       <SearchProvider>
         <Router>
           <Routes>
@@ -71,22 +69,7 @@ function App() {
             <Route path="/verify-email" element={<Layout><EmailVerification /></Layout>} />
             <Route path="/forgot-password" element={<Layout><ForgotPassword /></Layout>} />
             <Route path="/reset-password" element={<Layout><ResetPassword /></Layout>} />
-=======
-      <Router>
-        <Routes>
-        {/* Public Website Routes */}
-        <Route path="/" element={<Layout><Home /></Layout>} />
-        <Route path="/about" element={<Layout><About /></Layout>} />
-        <Route path="/how-it-works" element={<Layout><HowItWorks /></Layout>} />
-        <Route path="/pricing" element={<Layout><Pricing /></Layout>} />
-        <Route path="/contact" element={<Layout><Contact /></Layout>} />
-        <Route path="/faq" element={<Layout><FAQ /></Layout>} />
-        <Route path="/signup" element={<Layout><Signup /></Layout>} />
-        <Route path="/login" element={<Layout><Login /></Layout>} />
-        <Route path="/verify-email" element={<Layout><EmailVerification /></Layout>} />
-        <Route path="/forgot-password" element={<Layout><ForgotPassword /></Layout>} />
-        <Route path="/reset-password" element={<Layout><ResetPassword /></Layout>} />
->>>>>>> Stashed changes
+
 
             {/* Public Profile View (Shared) */}
             <Route path="/profile/freelancer/view" element={<PublicFreelancerProfile />} />
@@ -130,7 +113,7 @@ function App() {
               <Route path="settings" element={<DashboardSettings />} />
             </Route>
 
-<<<<<<< Updated upstream
+
             {/* Employer Dashboard */}
             <Route path="/dashboard/employer" element={<DashboardLayout role="employer" />}>
               <Route index element={<Navigate to="home" replace />} />
@@ -147,12 +130,6 @@ function App() {
           </Routes>
         </Router>
       </SearchProvider>
-=======
-        {/* Fallback for /dashboard/unknown */}
-        <Route path="/dashboard/*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </Router>
->>>>>>> Stashed changes
     </AuthProvider>
   );
 }

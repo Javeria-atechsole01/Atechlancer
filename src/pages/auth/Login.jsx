@@ -36,12 +36,12 @@ const Login = () => {
         setIsLoading(true);
 
         try {
-<<<<<<< Updated upstream
+
             const data = await login(formData.email, formData.password);
             // Role-based redirect
             const role = data.user.role;
             navigate(`/dashboard/${role}`);
-=======
+
             const { user } = await login(formData.email, formData.password);
             
             // Redirect based on role (App routes use /dashboard/<role>)
@@ -64,7 +64,7 @@ const Login = () => {
                 default:
                     navigate('/');
             }
->>>>>>> Stashed changes
+
         } catch (err) {
             setError(err.message || 'Login failed.');
         } finally {
