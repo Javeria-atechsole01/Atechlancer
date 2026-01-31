@@ -1,27 +1,72 @@
-import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { authService } from '../../services/authService';
 import { Mail, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 import './auth.css';
 
 const EmailVerification = () => {
     const { state } = useLocation();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const token = searchParams.get('token');
+    
     const [status, setStatus] = useState('sent'); // sent, verifying, success, error
     const [message, setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    
+    // In case we want to auto-login after verification
+    const { login } = useAuth(); // Note: This might be tricky if we don't have password. 
+                                 // Usually we redirect to login or auto-login with token returned from verify API.
 
     const email = state?.email || 'your email';
 
-    const handleSimulateVerification = async () => {
+    useEffect(() => {
+        if (token) {
+            verifyToken(token);
+        }
+    }, [token]);
+
+    const verifyToken = async (verificationToken) => {
         setStatus('verifying');
         try {
-            // Simulate token verification
-            await authService.verifyEmail('valid-token');
+            const response = await authService.verifyEmail(verificationToken);
             setStatus('success');
+            
+            // If backend returns token/user, we could auto login here
+            if (response.token && response.user) {
+                localStorage.setItem('token', response.token);
+                localStorage.setItem('user', JSON.stringify(response.user));
+                
+                // Optional: Reload page or update context to reflect logged in state
+                // For now, let's just show success and a button to go to dashboard
+                setTimeout(() => {
+                    // Redirect based on role (App routes use /dashboard/<role>)
+                    switch(response.user.role) {
+                        case 'employer':
+                            navigate('/dashboard/employer');
+                            break;
+                        case 'teacher':
+                            navigate('/dashboard/teacher');
+                            break;
+                        case 'freelancer':
+                            navigate('/dashboard/freelancer');
+                            break;
+                        case 'student':
+                            navigate('/dashboard/student');
+                            break;
+                        case 'admin':
+                            navigate('/dashboard/admin');
+                            break;
+                        default:
+                            navigate('/');
+                    }
+                }, 2000);
+            }
+
         } catch (err) {
             setStatus('error');
-            setMessage(err.message);
+            setMessage(err.message || 'Verification failed. Link might be expired.');
         }
     };
 
@@ -32,10 +77,14 @@ const EmailVerification = () => {
             setMessage('New verification link sent!');
             setTimeout(() => setMessage(''), 3000);
         } catch (err) {
-            setMessage('Failed to send link.');
+            setMessage(err.message || 'Failed to send link.');
         } finally {
             setIsLoading(false);
         }
+    };
+
+    const handleGoToLogin = () => {
+        navigate('/auth/login');
     };
 
     return (
@@ -70,37 +119,20 @@ const EmailVerification = () => {
                                 </button>
                                 {message && <p style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: 'var(--accent-500)' }}>{message}</p>}
                             </div>
-
-                            {/* Development Only: Simulator Button */}
-                            <div className="mt-4" style={{ paddingTop: '1.5rem', borderTop: '1px dashed var(--gray-200)' }}>
-                                <p style={{ fontSize: '0.75rem', color: 'var(--gray-400)', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Development Simulator</p>
-                                <button
-                                    onClick={handleSimulateVerification}
-                                    style={{
-                                        width: '100%',
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        padding: '0.5rem 1rem',
-                                        border: '1px solid transparent',
-                                        borderRadius: '0.375rem',
-                                        fontSize: '0.875rem',
-                                        fontWeight: 500,
-                                        color: 'var(--primary-600)',
-                                        backgroundColor: 'var(--primary-50)',
-                                        cursor: 'pointer'
-                                    }}
-                                >
-                                    Simulate Clicking Link
-                                </button>
-                            </div>
                         </div>
                     )}
 
                     {status === 'verifying' && (
                         <div className="verification-status">
-                            <Loader2 className="icon-spin" style={{ height: '3rem', width: '3rem', color: 'var(--primary-600)', margin: '0 auto' }} />
-                            <h2 className="role-title">Verifying your email...</h2>
+                            <div className="status-icon-wrapper verifying">
+                                <Loader2 size={24} className="icon-spin" />
+                            </div>
+                            <div>
+                                <h2 className="auth-title" style={{ marginTop: 0 }}>Verifying...</h2>
+                                <p className="auth-subtitle">
+                                    Please wait while we verify your email address.
+                                </p>
+                            </div>
                         </div>
                     )}
 
@@ -112,17 +144,12 @@ const EmailVerification = () => {
                             <div>
                                 <h2 className="auth-title" style={{ marginTop: 0 }}>Email Verified!</h2>
                                 <p className="auth-subtitle">
-                                    Your account has been successfully verified.
+                                    Your account has been successfully verified. Redirecting you to dashboard...
                                 </p>
                             </div>
-                            <div className="mt-4">
-                                <button
-                                    onClick={() => navigate('/login')}
-                                    className="auth-btn"
-                                >
-                                    Continue to Login
-                                </button>
-                            </div>
+                            <button onClick={handleGoToLogin} className="submit-button" style={{ marginTop: '1rem' }}>
+                                Continue to Login
+                            </button>
                         </div>
                     )}
 
@@ -134,15 +161,11 @@ const EmailVerification = () => {
                             <div>
                                 <h2 className="auth-title" style={{ marginTop: 0 }}>Verification Failed</h2>
                                 <p className="auth-subtitle">
-                                    {message || 'The verification link is invalid or expired.'}
+                                    {message}
                                 </p>
                             </div>
-                            <button
-                                onClick={() => setStatus('sent')}
-                                className="auth-link"
-                                style={{ background: 'none', border: 'none', cursor: 'pointer' }}
-                            >
-                                Try sending again
+                            <button onClick={handleResend} className="submit-button" style={{ marginTop: '1rem' }}>
+                                Resend Verification Link
                             </button>
                         </div>
                     )}

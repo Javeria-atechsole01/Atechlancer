@@ -36,10 +36,35 @@ const Login = () => {
         setIsLoading(true);
 
         try {
+<<<<<<< Updated upstream
             const data = await login(formData.email, formData.password);
             // Role-based redirect
             const role = data.user.role;
             navigate(`/dashboard/${role}`);
+=======
+            const { user } = await login(formData.email, formData.password);
+            
+            // Redirect based on role (App routes use /dashboard/<role>)
+            switch(user.role) {
+                case 'employer':
+                    navigate('/dashboard/employer');
+                    break;
+                case 'teacher':
+                    navigate('/dashboard/teacher');
+                    break;
+                case 'freelancer':
+                    navigate('/dashboard/freelancer');
+                    break;
+                case 'student':
+                    navigate('/dashboard/student');
+                    break;
+                case 'admin':
+                    navigate('/dashboard/admin');
+                    break;
+                default:
+                    navigate('/');
+            }
+>>>>>>> Stashed changes
         } catch (err) {
             setError(err.message || 'Login failed.');
         } finally {
@@ -105,51 +130,53 @@ const Login = () => {
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="input-icon-btn"
+                                    className="password-toggle"
                                 >
-                                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                    {showPassword ? (
+                                        <EyeOff className="h-5 w-5 text-gray-400" />
+                                    ) : (
+                                        <Eye className="h-5 w-5 text-gray-400" />
+                                    )}
                                 </button>
                             </div>
                         </div>
 
-                        <div className="flex-between">
-                            <div className="form-checkbox-group">
+                        <div className="form-options">
+                            <div className="remember-me">
                                 <input
-                                    id="remember-me"
+                                    id="remember"
                                     name="remember"
                                     type="checkbox"
                                     checked={formData.remember}
                                     onChange={handleChange}
-                                    className="form-checkbox"
+                                    className="checkbox-input"
                                 />
-                                <label htmlFor="remember-me" className="form-checkbox-label">
+                                <label htmlFor="remember" className="checkbox-label">
                                     Remember me
                                 </label>
                             </div>
 
-                            <div style={{ fontSize: '0.875rem' }}>
-                                <Link to="/forgot-password" className="auth-link">
+                            <div className="forgot-password">
+                                <Link to="/forgot-password">
                                     Forgot your password?
                                 </Link>
                             </div>
                         </div>
 
-                        <div>
-                            <button
-                                type="submit"
-                                disabled={isLoading}
-                                className="auth-btn"
-                            >
-                                {isLoading ? (
-                                    <>
-                                        <Loader2 className="icon-spin" />
-                                        Signing in...
-                                    </>
-                                ) : (
-                                    'Sign in'
-                                )}
-                            </button>
-                        </div>
+                        <button
+                            type="submit"
+                            disabled={isLoading}
+                            className="submit-button"
+                        >
+                            {isLoading ? (
+                                <>
+                                    <Loader2 className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" />
+                                    Signing in...
+                                </>
+                            ) : (
+                                'Sign in'
+                            )}
+                        </button>
                     </form>
                 </div>
             </div>

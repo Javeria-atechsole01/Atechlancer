@@ -31,6 +31,12 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
+    verificationToken: {
+      type: String
+    },
+    verificationTokenExpires: {
+      type: Date
+    },
     isApprovedByAdmin: {
       type: Boolean,
       default: false
@@ -44,6 +50,8 @@ UserSchema.methods.toJSON = function () {
   const obj = this.toObject();
   delete obj.password;
   delete obj.__v;
+  delete obj.verificationToken;
+  delete obj.verificationTokenExpires;
   return obj;
 };
 
