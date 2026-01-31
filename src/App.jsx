@@ -47,79 +47,82 @@ import EmployerContracts from './pages/dashboard/employer/EmployerContracts';
 import EmployerPayments from './pages/dashboard/employer/EmployerPayments';
 
 import { AuthProvider } from './context/AuthContext';
+import { SearchProvider } from './context/SearchContext';
 
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <Routes>
-          {/* Public Website Routes */}
-          <Route path="/" element={<Layout><Home /></Layout>} />
-          <Route path="/about" element={<Layout><About /></Layout>} />
-          <Route path="/how-it-works" element={<Layout><HowItWorks /></Layout>} />
-          <Route path="/pricing" element={<Layout><Pricing /></Layout>} />
-          <Route path="/contact" element={<Layout><Contact /></Layout>} />
-          <Route path="/faq" element={<Layout><FAQ /></Layout>} />
-          <Route path="/signup" element={<Layout><Signup /></Layout>} />
-          <Route path="/login" element={<Layout><Login /></Layout>} />
-          <Route path="/verify-email" element={<Layout><EmailVerification /></Layout>} />
-          <Route path="/forgot-password" element={<Layout><ForgotPassword /></Layout>} />
-          <Route path="/reset-password" element={<Layout><ResetPassword /></Layout>} />
+      <SearchProvider>
+        <Router>
+          <Routes>
+            {/* Public Website Routes */}
+            <Route path="/" element={<Layout><Home /></Layout>} />
+            <Route path="/about" element={<Layout><About /></Layout>} />
+            <Route path="/how-it-works" element={<Layout><HowItWorks /></Layout>} />
+            <Route path="/pricing" element={<Layout><Pricing /></Layout>} />
+            <Route path="/contact" element={<Layout><Contact /></Layout>} />
+            <Route path="/faq" element={<Layout><FAQ /></Layout>} />
+            <Route path="/signup" element={<Layout><Signup /></Layout>} />
+            <Route path="/login" element={<Layout><Login /></Layout>} />
+            <Route path="/verify-email" element={<Layout><EmailVerification /></Layout>} />
+            <Route path="/forgot-password" element={<Layout><ForgotPassword /></Layout>} />
+            <Route path="/reset-password" element={<Layout><ResetPassword /></Layout>} />
 
-          {/* Dashboard Routes with Shared Layout */}
+            {/* Dashboard Routes with Shared Layout */}
 
-          {/* Student Dashboard */}
-          <Route path="/dashboard/student" element={<DashboardLayout role="student" />}>
-            <Route index element={<Navigate to="home" replace />} />
-            <Route path="home" element={<StudentHome />} />
-            <Route path="profile" element={<StudentProfile />} />
-            <Route path="assignments" element={<StudentAssignments />} />
-            <Route path="projects" element={<StudentProjects />} />
-            <Route path="submissions" element={<StudentSubmissions />} />
-            <Route path="payments" element={<StudentPayments />} />
-            <Route path="settings" element={<DashboardSettings />} />
-          </Route>
+            {/* Student Dashboard */}
+            <Route path="/dashboard/student" element={<DashboardLayout role="student" />}>
+              <Route index element={<Navigate to="home" replace />} />
+              <Route path="home" element={<StudentHome />} />
+              <Route path="profile" element={<StudentProfile />} />
+              <Route path="assignments" element={<StudentAssignments />} />
+              <Route path="projects" element={<StudentProjects />} />
+              <Route path="submissions" element={<StudentSubmissions />} />
+              <Route path="payments" element={<StudentPayments />} />
+              <Route path="settings" element={<DashboardSettings />} />
+            </Route>
 
-          {/* Freelancer Dashboard */}
-          <Route path="/dashboard/freelancer" element={<DashboardLayout role="freelancer" />}>
-            <Route index element={<Navigate to="home" replace />} />
-            <Route path="home" element={<FreelancerHome />} />
-            <Route path="profile" element={<FreelancerProfile />} />
-            <Route path="gigs" element={<FreelancerGigs />} />
-            <Route path="orders" element={<FreelancerOrders />} />
-            <Route path="assignments" element={<FreelancerAssignments />} />
-            <Route path="earnings" element={<FreelancerEarnings />} />
-            <Route path="reviews" element={<FreelancerReviews />} />
-            <Route path="settings" element={<DashboardSettings />} />
-          </Route>
+            {/* Freelancer Dashboard */}
+            <Route path="/dashboard/freelancer" element={<DashboardLayout role="freelancer" />}>
+              <Route index element={<Navigate to="home" replace />} />
+              <Route path="home" element={<FreelancerHome />} />
+              <Route path="profile" element={<FreelancerProfile />} />
+              <Route path="gigs" element={<FreelancerGigs />} />
+              <Route path="orders" element={<FreelancerOrders />} />
+              <Route path="assignments" element={<FreelancerAssignments />} />
+              <Route path="earnings" element={<FreelancerEarnings />} />
+              <Route path="reviews" element={<FreelancerReviews />} />
+              <Route path="settings" element={<DashboardSettings />} />
+            </Route>
 
-          {/* Teacher Dashboard */}
-          <Route path="/dashboard/teacher" element={<DashboardLayout role="teacher" />}>
-            <Route index element={<Navigate to="home" replace />} />
-            <Route path="home" element={<TeacherHome />} />
-            <Route path="profile" element={<TeacherProfile />} />
-            <Route path="courses" element={<TeacherCourses />} />
-            <Route path="mentoring" element={<TeacherMentoring />} />
-            <Route path="jobs" element={<TeacherJobs />} />
-            <Route path="earnings" element={<TeacherEarnings />} />
-            <Route path="settings" element={<DashboardSettings />} />
-          </Route>
+            {/* Teacher Dashboard */}
+            <Route path="/dashboard/teacher" element={<DashboardLayout role="teacher" />}>
+              <Route index element={<Navigate to="home" replace />} />
+              <Route path="home" element={<TeacherHome />} />
+              <Route path="profile" element={<TeacherProfile />} />
+              <Route path="courses" element={<TeacherCourses />} />
+              <Route path="mentoring" element={<TeacherMentoring />} />
+              <Route path="jobs" element={<TeacherJobs />} />
+              <Route path="earnings" element={<TeacherEarnings />} />
+              <Route path="settings" element={<DashboardSettings />} />
+            </Route>
 
-          {/* Employer Dashboard */}
-          <Route path="/dashboard/employer" element={<DashboardLayout role="employer" />}>
-            <Route index element={<Navigate to="home" replace />} />
-            <Route path="home" element={<EmployerHome />} />
-            <Route path="post-job" element={<EmployerPostJob />} />
-            <Route path="candidates" element={<EmployerCandidates />} />
-            <Route path="contracts" element={<EmployerContracts />} />
-            <Route path="payments" element={<EmployerPayments />} />
-            <Route path="settings" element={<DashboardSettings />} />
-          </Route>
+            {/* Employer Dashboard */}
+            <Route path="/dashboard/employer" element={<DashboardLayout role="employer" />}>
+              <Route index element={<Navigate to="home" replace />} />
+              <Route path="home" element={<EmployerHome />} />
+              <Route path="post-job" element={<EmployerPostJob />} />
+              <Route path="candidates" element={<EmployerCandidates />} />
+              <Route path="contracts" element={<EmployerContracts />} />
+              <Route path="payments" element={<EmployerPayments />} />
+              <Route path="settings" element={<DashboardSettings />} />
+            </Route>
 
-          {/* Fallback for /dashboard/unknown */}
-          <Route path="/dashboard/*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Router>
+            {/* Fallback for /dashboard/unknown */}
+            <Route path="/dashboard/*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Router>
+      </SearchProvider>
     </AuthProvider>
   );
 }

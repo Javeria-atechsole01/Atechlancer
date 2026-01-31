@@ -1,7 +1,10 @@
 import React from 'react';
 import { Bell, Search, Menu, ChevronDown } from 'lucide-react';
+import { useSearch } from '../../context/SearchContext';
 
 const DashboardHeader = ({ user, toggleSidebar }) => {
+    const { searchQuery, setSearchQuery } = useSearch();
+
     return (
         <header className="dashboard-header">
             <div className="header-left">
@@ -15,6 +18,8 @@ const DashboardHeader = ({ user, toggleSidebar }) => {
                         type="text"
                         placeholder="Search..."
                         className="search-input"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
             </div>

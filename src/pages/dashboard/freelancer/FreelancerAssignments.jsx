@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Search, Filter, BookOpen, Clock, DollarSign, CheckCircle } from 'lucide-react';
+import { useSearch } from '../../../context/SearchContext';
 
 const FreelancerAssignments = () => {
     // Mock Data for Assignments - Will connect to API later
@@ -37,7 +38,7 @@ const FreelancerAssignments = () => {
     ]);
 
     const [filter, setFilter] = useState('All');
-    const [searchQuery, setSearchQuery] = useState('');
+    const { searchQuery } = useSearch();
 
     const filteredAssignments = assignments.filter(a => {
         const matchesStatus = filter === 'All' || a.status === filter;
@@ -95,16 +96,7 @@ const FreelancerAssignments = () => {
             {/* Search & Filter */}
             <div className="card mb-xl">
                 <div className="flex-row-gap">
-                    <div className="search-box" style={{ flex: 1, position: 'relative' }}>
-                        <Search className="search-icon" size={20} />
-                        <input
-                            type="text"
-                            placeholder="Search by subject or keyword..."
-                            className="search-input"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                        />
-                    </div>
+                    <div style={{ flex: 1 }}></div>
                     <select
                         className="search-input"
                         style={{ width: 'auto' }}
