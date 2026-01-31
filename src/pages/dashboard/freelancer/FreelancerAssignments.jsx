@@ -37,10 +37,17 @@ const FreelancerAssignments = () => {
     ]);
 
     const [filter, setFilter] = useState('All');
+    const [searchQuery, setSearchQuery] = useState('');
 
-    const filteredAssignments = filter === 'All'
-        ? assignments
-        : assignments.filter(a => a.status === filter);
+    const filteredAssignments = assignments.filter(a => {
+        const matchesStatus = filter === 'All' || a.status === filter;
+        const matchesSearch =
+            a.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            a.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            a.description.toLowerCase().includes(searchQuery.toLowerCase());
+
+        return matchesStatus && matchesSearch;
+    });
 
     return (
         <div className="dashboard-page">
@@ -90,7 +97,13 @@ const FreelancerAssignments = () => {
                 <div className="flex-row-gap">
                     <div className="search-box" style={{ flex: 1, position: 'relative' }}>
                         <Search className="search-icon" size={20} />
-                        <input type="text" placeholder="Search by subject or keyword..." className="search-input" />
+                        <input
+                            type="text"
+                            placeholder="Search by subject or keyword..."
+                            className="search-input"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
                     </div>
                     <select
                         className="search-input"
