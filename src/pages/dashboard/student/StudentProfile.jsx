@@ -76,6 +76,7 @@ const StudentProfile = () => {
                 {/* Main Content */}
                 <div className="lg:col-span-2 space-y-6">
                     <AboutSection
+                        user={user}
                         profile={profile}
                         onUpdate={handleUpdate}
                         isOwnProfile={true}

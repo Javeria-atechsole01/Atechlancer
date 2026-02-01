@@ -35,65 +35,90 @@ export const ProfileHeader = ({ user, profile, onUpdate, isOwnProfile }) => {
         }
     };
 
+    // Maxi-D Card Style
+    const cardStyle = {
+        backgroundColor: '#fff',
+        border: '1px solid #e5e7eb',
+        borderRadius: '12px',
+        padding: '24px',
+        marginBottom: '24px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '24px',
+        boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
+    };
+
     return (
-        <div className="card">
-            <div className="flex flex-col md:flex-row gap-6 items-start">
-                <div className="relative group cursor-pointer" onClick={handlePhotoClick}>
-                    <div className={`w-32 h-32 rounded-full flex items-center justify-center overflow-hidden border-4 border-white shadow-lg bg-gray-100 ${uploading ? 'opacity-50' : ''}`}>
-                        {profile.photo ? (
-                            <img src={profile.photo} alt={user.name} className="w-full h-full object-cover" />
-                        ) : (
-                            <span className="text-4xl font-bold text-gray-400">{user.name?.substring(0, 2).toUpperCase()}</span>
+        <div style={cardStyle}>
+            {/* Avatar Section */}
+            <div
+                onClick={handlePhotoClick}
+                style={{
+                    position: 'relative',
+                    width: '100px',
+                    height: '100px',
+                    borderRadius: '50%',
+                    overflow: 'hidden',
+                    backgroundColor: '#f3f4f6',
+                    flexShrink: 0,
+                    cursor: isOwnProfile ? 'pointer' : 'default',
+                    border: '1px solid #e5e7eb'
+                }}
+            >
+                {profile.photo ? (
+                    <img src={profile.photo} alt={user.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                    <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '32px', fontWeight: 'bold', color: '#9ca3af' }}>
+                        {user.name?.substring(0, 2).toUpperCase()}
+                    </div>
+                )}
+
+                {uploading && (
+                    <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Loader2 className="animate-spin" color="white" size={24} />
+                    </div>
+                )}
+
+                <input type="file" ref={fileInputRef} onChange={handleFileChange} hidden accept="image/*" />
+            </div>
+
+            {/* User Info Section */}
+            <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <div>
+                        <h2 style={{ fontSize: '20px', fontWeight: '700', color: '#111827', margin: '0 0 4px 0' }}>{user.name}</h2>
+                        <p style={{ fontSize: '15px', color: '#4b5563', margin: 0 }}>{profile.title || user.role}</p>
+                        {profile.location && (
+                            <p style={{ fontSize: '14px', color: '#6b7280', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                <MapPin size={14} /> {profile.location}
+                            </p>
                         )}
                     </div>
+
                     {isOwnProfile && (
-                        <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                            <Camera className="text-white" size={24} />
-                        </div>
+                        <button style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            padding: '6px 12px',
+                            border: '1px solid #d1d5db',
+                            borderRadius: '6px',
+                            backgroundColor: '#fff',
+                            color: '#374151',
+                            fontSize: '14px',
+                            fontWeight: '500',
+                            cursor: 'pointer'
+                        }}>
+                            Edit <Edit2 size={14} />
+                        </button>
                     )}
-                    {uploading && (
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <Loader2 className="animate-spin text-primary" size={32} />
-                        </div>
-                    )}
-                    <input type="file" ref={fileInputRef} onChange={handleFileChange} hidden accept="image/*" />
-                </div>
-
-                <div className="flex-1 w-full">
-                    <div className="flex justify-between items-start">
-                        <div>
-                            <h1 className="text-2xl font-bold text-navy-900">{user.name}</h1>
-                            <p className="text-lg text-gray-600 mt-1">{profile.title || user.role}</p>
-                            <div className="flex items-center gap-2 text-gray-500 mt-2 text-sm">
-                                {profile.location && (
-                                    <span className="flex items-center gap-1"><MapPin size={14} /> {profile.location}</span>
-                                )}
-                                {user.isEmailVerified && (
-                                    <span className="flex items-center gap-1 text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100">
-                                        <CheckCircle size={12} /> Verified
-                                    </span>
-                                )}
-                            </div>
-                        </div>
-
-                        <div className="text-right">
-                            <div className="text-sm font-semibold text-gray-500 mb-1">Profile Completion</div>
-                            <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
-                                <div
-                                    className="h-full bg-green-500 rounded-full transition-all duration-500"
-                                    style={{ width: `${profile.completionPercentage || 0}%` }}
-                                ></div>
-                            </div>
-                            <div className="text-xs text-right mt-1 text-gray-400">{profile.completionPercentage || 0}%</div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     );
 };
 
-export const AboutSection = ({ profile, onUpdate, isOwnProfile }) => {
+export const AboutSection = ({ user, profile, onUpdate, isOwnProfile }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({
         bio: profile.bio || '',
@@ -124,89 +149,178 @@ export const AboutSection = ({ profile, onUpdate, isOwnProfile }) => {
         setFormData(prev => ({ ...prev, skills: prev.skills.filter(s => s !== skill) }));
     };
 
+    const cardStyle = {
+        backgroundColor: '#fff',
+        border: '1px solid #e5e7eb',
+        borderRadius: '12px',
+        padding: '24px',
+        marginBottom: '24px',
+        boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
+    };
+
+    const headerStyle = {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '24px',
+        borderBottom: '1px solid #f3f4f6',
+        paddingBottom: '16px'
+    };
+
+    const titleStyle = {
+        fontSize: '18px',
+        fontWeight: '600',
+        color: '#111827',
+        margin: 0
+    };
+
+    const editBtnStyle = {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
+        padding: '6px 12px',
+        border: '1px solid #d1d5db',
+        borderRadius: '6px',
+        backgroundColor: '#fff',
+        color: '#374151',
+        fontSize: '14px',
+        fontWeight: '500',
+        cursor: 'pointer'
+    };
+
+    const labelStyle = {
+        display: 'block',
+        fontSize: '14px',
+        color: '#6b7280',
+        marginBottom: '4px'
+    };
+
+    const valueStyle = {
+        display: 'block',
+        fontSize: '16px',
+        color: '#111827',
+        fontWeight: '500'
+    };
+
     if (isEditing) {
         return (
-            <div className="card space-y-4">
-                <h3 className="card-title">Edit About</h3>
-                <div>
-                    <label className="form-label">Professional Title</label>
-                    <input
-                        type="text"
-                        className="search-input w-full"
-                        value={formData.title}
-                        onChange={e => setFormData({ ...formData, title: e.target.value })}
-                        placeholder="e.g. Senior Full Stack Developer"
-                    />
+            <div style={cardStyle}>
+                <div style={headerStyle}>
+                    <h3 style={titleStyle}>Personal Information</h3>
                 </div>
-                <div>
-                    <label className="form-label">Location</label>
-                    <input
-                        type="text"
-                        className="search-input w-full"
-                        value={formData.location}
-                        onChange={e => setFormData({ ...formData, location: e.target.value })}
-                        placeholder="e.g. New York, USA"
-                    />
-                </div>
-                <div>
-                    <label className="form-label">Bio</label>
-                    <textarea
-                        className="search-input w-full resize-none"
-                        rows="4"
-                        value={formData.bio}
-                        onChange={e => setFormData({ ...formData, bio: e.target.value })}
-                        maxLength={500}
-                    />
-                    <div className="text-xs text-right text-gray-400">{formData.bio.length}/500</div>
-                </div>
-                <div>
-                    <label className="form-label">Skills</label>
-                    <div className="flex flex-wrap gap-2 mb-2">
-                        {formData.skills.map(skill => (
-                            <span key={skill} className="tag flex items-center gap-1">
-                                {skill} <button onClick={() => removeSkill(skill)} className="hover:text-red-500">&times;</button>
-                            </span>
-                        ))}
-                    </div>
-                    <div className="flex gap-2">
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+                    <div>
+                        <label style={labelStyle}>Professional Title</label>
                         <input
-                            type="text"
-                            className="search-input flex-1"
-                            value={newSkill}
-                            onChange={e => setNewSkill(e.target.value)}
-                            onKeyDown={e => e.key === 'Enter' && addSkill()}
-                            placeholder="Add a form skill..."
+                            style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px', fontSize: '15px', outline: 'none' }}
+                            value={formData.title}
+                            onChange={e => setFormData({ ...formData, title: e.target.value })}
+                            placeholder="e.g. Senior Full Stack Developer"
                         />
-                        <button type="button" onClick={addSkill} className="btn btn-secondary">Add</button>
+                    </div>
+                    <div>
+                        <label style={labelStyle}>Location</label>
+                        <input
+                            style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px', fontSize: '15px', outline: 'none' }}
+                            value={formData.location}
+                            onChange={e => setFormData({ ...formData, location: e.target.value })}
+                            placeholder="e.g. New York, USA"
+                        />
+                    </div>
+                    <div style={{ gridColumn: '1 / -1' }}>
+                        <label style={labelStyle}>Bio</label>
+                        <textarea
+                            style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px', fontSize: '15px', outline: 'none', resize: 'vertical' }}
+                            rows="4"
+                            value={formData.bio}
+                            onChange={e => setFormData({ ...formData, bio: e.target.value })}
+                            maxLength={500}
+                        />
+                    </div>
+                    <div style={{ gridColumn: '1 / -1' }}>
+                        <label style={labelStyle}>Skills</label>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '8px' }}>
+                            {formData.skills.map(skill => (
+                                <span key={skill} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '4px 10px', backgroundColor: '#f3f4f6', borderRadius: '4px', fontSize: '14px', color: '#1f2937' }}>
+                                    {skill}
+                                    <button onClick={() => removeSkill(skill)} style={{ border: 'none', background: 'none', cursor: 'pointer', color: '#6b7280' }}>&times;</button>
+                                </span>
+                            ))}
+                        </div>
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                            <input
+                                style={{ flex: 1, padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px', fontSize: '15px', outline: 'none' }}
+                                value={newSkill}
+                                onChange={e => setNewSkill(e.target.value)}
+                                onKeyDown={e => e.key === 'Enter' && addSkill()}
+                                placeholder="Add a skill..."
+                            />
+                            <button type="button" onClick={addSkill} style={{ padding: '8px 16px', backgroundColor: '#f3f4f6', border: '1px solid #d1d5db', borderRadius: '6px', cursor: 'pointer', fontWeight: '500' }}>Add</button>
+                        </div>
                     </div>
                 </div>
-                <div className="flex justify-end gap-2">
-                    <button className="btn btn-outline" onClick={() => setIsEditing(false)}>Cancel</button>
-                    <button className="btn btn-primary" onClick={handleSave}>Save Changes</button>
+
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '24px', paddingTop: '16px', borderTop: '1px solid #f3f4f6' }}>
+                    <button onClick={() => setIsEditing(false)} style={{ ...editBtnStyle, border: 'none' }}>Cancel</button>
+                    <button onClick={handleSave} style={{ ...editBtnStyle, backgroundColor: '#111827', color: '#fff', border: '1px solid #111827' }}>Save Changes</button>
                 </div>
             </div>
         );
     }
 
+    // View Mode
     return (
-        <div className="card relative group">
-            {isOwnProfile && (
-                <button onClick={() => setIsEditing(true)} className="absolute top-4 right-4 text-gray-400 hover:text-primary-600">
-                    <Edit2 size={18} />
-                </button>
-            )}
-            <h3 className="card-title mb-4">About</h3>
-            <p className="text-gray-600 whitespace-pre-wrap mb-6">{profile.bio || "No bio added yet."}</p>
-
-            <h4 className="font-semibold text-sm text-gray-700 mb-3">Skills</h4>
-            <div className="flex flex-wrap gap-2">
-                {profile.skills && profile.skills.length > 0 ? (
-                    profile.skills.map(skill => (
-                        <span key={skill} className="tag">{skill}</span>
-                    ))
-                ) : (
-                    <span className="text-gray-400 text-sm">No skills listed.</span>
+        <div style={cardStyle}>
+            <div style={headerStyle}>
+                <h3 style={titleStyle}>Personal Information</h3>
+                {isOwnProfile && (
+                    <button onClick={() => setIsEditing(true)} style={editBtnStyle}>
+                        Edit <Edit2 size={14} />
+                    </button>
                 )}
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '24px' }}>
+                <div>
+                    <span style={labelStyle}>Full Name</span>
+                    <span style={valueStyle}>{user?.name || 'User'}</span>
+                </div>
+
+                <div>
+                    <span style={labelStyle}>Position</span>
+                    <span style={valueStyle}>{profile.title || 'Not Set'}</span>
+                </div>
+
+                <div>
+                    <span style={labelStyle}>Location</span>
+                    <span style={valueStyle}>{profile.location || 'Not Set'}</span>
+                </div>
+
+                <div>
+                    <span style={labelStyle}>Email Address</span>
+                    <span style={valueStyle}>{user.email || 'hidden'}</span>
+                </div>
+
+                <div style={{ gridColumn: '1 / -1' }}>
+                    <span style={labelStyle}>Bio</span>
+                    <p style={{ marginTop: '4px', fontSize: '15px', color: '#374151', lineHeight: '1.6' }}>
+                        {profile.bio || 'No bio provided.'}
+                    </p>
+                </div>
+
+                <div style={{ gridColumn: '1 / -1' }}>
+                    <span style={labelStyle}>Skills</span>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '6px' }}>
+                        {profile.skills && profile.skills.length > 0 ? (
+                            profile.skills.map(skill => (
+                                <span key={skill} style={{ padding: '4px 10px', backgroundColor: '#f3f4f6', borderRadius: '6px', fontSize: '13px', fontWeight: '500', color: '#374151' }}>{skill}</span>
+                            ))
+                        ) : (
+                            <span style={{ color: '#9ca3af', fontSize: '14px' }}>No skills listed.</span>
+                        )}
+                    </div>
+                </div>
             </div>
         </div>
     );
