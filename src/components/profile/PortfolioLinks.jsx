@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, ExternalLink, Github, Linkedin, Globe, Award } from 'lucide-react';
+import { Plus, Trash2, ExternalLink, Github, Linkedin, Globe, Award, Edit2 } from 'lucide-react';
 
 export const PortfolioSection = ({ projects = [], onUpdate, isOwnProfile }) => {
     const [isAdding, setIsAdding] = useState(false);
@@ -132,31 +132,65 @@ export const SocialLinksSection = ({ socialLinks = {}, onUpdate, isOwnProfile })
         setIsEditing(false);
     };
 
+    const cardStyle = {
+        backgroundColor: '#fff',
+        border: '1px solid #e5e7eb',
+        borderRadius: '12px',
+        padding: '24px',
+        marginBottom: '24px',
+        boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
+    };
+
+    const headerStyle = {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '24px',
+        borderBottom: '1px solid #f3f4f6',
+        paddingBottom: '16px'
+    };
+
+    const editBtnStyle = {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
+        padding: '6px 12px',
+        border: '1px solid #d1d5db',
+        borderRadius: '6px',
+        backgroundColor: '#fff',
+        color: '#374151',
+        fontSize: '14px',
+        fontWeight: '500',
+        cursor: 'pointer'
+    };
+
     if (isOwnProfile && isEditing) {
         return (
-            <div className="card">
-                <h3 className="card-title" style={{ marginBottom: '1rem' }}>Social Links</h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div style={cardStyle}>
+                <div style={headerStyle}>
+                    <h3 className="card-title" style={{ fontSize: '18px', margin: 0 }}>Social Links</h3>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                         <Github size={20} style={{ color: 'var(--gray-700)' }} />
-                        <input className="search-input" style={{ flex: 1 }} placeholder="GitHub URL" value={formData.github || ''} onChange={e => setFormData({ ...formData, github: e.target.value })} />
+                        <input className="search-input" style={{ flex: 1, padding: '8px 12px', borderRadius: '6px', border: '1px solid #d1d5db' }} placeholder="GitHub URL" value={formData.github || ''} onChange={e => setFormData({ ...formData, github: e.target.value })} />
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                         <Linkedin size={20} style={{ color: '#0077b5' }} />
-                        <input className="search-input" style={{ flex: 1 }} placeholder="LinkedIn URL" value={formData.linkedin || ''} onChange={e => setFormData({ ...formData, linkedin: e.target.value })} />
+                        <input className="search-input" style={{ flex: 1, padding: '8px 12px', borderRadius: '6px', border: '1px solid #d1d5db' }} placeholder="LinkedIn URL" value={formData.linkedin || ''} onChange={e => setFormData({ ...formData, linkedin: e.target.value })} />
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                         <Globe size={20} style={{ color: 'var(--gray-500)' }} />
-                        <input className="search-input" style={{ flex: 1 }} placeholder="Portfolio Website" value={formData.website || ''} onChange={e => setFormData({ ...formData, website: e.target.value })} />
+                        <input className="search-input" style={{ flex: 1, padding: '8px 12px', borderRadius: '6px', border: '1px solid #d1d5db' }} placeholder="Portfolio Website" value={formData.website || ''} onChange={e => setFormData({ ...formData, website: e.target.value })} />
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                         <div style={{ width: '20px', display: 'flex', justifyContent: 'center', fontWeight: 'bold', color: '#1769ff' }}>Be</div>
-                        <input className="search-input" style={{ flex: 1 }} placeholder="Behance URL" value={formData.behance || ''} onChange={e => setFormData({ ...formData, behance: e.target.value })} />
+                        <input className="search-input" style={{ flex: 1, padding: '8px 12px', borderRadius: '6px', border: '1px solid #d1d5db' }} placeholder="Behance URL" value={formData.behance || ''} onChange={e => setFormData({ ...formData, behance: e.target.value })} />
                     </div>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '1rem' }}>
-                    <button className="btn btn-outline" onClick={() => setIsEditing(false)}>Cancel</button>
-                    <button className="btn btn-primary" onClick={handleSave}>Save</button>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '24px', paddingTop: '16px', borderTop: '1px solid #f3f4f6' }}>
+                    <button style={{ ...editBtnStyle, border: 'none' }} onClick={() => setIsEditing(false)}>Cancel</button>
+                    <button style={{ ...editBtnStyle, backgroundColor: '#111827', color: '#fff', border: '1px solid #111827' }} onClick={handleSave}>Save Changes</button>
                 </div>
             </div>
         )
@@ -164,39 +198,44 @@ export const SocialLinksSection = ({ socialLinks = {}, onUpdate, isOwnProfile })
 
     // View Mode
     return (
-        <div className="card">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                <h3 className="card-title">On the Web</h3>
-                {isOwnProfile && <button onClick={() => setIsEditing(true)} style={{ color: 'var(--primary-600)', fontSize: '0.875rem', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Edit</button>}
+        <div style={cardStyle}>
+            <div style={headerStyle}>
+                <h3 className="card-title" style={{ fontSize: '18px', margin: 0 }}>On the Web</h3>
+                {isOwnProfile && (
+                    <button onClick={() => setIsEditing(true)} style={editBtnStyle}>
+                        Edit <Edit2 size={14} />
+                    </button>
+                )}
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 {socialLinks.github && (
-                    <a href={socialLinks.github} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--gray-700)', textDecoration: 'none' }} className="hover:text-navy-900">
+                    <a href={socialLinks.github} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#374151', textDecoration: 'none', fontSize: '15px' }} className="hover:text-navy-900">
                         <Github size={20} /> GitHub
                     </a>
                 )}
                 {socialLinks.linkedin && (
-                    <a href={socialLinks.linkedin} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--gray-700)', textDecoration: 'none' }} className="hover:text-blue-700">
+                    <a href={socialLinks.linkedin} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#374151', textDecoration: 'none', fontSize: '15px' }} className="hover:text-blue-700">
                         <Linkedin size={20} /> LinkedIn
                     </a>
                 )}
                 {socialLinks.website && (
-                    <a href={socialLinks.website} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--gray-700)', textDecoration: 'none' }} className="hover:text-primary-600">
+                    <a href={socialLinks.website} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#374151', textDecoration: 'none', fontSize: '15px' }} className="hover:text-primary-600">
                         <Globe size={20} /> Website
                     </a>
                 )}
                 {socialLinks.behance && (
-                    <a href={socialLinks.behance} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--gray-700)', textDecoration: 'none' }} className="hover:text-blue-500">
+                    <a href={socialLinks.behance} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#374151', textDecoration: 'none', fontSize: '15px' }} className="hover:text-blue-500">
                         <div style={{ width: '20px', textAlign: 'center', fontWeight: 'bold' }}>Be</div> Behance
                     </a>
                 )}
                 {!socialLinks.github && !socialLinks.linkedin && !socialLinks.website && (
-                    <p style={{ color: 'var(--gray-400)', fontSize: '0.875rem' }}>No social links added.</p>
+                    <p style={{ color: '#9ca3af', fontSize: '14px' }}>No social links added.</p>
                 )}
             </div>
         </div>
     );
 };
+
 
 export const CertificationSection = ({ certifications = [], onUpdate, isOwnProfile }) => {
     const [isAdding, setIsAdding] = useState(false);
