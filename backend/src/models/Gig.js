@@ -8,7 +8,26 @@ const GigSchema = new mongoose.Schema(
     price: { type: Number, required: true, min: 0 },
     category: { type: String, required: true, trim: true },
     images: { type: [String], default: [] },
-    isActive: { type: Boolean, default: true }
+
+    // Marketplace Fields
+    tags: { type: [String], default: [] },
+    deliveryTime: { type: Number, required: true, min: 1 }, // in days
+    revisions: { type: Number, default: 0 },
+    features: { type: [String], default: [] }, // e.g., ["Source File", "Commercial Use"]
+    faqs: [
+      {
+        question: { type: String, required: true },
+        answer: { type: String, required: true }
+      }
+    ],
+    status: {
+      type: String,
+      enum: ['pending_approval', 'active', 'paused', 'rejected'],
+      default: 'pending_approval'
+    },
+    rating: { type: Number, default: 0 },
+    reviewsCount: { type: Number, default: 0 },
+    isActive: { type: Boolean, default: true } // Legacy, prefer status='active'
   },
   { timestamps: true }
 );

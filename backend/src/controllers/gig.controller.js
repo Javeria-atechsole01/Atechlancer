@@ -3,14 +3,24 @@ const mongoose = require('mongoose');
 
 exports.createGig = async (req, res) => {
   try {
-    const { title, description, price, category, images } = req.body;
+    const { title, description, price, category, images, tags, deliveryTime, revisions, features, faqs } = req.body;
+
+    // Default status: 'active' if admin, else 'pending_approval'
+    const status = req.user.role === 'admin' ? 'active' : 'pending_approval';
+
     const gig = await Gig.create({
       sellerId: req.user.userId,
       title,
       description,
       price,
       category,
-      images: images || []
+      images: images || [],
+      tags: tags || [],
+      deliveryTime,
+      revisions,
+      features: features || [],
+      faqs: faqs || [],
+      status
     });
     res.status(201).json(gig);
   } catch (err) {
@@ -56,19 +66,36 @@ exports.getMyGigs = async (req, res) => {
 
 exports.getGigs = async (req, res) => {
   try {
-    const { q, category, minPrice, maxPrice, sort = 'latest', page = 1, limit = 10 } = req.query;
-    const filter = { isActive: true };
+    const { q, category, minPrice, maxPrice, deliveryTime, rating, sort = 'latest', page = 1, limit = 10 } = req.query;
+
+    // Only show active gigs
+    const filter = { status: 'active' };
+
     if (category) filter.category = category;
+
     if (minPrice || maxPrice) {
       filter.price = {};
       if (minPrice) filter.price.$gte = Number(minPrice);
       if (maxPrice) filter.price.$lte = Number(maxPrice);
     }
-    let query = Gig.find(filter);
+
+    if (deliveryTime) {
+      filter.deliveryTime = { $lte: Number(deliveryTime) };
+    }
+
+    if (rating) {
+      filter.rating = { $gte: Number(rating) };
+    }
+
+    let query = Gig.find(filter).populate('sellerId', 'name photo'); // Populate seller name/photo for cards
+
     if (q) query = query.find({ $text: { $search: q } });
+
     if (sort === 'price_asc') query = query.sort({ price: 1 });
     else if (sort === 'price_desc') query = query.sort({ price: -1 });
+    else if (sort === 'rating') query = query.sort({ rating: -1 });
     else query = query.sort({ createdAt: -1 });
+
     const skip = (Number(page) - 1) * Number(limit);
     const [items, total] = await Promise.all([
       query.skip(skip).limit(Number(limit)).exec(),

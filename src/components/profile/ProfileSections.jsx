@@ -4,6 +4,11 @@ import { profileService } from '../../services/profileService';
 
 export const ProfileHeader = ({ user, profile, onUpdate, isOwnProfile }) => {
     const [uploading, setUploading] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [headerData, setHeaderData] = useState({
+        title: profile.title || '',
+        location: profile.location || ''
+    });
     const fileInputRef = useRef(null);
 
     const handlePhotoClick = () => {
@@ -26,13 +31,21 @@ export const ProfileHeader = ({ user, profile, onUpdate, isOwnProfile }) => {
             const formData = new FormData();
             formData.append('photo', file);
             const data = await profileService.uploadPhoto(formData);
-            onUpdate('photo', data.photo);
+            onUpdate({ photo: data.photo });
         } catch (error) {
             console.error('Upload failed', error);
             alert('Failed to upload photo');
         } finally {
             setUploading(false);
         }
+    };
+
+    const handleSave = async () => {
+        await onUpdate({
+            title: headerData.title,
+            location: headerData.location
+        });
+        setIsEditing(false);
     };
 
     // Maxi-D Card Style
@@ -46,6 +59,16 @@ export const ProfileHeader = ({ user, profile, onUpdate, isOwnProfile }) => {
         alignItems: 'center',
         gap: '24px',
         boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
+    };
+
+    const inputStyle = {
+        width: '100%',
+        padding: '6px 10px',
+        border: '1px solid #d1d5db',
+        borderRadius: '6px',
+        fontSize: '14px',
+        marginBottom: '8px',
+        outline: 'none'
     };
 
     return (
@@ -85,30 +108,70 @@ export const ProfileHeader = ({ user, profile, onUpdate, isOwnProfile }) => {
             {/* User Info Section */}
             <div style={{ flex: 1 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                    <div>
+                    <div style={{ flex: 1, marginRight: '16px' }}>
                         <h2 style={{ fontSize: '20px', fontWeight: '700', color: '#111827', margin: '0 0 4px 0' }}>{user.name}</h2>
-                        <p style={{ fontSize: '15px', color: '#4b5563', margin: 0 }}>{profile.title || user.role}</p>
-                        {profile.location && (
-                            <p style={{ fontSize: '14px', color: '#6b7280', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                <MapPin size={14} /> {profile.location}
-                            </p>
+
+                        {isEditing ? (
+                            <div style={{ marginTop: '8px', maxWidth: '300px' }}>
+                                <input
+                                    style={inputStyle}
+                                    placeholder="Headline / Title"
+                                    value={headerData.title}
+                                    onChange={e => setHeaderData({ ...headerData, title: e.target.value })}
+                                />
+                                <input
+                                    style={inputStyle}
+                                    placeholder="Location"
+                                    value={headerData.location}
+                                    onChange={e => setHeaderData({ ...headerData, location: e.target.value })}
+                                />
+                                <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+                                    <button
+                                        onClick={handleSave}
+                                        style={{ padding: '4px 12px', backgroundColor: '#111827', color: 'white', borderRadius: '4px', fontSize: '13px', border: 'none', cursor: 'pointer' }}
+                                    >
+                                        Save
+                                    </button>
+                                    <button
+                                        onClick={() => setIsEditing(false)}
+                                        style={{ padding: '4px 12px', backgroundColor: '#f3f4f6', color: '#374151', borderRadius: '4px', fontSize: '13px', border: '1px solid #e5e7eb', cursor: 'pointer' }}
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                            <>
+                                <p style={{ fontSize: '15px', color: '#4b5563', margin: 0 }}>{profile.title || user.role}</p>
+                                {profile.location && (
+                                    <p style={{ fontSize: '14px', color: '#6b7280', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                        <MapPin size={14} /> {profile.location}
+                                    </p>
+                                )}
+                            </>
                         )}
                     </div>
 
-                    {isOwnProfile && (
-                        <button style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '6px',
-                            padding: '6px 12px',
-                            border: '1px solid #d1d5db',
-                            borderRadius: '6px',
-                            backgroundColor: '#fff',
-                            color: '#374151',
-                            fontSize: '14px',
-                            fontWeight: '500',
-                            cursor: 'pointer'
-                        }}>
+                    {isOwnProfile && !isEditing && (
+                        <button
+                            onClick={() => {
+                                setHeaderData({ title: profile.title || '', location: profile.location || '' });
+                                setIsEditing(true);
+                            }}
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '6px',
+                                padding: '6px 12px',
+                                border: '1px solid #d1d5db',
+                                borderRadius: '6px',
+                                backgroundColor: '#fff',
+                                color: '#374151',
+                                fontSize: '14px',
+                                fontWeight: '500',
+                                cursor: 'pointer'
+                            }}
+                        >
                             Edit <Edit2 size={14} />
                         </button>
                     )}

@@ -38,20 +38,22 @@ const FreelancerGigs = () => {
 
     const handleSaveGig = async (gigData) => {
         const payload = {
-            title: gigData.title,
-            description: gigData.description,
+            ...gigData,
             price: Number(gigData.price),
-            category: gigData.category || 'general'
+            deliveryTime: Number(gigData.deliveryTime),
+            revisions: Number(gigData.revisions)
         };
+        // Ensure category fallback
+        if (!payload.category) payload.category = 'general';
         if (editingGig) {
             const id = editingGig._id || editingGig.id;
             try {
                 await gigsService.update(id, payload);
-            } catch {}
+            } catch { }
         } else {
             try {
                 await gigsService.create(payload);
-            } catch {}
+            } catch { }
         }
         await load();
         setIsModalOpen(false);
@@ -62,7 +64,7 @@ const FreelancerGigs = () => {
         const id = gig._id || gig.id;
         try {
             await gigsService.remove(id);
-        } catch {}
+        } catch { }
         setGigs(prev => prev.filter(g => (g._id || g.id) !== id));
     };
 
@@ -88,12 +90,12 @@ const FreelancerGigs = () => {
                         <CoverUpload gig={gig} onUploaded={({ cover, updated }) => {
                             setGigs(prev => prev.map(g => (
                                 g.id === gig.id
-                                  ? {
-                                      ...g,
-                                      ...(updated ? { ...updated, id: updated._id, deliveryTime: updated.deliveryTime || g.deliveryTime } : {}),
-                                      images: [cover]
+                                    ? {
+                                        ...g,
+                                        ...(updated ? { ...updated, id: updated._id, deliveryTime: updated.deliveryTime || g.deliveryTime } : {}),
+                                        images: [cover]
                                     }
-                                  : g
+                                    : g
                             )));
                         }} />
                         <div style={{ padding: '1.5rem' }}>
@@ -162,16 +164,46 @@ const FreelancerGigs = () => {
 };
 
 const GigModal = ({ onClose, onSave, initialData }) => {
-    const [title, setTitle] = useState(initialData?.title || '');
-    const [price, setPrice] = useState(initialData?.price || '');
-    const [deliveryTime, setDeliveryTime] = useState(initialData?.deliveryTime || '3 Days');
-    const [description, setDescription] = useState(initialData?.description || '');
-    const [category, setCategory] = useState(initialData?.category || '');
+    const [formData, setFormData] = useState({
+        title: initialData?.title || '',
+        description: initialData?.description || '',
+        price: initialData?.price || '',
+        category: initialData?.category || '',
+        deliveryTime: initialData?.deliveryTime || 3,
+        revisions: initialData?.revisions || 0,
+        tags: initialData?.tags?.join(', ') || '',
+        features: initialData?.features?.join('\n') || '',
+        faqs: initialData?.faqs || []
+    });
+
+    const [newFaq, setNewFaq] = useState({ question: '', answer: '' });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleAddFaq = () => {
+        if (newFaq.question && newFaq.answer) {
+            setFormData(prev => ({ ...prev, faqs: [...prev.faqs, newFaq] }));
+            setNewFaq({ question: '', answer: '' });
+        }
+    };
+
+    const handleRemoveFaq = (index) => {
+        setFormData(prev => ({ ...prev, faqs: prev.faqs.filter((_, i) => i !== index) }));
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!title || !price) return;
-        onSave({ title, price, deliveryTime, description, category });
+        onSave({
+            ...formData,
+            price: Number(formData.price),
+            deliveryTime: Number(formData.deliveryTime),
+            revisions: Number(formData.revisions),
+            tags: formData.tags.split(',').map(t => t.trim()).filter(Boolean),
+            features: formData.features.split('\n').filter(Boolean)
+        });
     };
 
     return (
@@ -180,78 +212,150 @@ const GigModal = ({ onClose, onSave, initialData }) => {
             backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1000,
             display: 'flex', alignItems: 'center', justifyContent: 'center'
         }}>
-            <div className="card" style={{ width: '100%', maxWidth: '600px', padding: '2rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+            <div className="card" style={{ width: '100%', maxWidth: '800px', maxHeight: '90vh', overflowY: 'auto', padding: '2rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '1px solid #e5e7eb', paddingBottom: '1rem' }}>
                     <h3 className="card-title">{initialData ? 'Edit Gig' : 'Create New Gig'}</h3>
-                    <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--gray-500)' }}>
+                    <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#6b7280' }}>
                         <X size={24} />
                     </button>
                 </div>
 
-                <form onSubmit={handleSubmit} className="flex-col gap-md">
-                    <div>
-                        <label className="form-label" style={{ display: 'block', marginBottom: '0.5rem' }}>Gig Title</label>
-                        <input
-                            type="text"
-                            className="search-input"
-                            placeholder="e.g. I will build a React website"
-                            value={title}
-                            onChange={e => setTitle(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div style={{ display: 'flex', gap: '1rem' }}>
-                        <div style={{ flex: 1 }}>
-                            <label className="form-label" style={{ display: 'block', marginBottom: '0.5rem' }}>Starting Price ($)</label>
+                <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+                    {/* Basic Info */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="col-span-2">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Gig Title</label>
                             <input
-                                type="number"
-                                className="search-input"
-                                placeholder="e.g. 100"
-                                value={price}
-                                onChange={e => setPrice(e.target.value)}
+                                name="title"
+                                className="search-input w-full"
+                                placeholder="e.g. I will build a React website"
+                                value={formData.title}
+                                onChange={handleChange}
                                 required
                             />
                         </div>
-                        <div style={{ flex: 1 }}>
-                            <label className="form-label" style={{ display: 'block', marginBottom: '0.5rem' }}>Delivery Time</label>
-                            <select
-                                className="search-input"
-                                value={deliveryTime}
-                                onChange={e => setDeliveryTime(e.target.value)}
-                                style={{ width: '100%' }}
-                            >
-                                <option>1 Day</option>
-                                <option>2 Days</option>
-                                <option>3 Days</option>
-                                <option>5 Days</option>
-                                <option>1 Week</option>
-                                <option>2 Weeks</option>
-                            </select>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                            <input
+                                name="category"
+                                className="search-input w-full"
+                                placeholder="e.g. Web Development"
+                                value={formData.category}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Tags (comma separated)</label>
+                            <input
+                                name="tags"
+                                className="search-input w-full"
+                                placeholder="e.g. react, node, ui"
+                                value={formData.tags}
+                                onChange={handleChange}
+                            />
                         </div>
                     </div>
-                    <div>
-                        <label className="form-label" style={{ display: 'block', marginBottom: '0.5rem' }}>Description</label>
-                        <textarea
-                            className="search-input"
-                            rows="4"
-                            placeholder="Describe your service in detail..."
-                            value={description}
-                            onChange={e => setDescription(e.target.value)}
-                        ></textarea>
-                    </div>
-                    <div>
-                        <label className="form-label" style={{ display: 'block', marginBottom: '0.5rem' }}>Category</label>
-                        <input
-                            type="text"
-                            className="search-input"
-                            placeholder="e.g. web, ai, writing"
-                            value={category}
-                            onChange={e => setCategory(e.target.value)}
-                            required
-                        />
+
+                    {/* Pricing & Delivery */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 p-4 rounded-lg">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Price ($)</label>
+                            <input
+                                type="number"
+                                name="price"
+                                className="search-input w-full"
+                                min="5"
+                                value={formData.price}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Delivery (Days)</label>
+                            <input
+                                type="number"
+                                name="deliveryTime"
+                                className="search-input w-full"
+                                min="1"
+                                value={formData.deliveryTime}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Revisions</label>
+                            <input
+                                type="number"
+                                name="revisions"
+                                className="search-input w-full"
+                                min="0"
+                                value={formData.revisions}
+                                onChange={handleChange}
+                            />
+                        </div>
                     </div>
 
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1rem' }}>
+                    {/* Description */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                        <textarea
+                            name="description"
+                            className="search-input w-full"
+                            rows="5"
+                            value={formData.description}
+                            onChange={handleChange}
+                            required
+                        ></textarea>
+                    </div>
+
+                    {/* Features */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Included Features (one per line)</label>
+                        <textarea
+                            name="features"
+                            className="search-input w-full"
+                            rows="3"
+                            placeholder="Source Code&#10;Commercial Use&#10;Responsive Design"
+                            value={formData.features}
+                            onChange={handleChange}
+                        ></textarea>
+                    </div>
+
+                    {/* FAQs */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Frequently Asked Questions</label>
+                        <div className="space-y-3 mb-4">
+                            {formData.faqs.map((faq, index) => (
+                                <div key={index} className="bg-gray-50 p-3 rounded flex justify-between items-start">
+                                    <div>
+                                        <p className="font-medium text-sm">Q: {faq.question}</p>
+                                        <p className="text-gray-600 text-sm">A: {faq.answer}</p>
+                                    </div>
+                                    <button type="button" onClick={() => handleRemoveFaq(index)} className="text-red-500 hover:text-red-700">
+                                        <Trash2 size={16} />
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="flex gap-2">
+                            <input
+                                className="search-input flex-1"
+                                placeholder="Question"
+                                value={newFaq.question}
+                                onChange={e => setNewFaq({ ...newFaq, question: e.target.value })}
+                            />
+                            <input
+                                className="search-input flex-1"
+                                placeholder="Answer"
+                                value={newFaq.answer}
+                                onChange={e => setNewFaq({ ...newFaq, answer: e.target.value })}
+                            />
+                            <button type="button" onClick={handleAddFaq} className="btn btn-secondary whitespace-nowrap">Add FAQ</button>
+                        </div>
+                    </div>
+
+                    <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
                         <button type="button" className="btn btn-outline" onClick={onClose}>Cancel</button>
                         <button type="submit" className="btn btn-primary">{initialData ? 'Update Gig' : 'Create Gig'}</button>
                     </div>
@@ -331,7 +435,7 @@ const CoverUpload = ({ gig, onUploaded }) => {
             let updatedGig = null;
             try {
                 updatedGig = await gigsService.get(gig._id || gig.id);
-            } catch {}
+            } catch { }
             onUploaded({ cover: res.cover, updated: updatedGig });
         } finally {
             setUploading(false);
