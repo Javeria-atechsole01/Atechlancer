@@ -28,8 +28,8 @@ app.use(morgan('dev'));
 const authRoutes = require('./routes/auth.routes');
 const adminRoutes = require('./routes/admin.routes');
 const profileRoutes = require('./routes/profile.routes');
-const gigRoutes = require('./routes/gigs.routes');
-const orderRoutes = require('./routes/orders.routes');
+const gigRoutes = require('./routes/gig.routes');
+const orderRoutes = require('./routes/order.routes');
 const messageRoutes = require('./routes/messages.routes');
 
 app.use('/api/auth', authRoutes);
