@@ -31,6 +31,8 @@ const profileRoutes = require('./routes/profile.routes');
 const gigRoutes = require('./routes/gig.routes');
 const orderRoutes = require('./routes/order.routes');
 const messageRoutes = require('./routes/messages.routes');
+const jobRoutes = require('./routes/job.routes');
+const applicationRoutes = require('./routes/application.routes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
@@ -38,6 +40,8 @@ app.use('/api/profile', profileRoutes);
 app.use('/api/gigs', gigRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/messages', messageRoutes);
+app.use('/api/jobs', jobRoutes);
+app.use('/api/applications', applicationRoutes);
 
 // Base route
 app.get('/', (req, res) => {
