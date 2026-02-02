@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import {
     LayoutDashboard,
     User,
@@ -11,37 +11,17 @@ import {
     BookOpen,
     Users,
     MessageSquare,
-    LogOut,
-    Building2,
-    GraduationCap
+    LogOut
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
 
 const DashboardSidebar = ({ isOpen, role }) => {
-    const { logout, switchRole, user } = useAuth();
+    const { logout } = useAuth();
     const navigate = useNavigate();
-    const [switching, setSwitching] = useState(false);
 
     const handleLogout = () => {
         logout();
         navigate('/login');
-    };
-
-    const handleSwitchRole = async (newRole) => {
-        if (switching) return;
-        setSwitching(true);
-        try {
-            const data = await switchRole(newRole);
-            // It might take a ms for state to update, but navigation should happen
-            // Force strict navigation
-            window.location.href = `/dashboard/${newRole}/home`; // Hard reload to ensure clean slate often better for major context switch
-        } catch (err) {
-            console.error("Failed to switch role", err);
-            // alert("Failed to switch role. Please try again.");
-        } finally {
-            setSwitching(false);
-        }
     };
 
     const getNavItems = () => {
@@ -98,9 +78,6 @@ const DashboardSidebar = ({ isOpen, role }) => {
 
     const navItems = getNavItems();
 
-    // Define available roles to switch to
-    const availableRoles = ['student', 'freelancer', 'teacher', 'employer'].filter(r => r !== role);
-
     return (
         <>
             {/* Overlay for mobile */}
@@ -132,31 +109,10 @@ const DashboardSidebar = ({ isOpen, role }) => {
                 </nav>
 
                 <div className="dashboard-sidebar-footer">
-
-                    {/* Role Switcher Section */}
-                    <div className="mb-4 pt-4 border-t border-white/10">
-                        <p className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2">Switch View</p>
-                        <div className="space-y-1">
-                            {availableRoles.map(r => (
-                                <button
-                                    key={r}
-                                    onClick={() => handleSwitchRole(r)}
-                                    disabled={switching}
-                                    className="nav-item w-full text-left hover:bg-white/5 transition-colors"
-                                    style={{ background: 'transparent', border: 'none', padding: '0.75rem 1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem', width: '100%', cursor: 'pointer', color: '#94a3b8' }}
-                                >
-                                    <SwitchRoleIcon role={r} />
-                                    <span className="capitalize">{r}</span>
-                                    {user?.roles?.includes(r) && <CheckCircle size={14} className="ml-auto text-green-500" />}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
                     <button
                         onClick={handleLogout}
                         className="nav-item"
-                        style={{ cursor: 'pointer', width: '100%', background: 'none', border: 'none', textAlign: 'left', font: 'inherit', marginTop: '0' }}
+                        style={{ cursor: 'pointer', width: '100%', background: 'none', border: 'none', textAlign: 'left', font: 'inherit' }}
                     >
                         <LogOut size={20} />
                         <span>Log Out</span>
@@ -165,16 +121,6 @@ const DashboardSidebar = ({ isOpen, role }) => {
             </aside>
         </>
     );
-};
-
-const SwitchRoleIcon = ({ role }) => {
-    switch (role) {
-        case 'student': return <GraduationCap size={16} />;
-        case 'freelancer': return <Briefcase size={16} />;
-        case 'teacher': return <User size={16} />;
-        case 'employer': return <Building2 size={16} />;
-        default: return <User size={16} />;
-    }
 };
 
 export default DashboardSidebar;
