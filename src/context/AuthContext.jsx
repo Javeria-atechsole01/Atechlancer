@@ -40,7 +40,13 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  const value = { user, login, signup, logout, loading };
+  const switchRole = async (role) => {
+    const data = await authService.switchRole(role);
+    setUser(data.user);
+    return data;
+  };
+
+  const value = { user, login, signup, logout, switchRole, loading };
 
   return (
     <AuthContext.Provider value={value}>
