@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { gigsService } from '../services/gigsService';
-import { ordersService } from '../services/ordersService';
-import { Clock, RefreshCw, Check, Star, ChevronDown, ChevronUp, Loader2, Shield, MessageSquare, Heart, Share2, Award } from 'lucide-react';
+import RequirementsModal from '../components/marketplace/RequirementsModal';
+import ProposalModal from '../components/marketplace/ProposalModal';
+import { messagesService } from '../services/messagesService';
+// ... other imports
 
 const GigDetails = () => {
   const { id } = useParams();
@@ -11,6 +10,10 @@ const GigDetails = () => {
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
   const [expandedFaq, setExpandedFaq] = useState(null);
+
+  // Modal states
+  const [showRequirements, setShowRequirements] = useState(false);
+  const [showProposal, setShowProposal] = useState(false);
 
   useEffect(() => {
     loadGig();
@@ -27,13 +30,36 @@ const GigDetails = () => {
     }
   };
 
-  const handleOrder = async () => {
+  const handleOrderClick = () => {
+    // Open requirements modal instead of direct order
+    setShowRequirements(true);
+  };
+
+  const confirmOrder = async (requirements) => {
     setProcessing(true);
     try {
-      const order = await ordersService.create(id);
+      const order = await ordersService.create(id, requirements);
       navigate(`/orders/${order._id}`);
     } catch (err) {
-      alert('Failed to create order. You might be the seller or not logged in.');
+      alert('Failed to create order. ' + (err.response?.data?.message || err.message));
+    } finally {
+      setProcessing(false);
+      setShowRequirements(false);
+    }
+  };
+
+  const sendProposal = async (message) => {
+    setProcessing(true);
+    try {
+      await messagesService.send({
+        receiverId: gig.sellerId._id,
+        message,
+        gigId: id
+      });
+      alert('Message sent successfully!');
+      setShowProposal(false);
+    } catch (err) {
+      alert('Failed to send message.');
     } finally {
       setProcessing(false);
     }
@@ -206,7 +232,7 @@ const GigDetails = () => {
 
             <div className="space-y-3">
               <button
-                onClick={handleOrder}
+                onClick={handleOrderClick}
                 disabled={processing}
                 className="w-full py-4 bg-navy-900 text-white rounded-lg font-bold text-lg hover:bg-navy-800 transition-all shadow-md hover:shadow-lg flex justify-center items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                 style={{ backgroundColor: 'var(--brand-navy)' }}
@@ -214,7 +240,10 @@ const GigDetails = () => {
                 {processing ? <Loader2 className="animate-spin" /> : 'Continue ($' + gig.price + ')'}
               </button>
 
-              <button className="w-full py-3 bg-white text-navy-900 border border-navy-900 rounded-lg font-bold hover:bg-gray-50 transition-colors flex justify-center items-center gap-2">
+              <button
+                onClick={() => setShowProposal(true)}
+                className="w-full py-3 bg-white text-navy-900 border border-navy-900 rounded-lg font-bold hover:bg-gray-50 transition-colors flex justify-center items-center gap-2"
+              >
                 <MessageSquare size={18} /> Contact Seller
               </button>
             </div>
@@ -247,6 +276,24 @@ const GigDetails = () => {
         </div>
 
       </div>
+
+      {showRequirements && (
+        <RequirementsModal
+          price={gig.price}
+          onClose={() => setShowRequirements(false)}
+          onSubmit={confirmOrder}
+          processing={processing}
+        />
+      )}
+
+      {showProposal && (
+        <ProposalModal
+          sellerName={gig.sellerId?.name}
+          onClose={() => setShowProposal(false)}
+          onSubmit={sendProposal}
+          processing={processing}
+        />
+      )}
     </div>
   );
 };

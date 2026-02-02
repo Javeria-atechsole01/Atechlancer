@@ -34,6 +34,10 @@ const OrderSchema = new mongoose.Schema(
       default: 'pending'
     },
     totalPrice: { type: Number, required: true },
+    requirements: {
+      message: { type: String, default: '' },
+      files: { type: [String], default: [] }
+    },
     delivery: DeliverySchema,
     revisions: [RevisionSchema]
   },

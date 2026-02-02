@@ -76,7 +76,11 @@ const OrderDetails = () => {
 
           {/* Order Requirements / Context */}
           <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-            <div className="flex items-start gap-4">
+            <h3 className="font-bold text-navy-900 mb-4 flex items-center gap-2">
+              <FileText size={20} className="text-gray-400" /> Order Requirements
+            </h3>
+
+            <div className="flex items-start gap-4 mb-6 pb-6 border-b border-gray-100">
               <div className="w-16 h-16 bg-gray-100 rounded-lg shrink-0 overflow-hidden">
                 {order.gigId?.images?.[0] && <img src={order.gigId.images[0]} className="w-full h-full object-cover" alt="Gig" />}
               </div>
@@ -87,6 +91,28 @@ const OrderDetails = () => {
                   <span className="bg-gray-100 px-2 py-1 rounded">{order.gigId?.deliveryTime} Days</span>
                 </div>
               </div>
+            </div>
+
+            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+              <p className="text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Instructions</p>
+              <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">
+                {order.requirements?.message || <span className="text-gray-400 italic">No specific instructions provided.</span>}
+              </p>
+
+              {order.requirements?.files?.length > 0 && (
+                <div className="mt-4 pt-4 border-t border-gray-200">
+                  <p className="text-xs font-bold text-gray-500 uppercase mb-2">Attachments</p>
+                  <ul className="space-y-2">
+                    {order.requirements.files.map((file, i) => (
+                      <li key={i}>
+                        <a href={file} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-primary-600 hover:underline">
+                          <Download size={14} /> Attachment {i + 1}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
 

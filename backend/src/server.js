@@ -25,11 +25,19 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 // Routes
-app.use('/api/auth', require('./routes/auth.routes'));
-app.use('/api/admin', require('./routes/admin.routes'));
-app.use('/api/profile', require('./routes/profile.routes'));
-app.use('/api/gigs', require('./routes/gig.routes'));
-app.use('/api/orders', require('./routes/order.routes'));
+const authRoutes = require('./routes/auth.routes');
+const adminRoutes = require('./routes/admin.routes');
+const profileRoutes = require('./routes/profile.routes');
+const gigRoutes = require('./routes/gigs.routes');
+const orderRoutes = require('./routes/orders.routes');
+const messageRoutes = require('./routes/messages.routes');
+
+app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/profile', profileRoutes);
+app.use('/api/gigs', gigRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/messages', messageRoutes);
 
 // Base route
 app.get('/', (req, res) => {
