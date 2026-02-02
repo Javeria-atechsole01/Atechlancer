@@ -33,6 +33,7 @@ const orderRoutes = require('./routes/order.routes');
 const messageRoutes = require('./routes/messages.routes');
 const jobRoutes = require('./routes/job.routes');
 const applicationRoutes = require('./routes/application.routes');
+const projectRoutes = require('./routes/project.routes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
@@ -42,6 +43,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/applications', applicationRoutes);
+app.use('/api/projects', projectRoutes);
 
 // Base route
 app.get('/', (req, res) => {

@@ -20,6 +20,9 @@ import Orders from './pages/Orders';
 import OrderDetails from './pages/OrderDetails';
 import Jobs from './pages/Jobs';
 import JobDetails from './pages/JobDetails';
+import ProjectHub from './pages/ProjectHub';
+import ProjectDetails from './pages/ProjectDetails';
+import StudentPostProject from './pages/dashboard/student/StudentPostProject';
 
 // Dashboard Imports
 // Dashboard Imports
@@ -82,6 +85,11 @@ function App() {
             <Route path="/orders/:id" element={<ProtectedRoute><Layout><OrderDetails /></Layout></ProtectedRoute>} />
             <Route path="/jobs" element={<Layout><Jobs /></Layout>} />
             <Route path="/jobs/:id" element={<Layout><JobDetails /></Layout>} />
+            <Route path="/projects" element={<Layout><ProjectHub /></Layout>} />
+            <Route path="/projects/:id" element={<Layout><ProjectDetails /></Layout>} />
+
+            {/* Project Upload Route */}
+            <Route path="/dashboard/student/projects/new" element={<Layout><StudentPostProject /></Layout>} />
 
 
             {/* Public Profile View (Shared) */}
