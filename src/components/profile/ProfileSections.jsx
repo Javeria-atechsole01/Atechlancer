@@ -6,8 +6,8 @@ export const ProfileHeader = ({ user, profile, onUpdate, isOwnProfile }) => {
     const [uploading, setUploading] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [headerData, setHeaderData] = useState({
-        title: profile.title || '',
-        location: profile.location || ''
+        title: profile?.title || '',
+        location: profile?.location || ''
     });
     const fileInputRef = useRef(null);
 

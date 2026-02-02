@@ -43,9 +43,9 @@ const Login = () => {
             navigate(`/dashboard/${role}`);
 
             const { user } = await login(formData.email, formData.password);
-            
+
             // Redirect based on role (App routes use /dashboard/<role>)
-            switch(user.role) {
+            switch (user.role) {
                 case 'employer':
                     navigate('/dashboard/employer');
                     break;
@@ -130,28 +130,28 @@ const Login = () => {
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="password-toggle"
+                                    className="input-icon-btn"
                                 >
                                     {showPassword ? (
-                                        <EyeOff className="h-5 w-5 text-gray-400" />
+                                        <EyeOff className="h-5 w-5" />
                                     ) : (
-                                        <Eye className="h-5 w-5 text-gray-400" />
+                                        <Eye className="h-5 w-5" />
                                     )}
                                 </button>
                             </div>
                         </div>
 
                         <div className="form-options">
-                            <div className="remember-me">
+                            <div className="form-checkbox-group">
                                 <input
                                     id="remember"
                                     name="remember"
                                     type="checkbox"
                                     checked={formData.remember}
                                     onChange={handleChange}
-                                    className="checkbox-input"
+                                    className="form-checkbox"
                                 />
-                                <label htmlFor="remember" className="checkbox-label">
+                                <label htmlFor="remember" className="form-checkbox-label">
                                     Remember me
                                 </label>
                             </div>
@@ -166,7 +166,7 @@ const Login = () => {
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="submit-button"
+                            className="auth-btn"
                         >
                             {isLoading ? (
                                 <>
