@@ -31,7 +31,7 @@ const profileRoutes = require('./routes/profile.routes');
 const gigRoutes = require('./routes/gig.routes');
 const orderRoutes = require('./routes/order.routes');
 const messageRoutes = require('./routes/messages.routes');
-const jobRoutes = require('./routes/job.routes');
+// const jobRoutes = require('./routes/job.routes');
 const applicationRoutes = require('./routes/application.routes');
 const projectRoutes = require('./routes/project.routes');
 
