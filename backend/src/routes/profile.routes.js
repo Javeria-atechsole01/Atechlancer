@@ -7,8 +7,14 @@ const {
   getOwnProfile,
   getPublicProfile,
   uploadProfilePhoto,
-  uploadDocument: uploadDocController
+  uploadDocument: uploadDocController,
+  getCandidates
 } = require('../controllers/profile.controller');
+
+// @route   GET /api/profile/candidates
+// @desc    Get all candidates (freelancers/students) with filters
+// @access  Public
+router.get('/candidates', getCandidates);
 
 // @route   POST /api/profile
 // @desc    Create or update user profile

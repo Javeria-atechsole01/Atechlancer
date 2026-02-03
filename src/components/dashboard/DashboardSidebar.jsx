@@ -32,6 +32,12 @@ const DashboardSidebar = ({ isOpen, role }) => {
         ];
 
         switch (role) {
+            case 'admin':
+                return [
+                    commonItems[0],
+                    { name: 'Payments', icon: <CreditCard />, path: `/dashboard/admin/payments` },
+                    commonItems[1],
+                ];
             case 'student':
                 return [
                     commonItems[0],
@@ -40,6 +46,7 @@ const DashboardSidebar = ({ isOpen, role }) => {
                     { name: 'Assignments', icon: <BookOpen />, path: `/dashboard/student/assignments` },
                     { name: 'Submissions', icon: <CheckCircle />, path: `/dashboard/student/submissions` },
                     { name: 'Payments', icon: <CreditCard />, path: `/dashboard/student/payments` },
+                    { name: 'Applications', icon: <Briefcase />, path: `/dashboard/student/applications` },
                     commonItems[1],
                 ];
             case 'freelancer':
@@ -50,6 +57,7 @@ const DashboardSidebar = ({ isOpen, role }) => {
                     { name: 'Assignments', icon: <BookOpen />, path: `/dashboard/freelancer/assignments` },
                     { name: 'Orders', icon: <FileText />, path: `/dashboard/freelancer/orders` },
                     { name: 'Earnings', icon: <CreditCard />, path: `/dashboard/freelancer/earnings` },
+                    { name: 'Applications', icon: <Briefcase />, path: `/dashboard/freelancer/applications` },
                     commonItems[1],
                 ];
             case 'teacher':
@@ -67,6 +75,7 @@ const DashboardSidebar = ({ isOpen, role }) => {
                     commonItems[0],
                     { name: 'Post a Job', icon: <Briefcase />, path: `/dashboard/employer/post-job` },
                     { name: 'Candidates', icon: <Users />, path: `/dashboard/employer/candidates` },
+                    { name: 'Applications', icon: <Briefcase />, path: `/dashboard/employer/applications` },
                     { name: 'Contracts', icon: <FileText />, path: `/dashboard/employer/contracts` },
                     { name: 'Payments', icon: <CreditCard />, path: `/dashboard/employer/payments` },
                     commonItems[1],

@@ -32,6 +32,7 @@ const GigSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-GigSchema.index({ title: 'text', description: 'text', category: 'text' });
+GigSchema.index({ title: 'text', description: 'text', tags: 'text' });
+GigSchema.index({ category: 1, price: 1, status: 1, createdAt: -1 });
 
 module.exports = mongoose.model('Gig', GigSchema);

@@ -1,5 +1,41 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
+import { jobService } from '../../../services/jobService';
+import { Loader2 } from 'lucide-react';
+
+const EmployerPostJob = () => {
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [formData, setFormData] = useState({
+        title: '',
+        category: 'Web Development',
+        budget: '',
+        description: '',
+        skills: '' // Comma separated string for input
+    });
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            // Convert skills string to array
+            const payload = {
+                ...formData,
+                skills: formData.skills.split(',').map(s => s.trim()).filter(s => s)
+            };
+            
+            const job = await jobService.create(payload);
+            // Redirect to the newly created job details page instead of the list
+            navigate(`/jobs/${job._id}`);
+        } catch (err) {
+            alert('Failed to create job');
+            console.error(err);
+=======
 import { Briefcase, DollarSign, MapPin, Calendar, CheckCircle, ArrowRight, ArrowLeft } from 'lucide-react';
 // import { jobsService } from '../../../services/jobsService'; // To be implemented
 
@@ -52,11 +88,17 @@ const EmployerPostJob = () => {
         } catch (error) {
             console.error(error);
             alert("Failed to post job");
+>>>>>>> ddb7b09595525bd3df0290c7dfb032ed30fc1fc5
         } finally {
             setLoading(false);
         }
     };
 
+<<<<<<< HEAD
+    return (
+        <div className="dashboard-page">
+            <div className="dashboard-page-header">
+=======
     // --- STEPS COMPONENTS ---
 
     /** Step 1: Job Basics */
@@ -75,6 +117,7 @@ const EmployerPostJob = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+>>>>>>> ddb7b09595525bd3df0290c7dfb032ed30fc1fc5
                 <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-1">Category</label>
                     <select name="category" value={formData.category} onChange={handleChange} className="search-input w-full">
@@ -97,6 +140,50 @@ const EmployerPostJob = () => {
                 </div>
             </div>
 
+<<<<<<< HEAD
+            <div className="card" style={{ maxWidth: '800px', margin: '0 auto' }}>
+                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                    <div>
+                        <label className="form-label" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600' }}>Job Title</label>
+                        <input 
+                            type="text" 
+                            name="title"
+                            value={formData.title}
+                            onChange={handleChange}
+                            required
+                            className="search-input w-full" 
+                            placeholder="e.g. Senior React Developer needed" 
+                        />
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+                        <div>
+                            <label className="form-label" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600' }}>Category</label>
+                            <select 
+                                name="category"
+                                value={formData.category}
+                                onChange={handleChange}
+                                className="search-input w-full"
+                            >
+                                <option value="Web Development">Web Development</option>
+                                <option value="Mobile Development">Mobile Development</option>
+                                <option value="Design">Design</option>
+                                <option value="Writing">Writing</option>
+                                <option value="Marketing">Marketing</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label className="form-label" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600' }}>Budget ($)</label>
+                            <input 
+                                type="number" 
+                                name="budget"
+                                value={formData.budget}
+                                onChange={handleChange}
+                                required
+                                className="search-input w-full" 
+                                placeholder="500" 
+                            />
+=======
             <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-1">Required Skills (comma separated)</label>
                 <input
@@ -238,6 +325,7 @@ const EmployerPostJob = () => {
                             <span className="capitalize">{formData.type}</span>
                             <span>•</span>
                             <span className="capitalize">{formData.locationType}</span>
+>>>>>>> ddb7b09595525bd3df0290c7dfb032ed30fc1fc5
                         </div>
                     </div>
                     <div className="text-right">
@@ -252,12 +340,37 @@ const EmployerPostJob = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-gray-100">
                     <div>
+<<<<<<< HEAD
+                        <label className="form-label" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600' }}>Skills (comma separated)</label>
+                        <input 
+                            type="text" 
+                            name="skills"
+                            value={formData.skills}
+                            onChange={handleChange}
+                            className="search-input w-full" 
+                            placeholder="React, Node.js, MongoDB" 
+                        />
+                    </div>
+
+                    <div>
+                        <label className="form-label" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600' }}>Description</label>
+                        <textarea 
+                            name="description"
+                            value={formData.description}
+                            onChange={handleChange}
+                            required
+                            className="search-input w-full" 
+                            rows="5" 
+                            placeholder="Detailed job description..."
+                        ></textarea>
+=======
                         <h4 className="font-bold text-navy-900 mb-2">Required Skills</h4>
                         <div className="flex flex-wrap gap-2">
                             {formData.skills ? formData.skills.split(',').map((s, i) => (
                                 <span key={i} className="bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs font-semibold">{s}</span>
                             )) : <span className="text-gray-400 italic">None specified</span>}
                         </div>
+>>>>>>> ddb7b09595525bd3df0290c7dfb032ed30fc1fc5
                     </div>
                     <div>
                         <h4 className="font-bold text-navy-900 mb-2">Preferences</h4>
@@ -272,6 +385,13 @@ const EmployerPostJob = () => {
         </div>
     );
 
+<<<<<<< HEAD
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1rem' }}>
+                        <button type="button" className="btn btn-secondary" onClick={() => navigate(-1)}>Cancel</button>
+                        <button type="submit" className="btn btn-primary" disabled={loading}>
+                            {loading ? <Loader2 className="animate-spin" size={20} /> : 'Publish Job'}
+                        </button>
+=======
     return (
         <div className="dashboard-page max-w-4xl mx-auto py-8">
             <div className="mb-8">
@@ -301,6 +421,7 @@ const EmployerPostJob = () => {
                         {i < 3 && (
                             <div className={`h-1 flex-1 mx-4 rounded ${step > s.n ? 'bg-primary-600' : 'bg-gray-200'}`}></div>
                         )}
+>>>>>>> ddb7b09595525bd3df0290c7dfb032ed30fc1fc5
                     </div>
                 ))}
             </div>

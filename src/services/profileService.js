@@ -34,5 +34,11 @@ export const profileService = {
             },
         });
         return response.data;
+    },
+
+    // Get candidates with filters
+    getCandidates: async (params) => {
+        const response = await api.get('/profile/candidates', { params });
+        return response.data;
     }
 };

@@ -10,7 +10,8 @@ export const authService = {
       }
       return response.data;
     } catch (error) {
-      throw error.response?.data || { message: 'Login failed' };
+      const message = error.response?.data?.message || error.response?.data || 'Login failed';
+      throw { message: typeof message === 'string' ? message : JSON.stringify(message) };
     }
   },
 

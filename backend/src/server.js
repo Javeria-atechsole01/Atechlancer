@@ -25,6 +25,16 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 // Routes
+<<<<<<< HEAD
+app.use('/api/auth', require('./routes/auth.routes'));
+app.use('/api/admin', require('./routes/admin.routes'));
+app.use('/api/profile', require('./routes/profile.routes'));
+app.use('/api/gigs', require('./routes/gig.routes'));
+app.use('/api/orders', require('./routes/order.routes'));
+app.use('/api/jobs', require('./routes/job.routes'));
+app.use('/api', require('./routes/payment.routes'));
+app.use('/api', require('./routes/application.routes'));
+=======
 const authRoutes = require('./routes/auth.routes');
 const adminRoutes = require('./routes/admin.routes');
 const profileRoutes = require('./routes/profile.routes');
@@ -44,6 +54,7 @@ app.use('/api/messages', messageRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/projects', projectRoutes);
+>>>>>>> ddb7b09595525bd3df0290c7dfb032ed30fc1fc5
 
 // Base route
 app.get('/', (req, res) => {
@@ -53,7 +64,7 @@ app.get('/', (req, res) => {
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send('Something broke!');
+  res.status(500).json({ message: 'Server Error: ' + err.message });
 });
 
 const PORT = config.port;

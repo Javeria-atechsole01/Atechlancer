@@ -2,6 +2,52 @@ const mongoose = require('mongoose');
 
 const JobSchema = new mongoose.Schema(
     {
+<<<<<<< HEAD
+        employerId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        },
+        title: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        description: {
+            type: String,
+            required: true
+        },
+        category: {
+            type: String,
+            required: true
+        },
+        skills: {
+            type: [String],
+            default: []
+        },
+        requirements: {
+            type: [String],
+            default: []
+        },
+        budget: {
+            type: Number,
+            required: true
+        },
+        type: {
+            type: String,
+            enum: ['full-time', 'part-time', 'contract', 'freelance'],
+            default: 'freelance'
+        },
+        status: {
+            type: String,
+            enum: ['open', 'closed', 'in-progress'],
+            default: 'open'
+        },
+        applicants: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }]
+=======
         employerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
         title: { type: String, required: true, trim: true },
         category: { type: String, required: true },
@@ -23,6 +69,7 @@ const JobSchema = new mongoose.Schema(
 
         status: { type: String, enum: ['open', 'closed', 'in-progress'], default: 'open' },
         applicants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Application' }]
+>>>>>>> ddb7b09595525bd3df0290c7dfb032ed30fc1fc5
     },
     { timestamps: true }
 );

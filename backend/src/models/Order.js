@@ -21,6 +21,11 @@ const OrderSchema = new mongoose.Schema(
     gigId: { type: mongoose.Schema.Types.ObjectId, ref: 'Gig', required: true },
     sellerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     buyerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    paymentStatus: {
+      type: String,
+      enum: ['unpaid', 'pending', 'paid', 'rejected'],
+      default: 'unpaid'
+    },
     status: {
       type: String,
       enum: [
