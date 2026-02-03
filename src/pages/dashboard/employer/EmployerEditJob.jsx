@@ -1,18 +1,45 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { jobService } from '../../../services/jobService';
 import { Loader2 } from 'lucide-react';
 
-const EmployerPostJob = () => {
+const EmployerEditJob = () => {
+    const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const [fetching, setFetching] = useState(true);
     const [formData, setFormData] = useState({
         title: '',
         category: 'Web Development',
         budget: '',
         description: '',
-        skills: '' // Comma separated string for input
+        skills: '',
+        status: 'open'
     });
+
+    useEffect(() => {
+        loadJob();
+    }, [id]);
+
+    const loadJob = async () => {
+        try {
+            const job = await jobService.getById(id);
+            setFormData({
+                title: job.title,
+                category: job.category,
+                budget: job.budget,
+                description: job.description,
+                skills: job.skills.join(', '),
+                status: job.status
+            });
+        } catch (err) {
+            console.error("Failed to load job", err);
+            alert("Failed to load job details");
+            navigate('/dashboard/employer');
+        } finally {
+            setFetching(false);
+        }
+    };
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -22,29 +49,29 @@ const EmployerPostJob = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            // Convert skills string to array
             const payload = {
                 ...formData,
                 skills: formData.skills.split(',').map(s => s.trim()).filter(s => s)
             };
             
-            const job = await jobService.create(payload);
-            // Redirect to the newly created job details page instead of the list
-            navigate(`/jobs/${job._id}`);
+            await jobService.update(id, payload);
+            navigate(`/jobs/${id}`);
         } catch (err) {
-            alert('Failed to create job');
+            alert('Failed to update job');
             console.error(err);
         } finally {
             setLoading(false);
         }
     };
 
+    if (fetching) return <div className="flex justify-center p-20"><Loader2 className="animate-spin" /></div>;
+
     return (
         <div className="dashboard-page">
             <div className="dashboard-page-header">
                 <div>
-                    <h1 className="page-title">Post a New Job</h1>
-                    <p className="page-description">Find the perfect talent for your project.</p>
+                    <h1 className="page-title">Edit Job</h1>
+                    <p className="page-description">Update job details.</p>
                 </div>
             </div>
 
@@ -59,7 +86,6 @@ const EmployerPostJob = () => {
                             onChange={handleChange}
                             required
                             className="search-input w-full" 
-                            placeholder="e.g. Senior React Developer needed" 
                         />
                     </div>
 
@@ -88,8 +114,23 @@ const EmployerPostJob = () => {
                                 onChange={handleChange}
                                 required
                                 className="search-input w-full" 
-                                placeholder="500" 
                             />
+                        </div>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.5rem' }}>
+                         <div>
+                            <label className="form-label" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600' }}>Status</label>
+                            <select 
+                                name="status"
+                                value={formData.status}
+                                onChange={handleChange}
+                                className="search-input w-full"
+                            >
+                                <option value="open">Open</option>
+                                <option value="closed">Closed</option>
+                                <option value="in-progress">In Progress</option>
+                            </select>
                         </div>
                     </div>
 
@@ -101,7 +142,6 @@ const EmployerPostJob = () => {
                             value={formData.skills}
                             onChange={handleChange}
                             className="search-input w-full" 
-                            placeholder="React, Node.js, MongoDB" 
                         />
                     </div>
 
@@ -114,14 +154,13 @@ const EmployerPostJob = () => {
                             required
                             className="search-input w-full" 
                             rows="5" 
-                            placeholder="Detailed job description..."
                         ></textarea>
                     </div>
 
                     <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1rem' }}>
                         <button type="button" className="btn btn-secondary" onClick={() => navigate(-1)}>Cancel</button>
                         <button type="submit" className="btn btn-primary" disabled={loading}>
-                            {loading ? <Loader2 className="animate-spin" size={20} /> : 'Publish Job'}
+                            {loading ? <Loader2 className="animate-spin" size={20} /> : 'Update Job'}
                         </button>
                     </div>
                 </form>
@@ -130,4 +169,4 @@ const EmployerPostJob = () => {
     );
 };
 
-export default EmployerPostJob;
+export default EmployerEditJob;

@@ -38,13 +38,9 @@ const Login = () => {
         try {
 
             const data = await login(formData.email, formData.password);
-            // Role-based redirect
-            const role = data.user.role;
-            navigate(`/dashboard/${role}`);
-
-            const { user } = await login(formData.email, formData.password);
             
-            // Redirect based on role (App routes use /dashboard/<role>)
+            // Redirect based on role
+            const user = data.user;
             switch(user.role) {
                 case 'employer':
                     navigate('/dashboard/employer');

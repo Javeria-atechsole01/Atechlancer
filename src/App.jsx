@@ -30,6 +30,7 @@ import StudentAssignments from './pages/dashboard/student/StudentAssignments';
 import StudentProjects from './pages/dashboard/student/StudentProjects';
 import StudentSubmissions from './pages/dashboard/student/StudentSubmissions';
 import StudentPayments from './pages/dashboard/student/StudentPayments';
+import StudentApplications from './pages/dashboard/student/StudentApplications';
 
 import FreelancerHome from './pages/dashboard/freelancer/FreelancerHome';
 import FreelancerGigs from './pages/dashboard/freelancer/FreelancerGigs';
@@ -38,6 +39,7 @@ import FreelancerOrders from './pages/dashboard/freelancer/FreelancerOrders';
 import FreelancerProfile from './pages/dashboard/freelancer/FreelancerProfile';
 import FreelancerEarnings from './pages/dashboard/freelancer/FreelancerEarnings';
 import FreelancerReviews from './pages/dashboard/freelancer/FreelancerReviews';
+import FreelancerApplications from './pages/dashboard/freelancer/FreelancerApplications';
 
 import TeacherHome from './pages/dashboard/teacher/TeacherHome';
 import TeacherCourses from './pages/dashboard/teacher/TeacherCourses';
@@ -49,9 +51,16 @@ import FreelancerAssignments from './pages/dashboard/freelancer/FreelancerAssign
 
 import EmployerHome from './pages/dashboard/employer/EmployerHome';
 import EmployerPostJob from './pages/dashboard/employer/EmployerPostJob';
+import EmployerEditJob from './pages/dashboard/employer/EmployerEditJob';
 import EmployerCandidates from './pages/dashboard/employer/EmployerCandidates';
 import EmployerContracts from './pages/dashboard/employer/EmployerContracts';
 import EmployerPayments from './pages/dashboard/employer/EmployerPayments';
+import AdminPayments from './pages/dashboard/admin/AdminPayments';
+import EmployerApplications from './pages/dashboard/employer/EmployerApplications';
+
+import Jobs from './pages/Jobs';
+import JobDetails from './pages/JobDetails';
+import ApplyJob from './pages/ApplyJob';
 
 import { AuthProvider } from './context/AuthContext';
 import { SearchProvider } from './context/SearchContext';
@@ -71,6 +80,9 @@ function App() {
             <Route path="/faq" element={<Layout><FAQ /></Layout>} />
             <Route path="/gigs" element={<Layout><Gigs /></Layout>} />
             <Route path="/gigs/:id" element={<Layout><GigDetails /></Layout>} />
+            <Route path="/jobs" element={<Layout><Jobs /></Layout>} />
+            <Route path="/jobs/:id" element={<Layout><JobDetails /></Layout>} />
+            <Route path="/jobs/:id/apply" element={<Layout><ApplyJob /></Layout>} />
             <Route path="/signup" element={<Layout><Signup /></Layout>} />
             <Route path="/login" element={<Layout><Login /></Layout>} />
             <Route path="/verify-email" element={<Layout><EmailVerification /></Layout>} />
@@ -94,6 +106,7 @@ function App() {
               <Route path="projects" element={<StudentProjects />} />
               <Route path="submissions" element={<StudentSubmissions />} />
               <Route path="payments" element={<StudentPayments />} />
+              <Route path="applications" element={<StudentApplications />} />
               <Route path="settings" element={<DashboardSettings />} />
             </Route>
 
@@ -108,6 +121,7 @@ function App() {
               <Route path="assignments" element={<FreelancerAssignments />} />
               <Route path="earnings" element={<FreelancerEarnings />} />
               <Route path="reviews" element={<FreelancerReviews />} />
+              <Route path="applications" element={<FreelancerApplications />} />
               <Route path="settings" element={<DashboardSettings />} />
             </Route>
 
@@ -129,9 +143,18 @@ function App() {
               <Route index element={<Navigate to="home" replace />} />
               <Route path="home" element={<EmployerHome />} />
               <Route path="post-job" element={<EmployerPostJob />} />
+              <Route path="jobs/edit/:id" element={<EmployerEditJob />} />
               <Route path="candidates" element={<EmployerCandidates />} />
               <Route path="contracts" element={<EmployerContracts />} />
               <Route path="payments" element={<EmployerPayments />} />
+              <Route path="applications" element={<EmployerApplications />} />
+              <Route path="settings" element={<DashboardSettings />} />
+            </Route>
+
+            {/* Admin Dashboard */}
+            <Route path="/dashboard/admin" element={<DashboardLayout role="admin" />}>
+              <Route index element={<Navigate to="payments" replace />} />
+              <Route path="payments" element={<AdminPayments />} />
               <Route path="settings" element={<DashboardSettings />} />
             </Route>
 

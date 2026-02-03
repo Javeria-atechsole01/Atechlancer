@@ -64,76 +64,127 @@ exports.getMyGigs = async (req, res) => {
   }
 };
 
-exports.getGigs = async (req, res) => {
-  try {
-    const { q, category, minPrice, maxPrice, deliveryTime, rating, sort = 'latest', page = 1, limit = 10 } = req.query;
-
-    // Only show active gigs
-    const filter = { status: 'active' };
-
-    if (category) filter.category = category;
-
-    if (minPrice || maxPrice) {
-      filter.price = {};
-      if (minPrice) filter.price.$gte = Number(minPrice);
-      if (maxPrice) filter.price.$lte = Number(maxPrice);
-    }
-
-    if (deliveryTime) {
-      filter.deliveryTime = { $lte: Number(deliveryTime) };
-    }
-
-    if (rating) {
-      filter.rating = { $gte: Number(rating) };
-    }
-
-    let query = Gig.find(filter).populate('sellerId', 'name photo'); // Populate seller name/photo for cards
-
-    if (q) query = query.find({ $text: { $search: q } });
-
-    if (sort === 'price_asc') query = query.sort({ price: 1 });
-    else if (sort === 'price_desc') query = query.sort({ price: -1 });
-    else if (sort === 'rating') query = query.sort({ rating: -1 });
-    else query = query.sort({ createdAt: -1 });
-
-    const skip = (Number(page) - 1) * Number(limit);
-    const [items, total] = await Promise.all([
-      query.skip(skip).limit(Number(limit)).exec(),
-      Gig.countDocuments(filter)
-    ]);
-    res.json({ items, total, page: Number(page), limit: Number(limit) });
-  } catch {
-    res.status(500).json({ message: 'Failed to fetch gigs' });
-  }
-};
-
 exports.getGigById = async (req, res) => {
   try {
-    const gig = await Gig.findById(req.params.id).populate('sellerId', 'name');
+    const gig = await Gig.findById(req.params.id).populate('sellerId', 'name photo bio location rating reviewsCount');
     if (!gig) return res.status(404).json({ message: 'Gig not found' });
     res.json(gig);
-  } catch {
-    res.status(400).json({ message: 'Invalid id' });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch gig' });
   }
 };
 
 exports.uploadGigCover = async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
-    const id = req.params.id;
-    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({ message: 'Invalid id' });
-    const gig = await Gig.findOne({ _id: id, sellerId: req.user.userId });
+    
+    const gig = await Gig.findOne({ _id: req.params.id, sellerId: req.user.userId });
     if (!gig) return res.status(404).json({ message: 'Gig not found' });
-    const url = req.file.path;
-    if (!Array.isArray(gig.images)) gig.images = [];
-    if (gig.images.length) {
-      gig.images[0] = url;
-    } else {
-      gig.images.push(url);
-    }
+    
+    // Add new image to the beginning (cover)
+    gig.images.unshift(req.file.path);
     await gig.save();
-    res.json({ cover: url, gig });
-  } catch {
-    res.status(500).json({ message: 'Failed to upload cover' });
+    
+    res.json(gig);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to upload image' });
+  }
+};
+
+const buildGigQuery = (queryParams) => {
+  const { 
+    search, 
+    category, 
+    minPrice, 
+    maxPrice, 
+    status 
+  } = queryParams;
+
+  const query = {};
+
+  // 1. Text Search (Regex)
+  if (search) {
+    const searchRegex = new RegExp(search, 'i');
+    query.$or = [
+      { title: searchRegex },
+      { description: searchRegex },
+      { tags: searchRegex }
+    ];
+  }
+
+  // 2. Category Filter
+  if (category) {
+    query.category = category;
+  }
+
+  // 3. Price Range Filter
+  if (minPrice || maxPrice) {
+    query.price = {};
+    if (minPrice) query.price.$gte = Number(minPrice);
+    if (maxPrice) query.price.$lte = Number(maxPrice);
+  }
+
+  // 4. Status Filter (Default to active if not provided)
+  if (status) {
+    query.status = status;
+  } else {
+    query.status = 'active';
+  }
+
+  return query;
+};
+
+exports.getGigs = async (req, res) => {
+  try {
+    const { 
+      sort = 'latest', 
+      page = 1, 
+      limit = 10 
+    } = req.query;
+
+    const query = buildGigQuery(req.query);
+
+    // 5. Sorting
+    let sortOptions = {};
+    switch (sort) {
+      case 'price_low':
+        sortOptions = { price: 1 };
+        break;
+      case 'price_high':
+        sortOptions = { price: -1 };
+        break;
+      case 'latest':
+      default:
+        sortOptions = { createdAt: -1 };
+        break;
+    }
+
+    // 6. Pagination
+    const pageNum = Number(page) || 1;
+    const limitNum = Number(limit) || 10;
+    const skip = (pageNum - 1) * limitNum;
+
+    // Execute Query
+    const [results, total] = await Promise.all([
+      Gig.find(query)
+        .populate('sellerId', 'name photo')
+        .sort(sortOptions)
+        .skip(skip)
+        .limit(limitNum),
+      Gig.countDocuments(query)
+    ]);
+
+    const totalPages = Math.ceil(total / limitNum);
+
+    res.json({
+      results,
+      total,
+      page: pageNum,
+      totalPages
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Failed to fetch gigs' });
   }
 };

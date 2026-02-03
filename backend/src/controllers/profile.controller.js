@@ -49,6 +49,7 @@ const createOrUpdateProfile = async (req, res) => {
       profile.bio = bio !== undefined ? bio : profile.bio;
       profile.title = title !== undefined ? title : profile.title;
       profile.location = location !== undefined ? location : profile.location;
+      profile.hourlyRate = hourlyRate !== undefined ? Number(hourlyRate) : profile.hourlyRate;
       if (skills) profile.skills = skills;
       if (education) profile.education = education;
       if (experience) profile.experience = experience;
@@ -188,10 +189,126 @@ const uploadDocument = async (req, res) => {
   }
 };
 
+/**
+ * @desc    Get candidates (freelancers/students) with search and filters
+ * @route   GET /api/profile/candidates
+ * @access  Public
+ */
+const getCandidates = async (req, res) => {
+  try {
+    const { search, skills, minRate, maxRate, page = 1, limit = 12 } = req.query;
+
+    const pipeline = [
+      // 1. Lookup User details
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'userId',
+          foreignField: '_id',
+          as: 'user'
+        }
+      },
+      // 2. Unwind user array (lookup returns an array)
+      { $unwind: '$user' },
+      
+      // 3. Match only freelancers and students
+      {
+        $match: {
+          'user.role': { $in: ['freelancer', 'student'] }
+        }
+      }
+    ];
+
+    // 4. Apply Search (Name, Title, Skills)
+    if (search) {
+      const regex = new RegExp(search, 'i');
+      pipeline.push({
+        $match: {
+          $or: [
+            { 'user.name': regex },
+            { title: regex },
+            { skills: regex }
+          ]
+        }
+      });
+    }
+
+    // 5. Filter by Skills (Exact match or overlap)
+    if (skills) {
+      const skillsArray = skills.split(',').map(s => new RegExp(s.trim(), 'i'));
+      pipeline.push({
+        $match: {
+          skills: { $in: skillsArray }
+        }
+      });
+    }
+
+    // 6. Filter by Hourly Rate
+    if (minRate || maxRate) {
+      const rateFilter = {};
+      if (minRate) rateFilter.$gte = Number(minRate);
+      if (maxRate) rateFilter.$lte = Number(maxRate);
+      
+      pipeline.push({
+        $match: {
+          hourlyRate: rateFilter
+        }
+      });
+    }
+
+    // 7. Pagination Facet
+    const pageNum = Number(page);
+    const limitNum = Number(limit);
+    const skip = (pageNum - 1) * limitNum;
+
+    pipeline.push({
+      $facet: {
+        metadata: [{ $count: 'total' }],
+        data: [
+          { $skip: skip },
+          { $limit: limitNum },
+          // Project only necessary fields
+          {
+            $project: {
+              _id: 1,
+              title: 1,
+              hourlyRate: 1,
+              skills: 1,
+              location: 1,
+              photo: 1,
+              'user._id': 1,
+              'user.name': 1,
+              'user.email': 1,
+              'user.role': 1
+            }
+          }
+        ]
+      }
+    });
+
+    const result = await Profile.aggregate(pipeline);
+    
+    const candidates = result[0].data;
+    const total = result[0].metadata[0] ? result[0].metadata[0].total : 0;
+
+    res.json({
+      results: candidates,
+      total,
+      page: pageNum,
+      totalPages: Math.ceil(total / limitNum)
+    });
+
+  } catch (err) {
+    console.error('Get Candidates Error:', err);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
 module.exports = {
   createOrUpdateProfile,
   getOwnProfile,
   getPublicProfile,
   uploadProfilePhoto,
-  uploadDocument
+  uploadDocument,
+  getCandidates
 };

@@ -66,6 +66,10 @@ const ProfileSchema = new mongoose.Schema(
       type: String,
       default: ''
     },
+    hourlyRate: {
+      type: Number,
+      default: 0
+    },
     skills: {
       type: [String],
       default: []

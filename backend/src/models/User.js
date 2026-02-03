@@ -40,6 +40,11 @@ const UserSchema = new mongoose.Schema(
     isApprovedByAdmin: {
       type: Boolean,
       default: false
+    },
+    // Stripe customer ID for payments
+    stripeCustomerId: {
+      type: String,
+      default: null
     }
   },
   { timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } }

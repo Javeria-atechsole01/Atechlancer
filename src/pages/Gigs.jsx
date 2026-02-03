@@ -9,15 +9,28 @@ const Gigs = () => {
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
+  const [searchInput, setSearchInput] = useState(''); // Separate state for input
+  
   const [filters, setFilters] = useState({
-    q: '',
+    search: '', // Backend expects 'search'
     category: '',
     minPrice: '',
     maxPrice: '',
-    deliveryTime: '',
-    rating: '',
+    status: 'active',
     sort: 'latest'
   });
+
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setFilters(prev => {
+        if (prev.search === searchInput) return prev;
+        return { ...prev, search: searchInput };
+      });
+      if (filters.search !== searchInput) setPage(1);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [searchInput]);
 
   useEffect(() => {
     load();
@@ -35,7 +48,7 @@ const Gigs = () => {
       Object.keys(query).forEach(key => (query[key] === '' || query[key] === null) && delete query[key]);
 
       const data = await gigsService.list(query);
-      setItems(data.items || []);
+      setItems(data.results || []); // Backend returns 'results'
       setTotal(data.total || 0);
     } catch (err) {
       console.error("Failed to load gigs", err);
@@ -50,13 +63,13 @@ const Gigs = () => {
   };
 
   const clearFilters = () => {
+    setSearchInput('');
     setFilters({
-      q: '',
+      search: '',
       category: '',
       minPrice: '',
       maxPrice: '',
-      deliveryTime: '',
-      rating: '',
+      status: 'active',
       sort: 'latest'
     });
     setPage(1);
@@ -74,8 +87,8 @@ const Gigs = () => {
           <input
             placeholder="Search services..."
             className="search-input w-full md:w-80"
-            value={filters.q}
-            onChange={e => handleFilterChange({ q: e.target.value })}
+            value={searchInput}
+            onChange={e => setSearchInput(e.target.value)}
           />
           <select
             className="search-input w-40"
@@ -83,9 +96,8 @@ const Gigs = () => {
             onChange={e => handleFilterChange({ sort: e.target.value })}
           >
             <option value="latest">Newest</option>
-            <option value="price_asc">Price: Low to High</option>
-            <option value="price_desc">Price: High to Low</option>
-            <option value="rating">Top Rated</option>
+            <option value="price_low">Price: Low to High</option>
+            <option value="price_high">Price: High to Low</option>
           </select>
         </div>
       </div>
@@ -99,47 +111,50 @@ const Gigs = () => {
         {/* Gigs Grid */}
         <div className="lg:col-span-3">
           {loading ? (
-            <div className="flex justify-center py-20">
-              <Loader2 className="animate-spin text-primary-600" size={40} />
+            <div className="flex justify-center items-center h-64">
+              <Loader2 className="animate-spin h-8 w-8 text-primary-600" />
             </div>
-          ) : items.length > 0 ? (
+          ) : items.length === 0 ? (
+            <div className="text-center py-12 bg-white rounded-lg shadow-sm border border-gray-100">
+              <p className="text-gray-500 text-lg">No gigs found matching your criteria.</p>
+              <button 
+                onClick={clearFilters}
+                className="mt-4 text-primary-600 font-medium hover:underline"
+              >
+                Clear all filters
+              </button>
+            </div>
+          ) : (
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {items.map(g => (
-                  <GigCard key={g._id} gig={g} />
+                {items.map(gig => (
+                  <GigCard key={gig._id} gig={gig} />
                 ))}
               </div>
-
+              
               {/* Pagination */}
               {total > 12 && (
-                <div className="flex justify-center mt-12 gap-2">
-                  <button
+                <div className="mt-8 flex justify-center gap-2">
+                  <button 
                     disabled={page === 1}
                     onClick={() => setPage(p => p - 1)}
-                    className="px-4 py-2 border rounded hover:bg-gray-100 disabled:opacity-50"
+                    className="px-4 py-2 border rounded hover:bg-gray-50 disabled:opacity-50"
                   >
                     Previous
                   </button>
                   <span className="px-4 py-2 bg-gray-50 rounded">
-                    {page} of {Math.ceil(total / 12)}
+                    Page {page}
                   </span>
-                  <button
-                    disabled={page >= Math.ceil(total / 12)}
+                  <button 
+                    disabled={items.length < 12}
                     onClick={() => setPage(p => p + 1)}
-                    className="px-4 py-2 border rounded hover:bg-gray-100 disabled:opacity-50"
+                    className="px-4 py-2 border rounded hover:bg-gray-50 disabled:opacity-50"
                   >
                     Next
                   </button>
                 </div>
               )}
             </>
-          ) : (
-            <div className="text-center py-20 bg-white rounded-lg border border-gray-200">
-              <p className="text-xl text-gray-500 font-medium">No services found matching your criteria</p>
-              <button onClick={clearFilters} className="mt-4 text-primary-600 hover:underline">
-                Clear all filters
-              </button>
-            </div>
           )}
         </div>
       </div>

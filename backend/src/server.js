@@ -30,6 +30,9 @@ app.use('/api/admin', require('./routes/admin.routes'));
 app.use('/api/profile', require('./routes/profile.routes'));
 app.use('/api/gigs', require('./routes/gig.routes'));
 app.use('/api/orders', require('./routes/order.routes'));
+app.use('/api/jobs', require('./routes/job.routes'));
+app.use('/api', require('./routes/payment.routes'));
+app.use('/api', require('./routes/application.routes'));
 
 // Base route
 app.get('/', (req, res) => {
@@ -39,7 +42,7 @@ app.get('/', (req, res) => {
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send('Something broke!');
+  res.status(500).json({ message: 'Server Error: ' + err.message });
 });
 
 const PORT = config.port;

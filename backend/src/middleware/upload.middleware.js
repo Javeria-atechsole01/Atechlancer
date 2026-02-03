@@ -68,9 +68,24 @@ const uploadDelivery = multer({
   limits: { fileSize: 20 * 1024 * 1024 }
 });
 
+// Storage for Bank Transfer Receipts (images)
+const receiptStorage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'payment_receipts',
+    allowed_formats: ['jpg', 'png', 'jpeg']
+  }
+});
+
+const uploadReceipt = multer({
+  storage: receiptStorage,
+  limits: { fileSize: 10 * 1024 * 1024 }
+});
+
 module.exports = {
   uploadPhoto,
   uploadDocument,
   uploadGigImages,
-  uploadDelivery
+  uploadDelivery,
+  uploadReceipt
 };

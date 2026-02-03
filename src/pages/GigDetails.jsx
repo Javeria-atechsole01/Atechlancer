@@ -157,3 +157,5 @@ const GigDetails = () => {
     </div>
   );
 };
+
+export default GigDetails;
