@@ -63,8 +63,6 @@ import EmployerPayments from './pages/dashboard/employer/EmployerPayments';
 import AdminPayments from './pages/dashboard/admin/AdminPayments';
 import EmployerApplications from './pages/dashboard/employer/EmployerApplications';
 
-import Jobs from './pages/Jobs';
-import JobDetails from './pages/JobDetails';
 import ApplyJob from './pages/ApplyJob';
 
 import { AuthProvider } from './context/AuthContext';
@@ -95,8 +93,6 @@ function App() {
             <Route path="/reset-password" element={<Layout><ResetPassword /></Layout>} />
             <Route path="/orders" element={<ProtectedRoute><Layout><Orders /></Layout></ProtectedRoute>} />
             <Route path="/orders/:id" element={<ProtectedRoute><Layout><OrderDetails /></Layout></ProtectedRoute>} />
-            <Route path="/jobs" element={<Layout><Jobs /></Layout>} />
-            <Route path="/jobs/:id" element={<Layout><JobDetails /></Layout>} />
             <Route path="/projects" element={<Layout><ProjectHub /></Layout>} />
             <Route path="/projects/:id" element={<Layout><ProjectDetails /></Layout>} />
 
