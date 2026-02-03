@@ -23,6 +23,11 @@ import JobDetails from './pages/JobDetails';
 import ProjectHub from './pages/ProjectHub';
 import ProjectDetails from './pages/ProjectDetails';
 import StudentPostProject from './pages/dashboard/student/StudentPostProject';
+import AssignmentLanding from './pages/assignments/AssignmentLanding';
+import AssignmentFeed from './pages/assignments/AssignmentFeed';
+import AssignmentDetails from './pages/assignments/AssignmentDetails';
+import PostAssignment from './pages/dashboard/student/PostAssignment';
+import SubmissionUpload from './pages/assignments/SubmissionUpload';
 
 // Dashboard Imports
 // Dashboard Imports
@@ -95,6 +100,13 @@ function App() {
             <Route path="/orders/:id" element={<ProtectedRoute><Layout><OrderDetails /></Layout></ProtectedRoute>} />
             <Route path="/projects" element={<Layout><ProjectHub /></Layout>} />
             <Route path="/projects/:id" element={<Layout><ProjectDetails /></Layout>} />
+
+            {/* Assignment Marketplace Routes */}
+            <Route path="/assignments" element={<Layout><AssignmentLanding /></Layout>} />
+            <Route path="/assignments/feed" element={<Layout><AssignmentFeed /></Layout>} />
+            <Route path="/assignments/:id" element={<Layout><AssignmentDetails /></Layout>} />
+            <Route path="/assignments/:id/submit" element={<Layout><SubmissionUpload /></Layout>} />
+            <Route path="/dashboard/student/post-assignment" element={<ProtectedRoute><Layout><PostAssignment /></Layout></ProtectedRoute>} />
 
             {/* Project Upload Route */}
             <Route path="/dashboard/student/projects/new" element={<Layout><StudentPostProject /></Layout>} />

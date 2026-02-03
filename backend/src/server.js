@@ -15,6 +15,9 @@ const messageRoutes = require('./routes/messages.routes');
 const jobRoutes = require('./routes/job.routes');
 const applicationRoutes = require('./routes/application.routes');
 const projectRoutes = require('./routes/project.routes');
+const assignmentRoutes = require('./routes/assignment.routes');
+const bidRoutes = require('./routes/bid.routes');
+const submissionRoutes = require('./routes/submission.routes');
 const paymentRoutes = require('c:/Users/Shani/Desktop/AtechLancer/Atechlancer/backend/src/routes/payment.routes.js');
 
 // Validate environment variables
@@ -44,6 +47,9 @@ app.use('/api/messages', messageRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/projects', projectRoutes);
+app.use('/api/assignments', assignmentRoutes);
+app.use('/api/bids', bidRoutes);
+app.use('/api/submissions', submissionRoutes);
 app.use('/api/payments', paymentRoutes);
 
 // Base route

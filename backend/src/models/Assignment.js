@@ -18,20 +18,40 @@ const AssignmentSchema = new mongoose.Schema(
         },
         subject: {
             type: String,
+            required: true,
+            trim: true
+        },
+        academicLevel: {
+            type: String,
+            enum: ['High School', 'Undergraduate', 'Graduate', 'Doctorate', 'Professional'],
             required: true
         },
         deadline: {
             type: Date,
             required: true
         },
+        budget: {
+            min: { type: Number, required: true },
+            max: { type: Number, required: true }
+        },
+        files: [{
+            name: String,
+            url: String,
+            type: String
+        }],
+        preferences: {
+            freelancerLevel: { type: String, default: 'any' },
+            language: { type: String, default: 'English' },
+            plagiarismFree: { type: Boolean, required: true, default: true }
+        },
         status: {
             type: String,
-            enum: ['open', 'assigned', 'completed'],
+            enum: ['open', 'assigned', 'in_progress', 'submitted', 'revision_requested', 'completed', 'canceled'],
             default: 'open'
         },
         assignedTo: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'User' // Could be Freelancer or Teacher
+            ref: 'User'
         }
     },
     { timestamps: true }
