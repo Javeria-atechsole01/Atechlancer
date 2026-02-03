@@ -25,6 +25,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 // Routes
+<<<<<<< HEAD
 app.use('/api/auth', require('./routes/auth.routes'));
 app.use('/api/admin', require('./routes/admin.routes'));
 app.use('/api/profile', require('./routes/profile.routes'));
@@ -33,6 +34,27 @@ app.use('/api/orders', require('./routes/order.routes'));
 app.use('/api/jobs', require('./routes/job.routes'));
 app.use('/api', require('./routes/payment.routes'));
 app.use('/api', require('./routes/application.routes'));
+=======
+const authRoutes = require('./routes/auth.routes');
+const adminRoutes = require('./routes/admin.routes');
+const profileRoutes = require('./routes/profile.routes');
+const gigRoutes = require('./routes/gig.routes');
+const orderRoutes = require('./routes/order.routes');
+const messageRoutes = require('./routes/messages.routes');
+const jobRoutes = require('./routes/job.routes');
+const applicationRoutes = require('./routes/application.routes');
+const projectRoutes = require('./routes/project.routes');
+
+app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/profile', profileRoutes);
+app.use('/api/gigs', gigRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/messages', messageRoutes);
+app.use('/api/jobs', jobRoutes);
+app.use('/api/applications', applicationRoutes);
+app.use('/api/projects', projectRoutes);
+>>>>>>> ddb7b09595525bd3df0290c7dfb032ed30fc1fc5
 
 // Base route
 app.get('/', (req, res) => {

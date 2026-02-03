@@ -3,14 +3,15 @@ const Gig = require('../models/Gig');
 
 exports.createOrder = async (req, res) => {
   try {
-    const { gigId } = req.body;
+    const { gigId, requirements } = req.body;
     const gig = await Gig.findById(gigId);
     if (!gig || !gig.isActive) return res.status(404).json({ message: 'Gig not found' });
     const order = await Order.create({
       gigId,
       sellerId: gig.sellerId,
       buyerId: req.user.userId,
-      totalPrice: gig.price
+      totalPrice: gig.price,
+      requirements: requirements || { message: '', files: [] }
     });
     res.status(201).json(order);
   } catch {

@@ -21,10 +21,16 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    role: {
+    // Changed from single role to array of roles
+    roles: {
+      type: [String],
+      enum: ROLES,
+      default: ['student']
+    },
+    // Track the currently active dashboard view
+    activeRole: {
       type: String,
       enum: ROLES,
-      required: true,
       default: 'student'
     },
     isEmailVerified: {
@@ -47,8 +53,17 @@ const UserSchema = new mongoose.Schema(
       default: null
     }
   },
-  { timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } }
+  {
+    timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+  }
 );
+
+// Virtual for backward compatibility with existing frontend code that checks user.role
+UserSchema.virtual('role').get(function () {
+  return this.activeRole;
+});
 
 // Remove sensitive fields when converting to JSON
 UserSchema.methods.toJSON = function () {

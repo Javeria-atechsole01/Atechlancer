@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import {
     LayoutDashboard,
     User,
@@ -14,7 +14,6 @@ import {
     LogOut
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
 
 const DashboardSidebar = ({ isOpen, role }) => {
     const { logout } = useAuth();
@@ -101,7 +100,6 @@ const DashboardSidebar = ({ isOpen, role }) => {
             <aside className={`dashboard-sidebar ${isOpen ? 'open' : ''}`}>
                 <div className="dashboard-sidebar-header">
                     <div className="dashboard-logo">
-                        {/* Using a simple text/icon for now, similar to navbar brand */}
                         <span style={{ color: 'var(--brand-accent)' }}>Atech</span>Lancer
                     </div>
                 </div>

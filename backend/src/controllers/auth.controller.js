@@ -9,7 +9,8 @@ const generateToken = (user) => {
   return jwt.sign(
     {
       userId: user._id,
-      role: user.role,
+      role: user.activeRole, // Keep 'role' as activeRole for backward compat
+      roles: user.roles,     // Include all available roles
       isApprovedByAdmin: user.isApprovedByAdmin
     },
     config.jwt.secret,
@@ -23,7 +24,7 @@ exports.register = async (req, res) => {
 
     let user = await User.findOne({ email });
     if (user) {
-      return res.status(400).json({ message: 'User already exists' });
+      return res.status(400).json({ message: 'User already exists. Please login to manage your roles.' });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -33,11 +34,14 @@ exports.register = async (req, res) => {
     const verificationToken = crypto.randomBytes(32).toString('hex');
     const verificationTokenExpires = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
 
+    const initialRole = role || 'student';
+
     user = new User({
       name,
       email,
       password: hashedPassword,
-      role: role || 'student',
+      roles: [initialRole],        // Initialize with requested role
+      activeRole: initialRole,     // Set active role
       verificationToken,
       verificationTokenExpires,
       isEmailVerified: false
@@ -61,7 +65,6 @@ exports.register = async (req, res) => {
       await sendEmail(email, 'Verify Your Email - Atechlancer', message);
     } catch (emailError) {
       console.error('Failed to send verification email', emailError);
-      // We still return success for registration, but user needs to resend email later
     }
 
     res.status(201).json({
@@ -93,12 +96,51 @@ exports.login = async (req, res) => {
       return res.status(403).json({ message: 'Please verify your email address first.' });
     }
 
-    const token = generateToken(user);
+    // Migration logic: If user has old schema (no roles array), fix it
+    if (!user.roles || user.roles.length === 0) {
+      user.roles = [user.role || 'student']; // Use the old 'role' field if available (via mapped object) or default
+      user.activeRole = user.role || 'student';
+      await user.save();
+    }
 
+    const token = generateToken(user);
     res.json({ token, user });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+exports.switchRole = async (req, res) => {
+  try {
+    const { targetRole } = req.body;
+    const userId = req.user.userId; // From auth middleware
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    // Check if user has the role
+    if (!user.roles.includes(targetRole)) {
+      // Optional: Allow auto-adding role here if policy allows? 
+      // For now, let's say they must explicitly "Add Role" first, but for smoother UX, 
+      // if they are switching to a standard role like 'freelancer' or 'employer', we might just allow it.
+      // Let's AUTO-ADD for now to fulfill the user's "register for multiple roles" request easily.
+      if (['student', 'freelancer', 'employer', 'teacher'].includes(targetRole)) {
+        user.roles.push(targetRole);
+      } else {
+        return res.status(403).json({ message: "Role not authorized" });
+      }
+    }
+
+    user.activeRole = targetRole;
+    await user.save();
+
+    const token = generateToken(user);
+    res.json({ success: true, token, user });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
   }
 };
 
@@ -122,9 +164,14 @@ exports.verifyEmail = async (req, res) => {
     user.isEmailVerified = true;
     user.verificationToken = undefined;
     user.verificationTokenExpires = undefined;
+
+    // Ensure roles check on verify
+    if (!user.roles || user.roles.length === 0) {
+      user.roles = [user.activeRole || 'student'];
+    }
+
     await user.save();
 
-    // Optionally auto-login or just return success
     const authToken = generateToken(user);
 
     res.json({
@@ -146,11 +193,11 @@ exports.resendVerification = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-        return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: 'User not found' });
     }
 
     if (user.isEmailVerified) {
-        return res.status(400).json({ message: 'Email is already verified' });
+      return res.status(400).json({ message: 'Email is already verified' });
     }
 
     const verificationToken = crypto.randomBytes(32).toString('hex');

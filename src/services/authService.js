@@ -42,6 +42,19 @@ export const authService = {
     }
   },
 
+  switchRole: async (targetRole) => {
+    try {
+      const response = await api.post('/auth/switch-role', { targetRole });
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+      }
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Failed to switch role' };
+    }
+  },
+
   logout: () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
