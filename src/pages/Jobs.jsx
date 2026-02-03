@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import React, { useEffect, useState } from 'react';
 import { jobService } from '../services/jobService';
 import JobCard from '../components/jobs/JobCard';
@@ -210,14 +210,14 @@ const Jobs = () => {
         </div>
       </div>
     </div>
-  );
-=======
-import React, { useState, useEffect } from 'react';
+  );}
+
+// import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, MapPin, Clock, DollarSign, Filter, Briefcase } from 'lucide-react';
+import {  MapPin, Clock, DollarSign,  Briefcase } from 'lucide-react';
 // import { jobsService } from '../services/jobsService'; // To be implemented
 
-const Jobs = () => {
+const jobs = () => {
     const [jobs, setJobs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filters, setFilters] = useState({
@@ -351,7 +351,7 @@ const Jobs = () => {
             </div>
         </div>
     );
->>>>>>> ddb7b09595525bd3df0290c7dfb032ed30fc1fc5
+
 };
 
 export default Jobs;

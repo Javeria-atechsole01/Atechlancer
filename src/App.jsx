@@ -18,8 +18,6 @@ import Gigs from './pages/Gigs';
 import GigDetails from './pages/GigDetails';
 import Orders from './pages/Orders';
 import OrderDetails from './pages/OrderDetails';
-import Jobs from './pages/Jobs';
-import JobDetails from './pages/JobDetails';
 import ProjectHub from './pages/ProjectHub';
 import ProjectDetails from './pages/ProjectDetails';
 import StudentPostProject from './pages/dashboard/student/StudentPostProject';

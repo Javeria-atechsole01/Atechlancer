@@ -34,49 +34,34 @@ const Login = () => {
         }
 
         setIsLoading(true);
-
-        try {
-
-            const data = await login(formData.email, formData.password);
-<<<<<<< HEAD
-            
-            // Redirect based on role
-            const user = data.user;
-            switch(user.role) {
-=======
-            // Role-based redirect
-            const role = data.user.role;
-            navigate(`/dashboard/${role}`);
-
-            const { user } = await login(formData.email, formData.password);
-
-            // Redirect based on role (App routes use /dashboard/<role>)
-            switch (user.role) {
->>>>>>> ddb7b09595525bd3df0290c7dfb032ed30fc1fc5
-                case 'employer':
-                    navigate('/dashboard/employer');
-                    break;
-                case 'teacher':
-                    navigate('/dashboard/teacher');
-                    break;
-                case 'freelancer':
-                    navigate('/dashboard/freelancer');
-                    break;
-                case 'student':
-                    navigate('/dashboard/student');
-                    break;
-                case 'admin':
-                    navigate('/dashboard/admin');
-                    break;
-                default:
-                    navigate('/');
-            }
-
-        } catch (err) {
-            setError(err.message || 'Login failed.');
-        } finally {
-            setIsLoading(false);
-        }
+        login(formData.email, formData.password)
+            .then(({ user }) => {
+                switch (user.role) {
+                    case 'employer':
+                        navigate('/dashboard/employer');
+                        break;
+                    case 'teacher':
+                        navigate('/dashboard/teacher');
+                        break;
+                    case 'freelancer':
+                        navigate('/dashboard/freelancer');
+                        break;
+                    case 'student':
+                        navigate('/dashboard/student');
+                        break;
+                    case 'admin':
+                        navigate('/dashboard/admin');
+                        break;
+                    default:
+                        navigate('/');
+                }
+            })
+            .catch((err) => {
+                setError(err.message || 'Login failed.');
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     };
 
     return (

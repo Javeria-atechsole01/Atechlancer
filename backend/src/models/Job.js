@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const JobSchema = new mongoose.Schema(
     {
-<<<<<<< HEAD
+
         employerId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
@@ -46,8 +46,8 @@ const JobSchema = new mongoose.Schema(
         applicants: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
-        }]
-=======
+        }],
+
         employerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
         title: { type: String, required: true, trim: true },
         category: { type: String, required: true },
@@ -69,7 +69,7 @@ const JobSchema = new mongoose.Schema(
 
         status: { type: String, enum: ['open', 'closed', 'in-progress'], default: 'open' },
         applicants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Application' }]
->>>>>>> ddb7b09595525bd3df0290c7dfb032ed30fc1fc5
+
     },
     { timestamps: true }
 );

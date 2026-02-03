@@ -1,8 +1,8 @@
-<<<<<<< HEAD
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+
+// import React, { useEffect, useState } from 'react';
+import {  useNavigate } from 'react-router-dom';
 import { jobService } from '../services/jobService';
-import { Loader2, DollarSign, Clock, MapPin, Briefcase, Calendar, CheckCircle } from 'lucide-react';
+// import { Loader2, Briefcase, Calendar, CheckCircle } from 'lucide-react';
  
 
 const JobDetails = () => {
@@ -150,13 +150,13 @@ const JobDetails = () => {
         </div>
       </div>
     </div>
-  );
-=======
+  );}
+
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { MapPin, Clock, DollarSign, Briefcase, ChevronLeft, Share2, Flag, CheckCircle } from 'lucide-react';
 
-const JobDetails = () => {
+const JobDetails2 = () => {
     const { id } = useParams();
     const [showApplyModal, setShowApplyModal] = useState(false);
 
@@ -296,7 +296,7 @@ const JobDetails = () => {
             )}
         </div>
     );
->>>>>>> ddb7b09595525bd3df0290c7dfb032ed30fc1fc5
+
 };
 
 export default JobDetails;

@@ -1,5 +1,5 @@
 const Job = require('../models/Job');
-<<<<<<< HEAD
+
 
 // 1) POST /api/jobs - Create a new job
 exports.createJob = async (req, res) => {
@@ -157,7 +157,7 @@ exports.deleteJob = async (req, res) => {
     console.error(err);
     res.status(500).json({ message: 'Server Error' });
   }
-=======
+}
 const Application = require('../models/Application');
 
 // Create a new Job
@@ -220,5 +220,5 @@ exports.getEmployerJobs = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Failed to fetch your jobs' });
     }
->>>>>>> ddb7b09595525bd3df0290c7dfb032ed30fc1fc5
+
 };

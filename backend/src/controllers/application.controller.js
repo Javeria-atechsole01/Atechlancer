@@ -1,7 +1,7 @@
 const Application = require('../models/Application');
 const Job = require('../models/Job');
 
-<<<<<<< HEAD
+
 // Candidate: apply to a job
 exports.applyToJob = async (req, res) => {
   try {
@@ -110,8 +110,7 @@ exports.getEmployerSummary = async (req, res) => {
   } catch (err) {
     console.error('Employer Summary Error:', err);
     res.status(500).json({ message: 'Server Error' });
-  }
-=======
+  }}
 // Apply to a Job
 exports.applyToJob = async (req, res) => {
     try {
@@ -172,5 +171,5 @@ exports.updateApplicationStatus = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Failed to update status' });
     }
->>>>>>> ddb7b09595525bd3df0290c7dfb032ed30fc1fc5
+
 };
