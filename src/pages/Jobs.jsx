@@ -14,13 +14,22 @@ const Jobs = () => {
   const [searchInput, setSearchInput] = useState('');
 
   // Filter state
-  const [filters, setFilters] = useState({
-    search: '',
-    category: '',
-    minBudget: '',
-    maxBudget: '',
-    sort: 'latest'
+  const [filters, setFilters] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return {
+      search: params.get('search') || '',
+      category: params.get('category') || '',
+      minBudget: '',
+      maxBudget: '',
+      sort: 'latest'
+    };
   });
+
+  useEffect(() => {
+    if (filters.search) {
+      setSearchInput(filters.search);
+    }
+  }, []);
 
   // Debounce search
   useEffect(() => {

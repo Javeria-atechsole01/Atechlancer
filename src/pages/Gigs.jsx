@@ -10,15 +10,25 @@ const Gigs = () => {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [searchInput, setSearchInput] = useState(''); // Separate state for input
-  
-  const [filters, setFilters] = useState({
-    search: '', // Backend expects 'search'
-    category: '',
-    minPrice: '',
-    maxPrice: '',
-    status: 'active',
-    sort: 'latest'
+
+  const [filters, setFilters] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return {
+      search: params.get('search') || '',
+      category: params.get('category') || '',
+      minPrice: '',
+      maxPrice: '',
+      status: 'active',
+      sort: 'latest'
+    };
   });
+
+  useEffect(() => {
+    // Sync searchInput with initial search filter
+    if (filters.search) {
+      setSearchInput(filters.search);
+    }
+  }, []);
 
   // Debounce search input
   useEffect(() => {
@@ -117,7 +127,7 @@ const Gigs = () => {
           ) : items.length === 0 ? (
             <div className="text-center py-12 bg-white rounded-lg shadow-sm border border-gray-100">
               <p className="text-gray-500 text-lg">No gigs found matching your criteria.</p>
-              <button 
+              <button
                 onClick={clearFilters}
                 className="mt-4 text-primary-600 font-medium hover:underline"
               >
@@ -131,11 +141,11 @@ const Gigs = () => {
                   <GigCard key={gig._id} gig={gig} />
                 ))}
               </div>
-              
+
               {/* Pagination */}
               {total > 12 && (
                 <div className="mt-8 flex justify-center gap-2">
-                  <button 
+                  <button
                     disabled={page === 1}
                     onClick={() => setPage(p => p - 1)}
                     className="px-4 py-2 border rounded hover:bg-gray-50 disabled:opacity-50"
@@ -145,7 +155,7 @@ const Gigs = () => {
                   <span className="px-4 py-2 bg-gray-50 rounded">
                     Page {page}
                   </span>
-                  <button 
+                  <button
                     disabled={items.length < 12}
                     onClick={() => setPage(p => p + 1)}
                     className="px-4 py-2 border rounded hover:bg-gray-50 disabled:opacity-50"
