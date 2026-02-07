@@ -15,26 +15,26 @@ const GigFilters = ({ filters, onChange, onClear }) => {
     };
 
     return (
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5 sticky top-24">
-            <div className="flex justify-between items-center mb-6">
-                <h3 className="font-bold text-navy-900 text-lg flex items-center gap-2">
+        <div className="filter-card">
+            <div className="filter-header">
+                <h3 className="filter-title">
                     <Filter size={18} /> Filters
                 </h3>
                 {Object.values(filters).some(x => x) && (
-                    <button onClick={onClear} className="text-xs font-semibold text-red-500 hover:text-red-600 flex items-center gap-1 transition-colors">
+                    <button onClick={onClear} className="clear-filters-btn">
                         <X size={12} /> Clear All
                     </button>
                 )}
             </div>
 
             {/* Categories */}
-            <div className="mb-6">
-                <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Category</h4>
-                <div className="space-y-1">
+            <div className="filter-group">
+                <h4 className="filter-label">Category</h4>
+                <div className="filter-options">
                     {['Web Development', 'Mobile Apps', 'Design', 'Writing', 'Marketing', 'Data Science'].map(cat => (
-                        <label key={cat} className="flex items-center gap-3 cursor-pointer group p-2 rounded-lg hover:bg-gray-50 transition-colors">
-                            <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${localFilters.category === cat ? 'bg-primary-600 border-primary-600' : 'border-gray-300 group-hover:border-primary-400'}`}>
-                                {localFilters.category === cat && <Check size={10} className="text-white" />}
+                        <label key={cat} className={`filter-option ${localFilters.category === cat ? 'active' : ''}`}>
+                            <div className="custom-radio">
+                                {localFilters.category === cat && <Check size={10} className="check-icon" />}
                             </div>
                             <input
                                 type="radio"
@@ -43,35 +43,35 @@ const GigFilters = ({ filters, onChange, onClear }) => {
                                 onChange={() => handleChange('category', cat)}
                                 className="hidden"
                             />
-                            <span className={`text-sm ${localFilters.category === cat ? 'font-semibold text-primary-700' : 'text-gray-600'}`}>{cat}</span>
+                            <span className="option-text">{cat}</span>
                         </label>
                     ))}
                 </div>
             </div>
 
             {/* Price Range */}
-            <div className="mb-6">
-                <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Price Range</h4>
-                <div className="flex items-center gap-2 mb-2">
-                    <div className="relative flex-1">
-                        <span className="absolute left-3 top-2.5 text-gray-400 text-xs">$</span>
+            <div className="filter-group">
+                <h4 className="filter-label">Price Range</h4>
+                <div className="price-inputs">
+                    <div className="price-field">
+                        <span className="currency">$</span>
                         <input
                             type="number"
                             placeholder="Min"
                             value={localFilters.minPrice || ''}
                             onChange={e => handleChange('minPrice', e.target.value)}
-                            className="w-full pl-6 pr-3 py-2 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:bg-white focus:border-primary-500 outline-none transition-all"
+                            className="price-input"
                         />
                     </div>
-                    <span className="text-gray-300">-</span>
-                    <div className="relative flex-1">
-                        <span className="absolute left-3 top-2.5 text-gray-400 text-xs">$</span>
+                    <span className="separator">-</span>
+                    <div className="price-field">
+                        <span className="currency">$</span>
                         <input
                             type="number"
                             placeholder="Max"
                             value={localFilters.maxPrice || ''}
                             onChange={e => handleChange('maxPrice', e.target.value)}
-                            className="w-full pl-6 pr-3 py-2 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:bg-white focus:border-primary-500 outline-none transition-all"
+                            className="price-input"
                         />
                     </div>
                 </div>
@@ -92,18 +92,18 @@ const GigFilters = ({ filters, onChange, onClear }) => {
             </div>
 
             {/* Delivery Time */}
-            <div className="mb-6">
-                <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Delivery Time</h4>
-                <div className="space-y-1">
+            <div className="filter-group">
+                <h4 className="filter-label">Delivery Time</h4>
+                <div className="filter-options">
                     {[
                         { label: 'Up to 24 hours', value: 1 },
                         { label: 'Up to 3 days', value: 3 },
                         { label: 'Up to 7 days', value: 7 },
                         { label: 'Anytime', value: '' },
                     ].map(opt => (
-                        <label key={opt.label} className="flex items-center gap-3 cursor-pointer group p-2 rounded-lg hover:bg-gray-50 transition-colors">
-                            <div className={`w-4 h-4 rounded-full border flex items-center justify-center transition-colors ${localFilters.deliveryTime == opt.value ? 'border-primary-600' : 'border-gray-300'}`}>
-                                {localFilters.deliveryTime == opt.value && <div className="w-2 h-2 rounded-full bg-primary-600" />}
+                        <label key={opt.label} className={`filter-option ${localFilters.deliveryTime == opt.value ? 'active' : ''}`}>
+                            <div className="custom-radio-round">
+                                {localFilters.deliveryTime == opt.value && <div className="dot" />}
                             </div>
                             <input
                                 type="radio"
@@ -112,35 +112,33 @@ const GigFilters = ({ filters, onChange, onClear }) => {
                                 onChange={() => handleChange('deliveryTime', opt.value)}
                                 className="hidden"
                             />
-                            <span className="text-sm text-gray-600">{opt.label}</span>
+                            <span className="option-text">{opt.label}</span>
                         </label>
                     ))}
                 </div>
             </div>
 
             {/* Rating */}
-            <div>
-                <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Rating</h4>
-                <div className="space-y-1">
+            <div className="filter-group">
+                <h4 className="filter-label">Rating</h4>
+                <div className="filter-options">
                     {[4, 3, 2, 1].map(r => (
-                        <label key={r} className="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                        <label key={r} className={`filter-option ${Number(localFilters.rating) === r ? 'active' : ''}`}>
                             <input
                                 type="radio"
                                 name="rating"
                                 checked={Number(localFilters.rating) === r}
                                 onChange={() => handleChange('rating', r)}
-                                className="hidden" // Hiding default radio
+                                className="hidden"
                             />
-                            {/* Custom Checkbox Look */}
-                            <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${Number(localFilters.rating) === r ? 'bg-primary-600 border-primary-600' : 'border-gray-300'}`}>
-                                {Number(localFilters.rating) === r && <Check size={10} className="text-white" />}
+                            <div className="custom-radio">
+                                {Number(localFilters.rating) === r && <Check size={10} className="check-icon" />}
                             </div>
-
-                            <div className="flex items-center gap-1 text-sm text-gray-600">
-                                <span className="flex items-center text-yellow-400 gap-0.5">
+                            <div className="rating-stars">
+                                <span className="stars">
                                     {[...Array(r)].map((_, i) => <Star key={i} size={14} fill="currentColor" />)}
                                 </span>
-                                <span className="text-gray-400 text-xs font-medium ml-1">& Up</span>
+                                <span className="up-text">& Up</span>
                             </div>
                         </label>
                     ))}

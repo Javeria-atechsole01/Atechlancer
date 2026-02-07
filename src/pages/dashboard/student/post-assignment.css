@@ -1,0 +1,276 @@
+/* Post Assignment Page Styles */
+.post-assignment-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+}
+
+.post-assignment-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+}
+
+.post-assignment-header h1 {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: var(--primary-900);
+    margin-bottom: 0.75rem;
+}
+
+.post-assignment-header p {
+    color: var(--gray-500);
+    font-size: 1.125rem;
+}
+
+/* Stepper */
+.assignment-stepper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4rem;
+    position: relative;
+    padding: 0 1rem;
+}
+
+.stepper-track {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: var(--gray-100);
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+.stepper-progress {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 4px;
+    background-color: var(--primary-600);
+    transform: translateY(-50%);
+    z-index: 2;
+    transition: width 0.4s ease;
+}
+
+.step-node {
+    position: relative;
+    z-index: 10;
+    width: 3.5rem;
+    height: 3.5rem;
+    background-color: white;
+    border: 3px solid var(--gray-200);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: var(--gray-400);
+    transition: all 0.3s ease;
+}
+
+.step-node.active {
+    border-color: var(--primary-600);
+    color: var(--primary-600);
+    box-shadow: 0 0 0 5px rgba(36, 62, 86, 0.1);
+    transform: scale(1.1);
+}
+
+.step-node.completed {
+    background-color: var(--primary-600);
+    border-color: var(--primary-600);
+    color: white;
+}
+
+/* Form Card */
+.form-card {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    padding: 3rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.form-group {
+    margin-bottom: 2rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--primary-900);
+    margin-bottom: 0.75rem;
+}
+
+.form-input-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    .form-input-row {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--primary-900);
+    transition: border-color 0.2s;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--primary-600);
+}
+
+/* Expert Level Selection */
+.expert-level-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.level-card {
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: white;
+}
+
+.level-card.active {
+    border-color: var(--primary-600);
+    background-color: rgba(36, 62, 86, 0.05);
+    box-shadow: 0 0 0 1px var(--primary-600);
+}
+
+.level-name {
+    font-weight: 700;
+    text-transform: capitalize;
+    color: var(--primary-900);
+    margin-bottom: 0.5rem;
+    font-size: 1.125rem;
+}
+
+.level-desc {
+    font-size: 0.8125rem;
+    color: var(--gray-500);
+    line-height: 1.4;
+}
+
+/* Guarantee Box */
+.guarantee-box {
+    background-color: var(--primary-900);
+    color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-top: 2.5rem;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    cursor: pointer;
+}
+
+.checkbox-text .text-bold {
+    font-weight: 700;
+    font-size: 1.125rem;
+    margin-bottom: 0.25rem;
+}
+
+.checkbox-text .text-muted {
+    font-size: 0.875rem;
+    color: #cbd5e1;
+    opacity: 0.8;
+}
+
+.custom-checkbox {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.25rem;
+    cursor: pointer;
+}
+
+/* Review Section */
+.review-box {
+    background-color: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.review-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-900);
+}
+
+.budget-val {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-600);
+}
+
+.budget-lbl {
+    font-size: 0.75rem;
+    color: var(--gray-400);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background-color: var(--gray-100);
+    color: var(--gray-600);
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+/* Actions */
+.form-actions {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--gray-100);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-back {
+    background: none;
+    border: none;
+    color: var(--gray-500);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-back:hover {
+    color: var(--primary-600);
+}

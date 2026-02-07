@@ -40,7 +40,10 @@ const Home = () => {
                                 <form className="hero-search-container" onSubmit={(e) => {
                                     e.preventDefault();
                                     const query = e.target.search.value;
-                                    window.location.href = `/marketplace?search=${query}`;
+                                    // Redirect to gigs with search query if UI is stable, or just same page
+                                    if (query) {
+                                        window.location.href = `/gigs?search=${encodeURIComponent(query)}`;
+                                    }
                                 }}>
                                     <input
                                         type="text"
@@ -54,10 +57,11 @@ const Home = () => {
                                 </form>
                                 <div className="popular-searches">
                                     <span>Popular:</span>
-                                    <Link to="/marketplace?search=Web Development" className="search-chip">Web Development</Link>
+                                    {/* TODO: Wire these to filter search results when ready. Currently non-navigational to avoid blank pages. */}
+                                    <span className="search-chip">Web Development</span>
                                     <Link to="/assignments" className="search-chip">Assignment Help</Link>
-                                    <Link to="/marketplace?search=UI/UX Design" className="search-chip">Graphic Design</Link>
-                                    <Link to="/marketplace?search=AI" className="search-chip">AI & Data</Link>
+                                    <span className="search-chip">Graphic Design</span>
+                                    <span className="search-chip">AI & Data</span>
                                 </div>
                             </div>
                         </div>
@@ -119,25 +123,25 @@ const Home = () => {
                             <div className="ac-icon"><GraduationCap size={28} /></div>
                             <h3>Students</h3>
                             <p>Showcase projects & earn from real assignments.</p>
-                            <Link to="/register?role=student" className="ac-link">Join as Student <ArrowRight size={16} /></Link>
+                            <Link to="/signup?role=student" className="ac-link">Join as Student <ArrowRight size={16} /></Link>
                         </div>
                         <div className="audience-card">
                             <div className="ac-icon"><Briefcase size={28} /></div>
                             <h3>Freelancers</h3>
                             <p>Access high-value, verified tech projects.</p>
-                            <Link to="/register?role=freelancer" className="ac-link">Join as Freelancer <ArrowRight size={16} /></Link>
+                            <Link to="/signup?role=freelancer" className="ac-link">Join as Freelancer <ArrowRight size={16} /></Link>
                         </div>
                         <div className="audience-card">
                             <div className="ac-icon"><Users size={28} /></div>
                             <h3>Teachers</h3>
                             <p>Issue certificates & mentor the next generation.</p>
-                            <Link to="/register?role=teacher" className="ac-link">Join as Teacher <ArrowRight size={16} /></Link>
+                            <Link to="/signup?role=teacher" className="ac-link">Join as Teacher <ArrowRight size={16} /></Link>
                         </div>
                         <div className="audience-card">
                             <div className="ac-icon"><Building2 size={28} /></div>
                             <h3>Employers</h3>
                             <p>Hire pre-vetted talent with zero risk.</p>
-                            <Link to="/register?role=employer" className="ac-link">Post a Job <ArrowRight size={16} /></Link>
+                            <Link to="/signup?role=employer" className="ac-link">Post a Job <ArrowRight size={16} /></Link>
                         </div>
                     </div>
                 </div>
@@ -175,7 +179,7 @@ const Home = () => {
                         <h2>Ready to work with verified professionals?</h2>
                         <p>Join the platform built on trust, transparency, and technical excellence.</p>
                         <div className="cta-buttons">
-                            <Link to="/register" className="btn btn-white">Get Started</Link>
+                            <Link to="/signup" className="btn btn-white">Get Started</Link>
                             <Link to="/contact" className="btn btn-link">Contact Sales</Link>
                         </div>
                     </div>
