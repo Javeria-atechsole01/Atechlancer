@@ -92,7 +92,7 @@ const Gigs = () => {
         <h1>Freelance Services</h1>
         <p>Find the perfect professional for your needs</p>
 
-        <div className="search-container" style={{ maxWidth: '600px', margin: '2rem auto', display: 'flex', gap: '1rem' }}>
+        <div className="gigs-search-bar">
           <input
             placeholder="Search services..."
             className="form-input"
@@ -100,8 +100,7 @@ const Gigs = () => {
             onChange={e => setSearchInput(e.target.value)}
           />
           <select
-            className="form-input"
-            style={{ width: '200px' }}
+            className="form-input gigs-sort-select"
             value={filters.sort}
             onChange={e => handleFilterChange({ sort: e.target.value })}
           >
@@ -121,8 +120,8 @@ const Gigs = () => {
         {/* Gigs Grid */}
         <div className="jobs-list-section">
           {loading ? (
-            <div style={{ display: 'flex', justifyContent: 'center', padding: '5rem' }}>
-              <Loader2 className="animate-spin" style={{ color: 'var(--primary-600)' }} size={40} />
+            <div className="gigs-loading-state">
+              <Loader2 className="animate-spin gigs-loading-spinner" size={40} />
             </div>
           ) : items.length === 0 ? (
             <div className="empty-state">
@@ -130,8 +129,7 @@ const Gigs = () => {
               <p>Try adjusting your search or filters.</p>
               <button
                 onClick={clearFilters}
-                className="btn btn-secondary"
-                style={{ marginTop: '1rem' }}
+                className="btn btn-secondary empty-state-button"
               >
                 Clear all filters
               </button>
@@ -154,7 +152,7 @@ const Gigs = () => {
                   >
                     Previous
                   </button>
-                  <span style={{ padding: '0 1rem', fontWeight: '500' }}>
+                  <span className="pagination-spacing">
                     Page {page}
                   </span>
                   <button

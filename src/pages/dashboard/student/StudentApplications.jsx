@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { applicationService } from '../../../services/applicationService';
+import './student.css';
 
 const StudentApplications = () => {
   const [apps, setApps] = useState([]);
@@ -28,27 +29,27 @@ const StudentApplications = () => {
         </div>
       </div>
 
-      <div className="card">
-        <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse' }}>
+      <div className="card dashboard-table-wrapper">
+        <table className="dashboard-table">
           <thead>
-            <tr style={{ borderBottom: '1px solid var(--gray-200)' }}>
-              <th style={{ padding: '1rem' }}>Date</th>
-              <th style={{ padding: '1rem' }}>Job</th>
-              <th style={{ padding: '1rem' }}>Budget</th>
-              <th style={{ padding: '1rem' }}>Status</th>
+            <tr>
+              <th>Date</th>
+              <th>Job</th>
+              <th>Budget</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
-              <tr><td style={{ padding: '1rem' }} colSpan={4}>Loading...</td></tr>
+              <tr><td colSpan={4} className="text-center py-lg">Loading...</td></tr>
             ) : apps.length === 0 ? (
-              <tr><td style={{ padding: '1rem' }} colSpan={4}>No applications yet.</td></tr>
+              <tr><td colSpan={4} className="text-center py-lg text-muted italic">No applications yet.</td></tr>
             ) : apps.map(a => (
-              <tr key={a._id} style={{ borderBottom: '1px solid var(--gray-100)' }}>
-                <td style={{ padding: '1rem', color: 'var(--gray-600)' }}>{new Date(a.createdAt).toLocaleString()}</td>
-                <td style={{ padding: '1rem', fontWeight: 600, color: 'var(--brand-navy)' }}>{a.jobId?.title}</td>
-                <td style={{ padding: '1rem' }}>${a.jobId?.budget}</td>
-                <td style={{ padding: '1rem' }}>
+              <tr key={a._id}>
+                <td className="item-meta">{new Date(a.createdAt).toLocaleString()}</td>
+                <td className="item-title">{a.jobId?.title}</td>
+                <td className="font-semibold">${a.jobId?.budget}</td>
+                <td>
                   <span className="tag">{a.status}</span>
                 </td>
               </tr>

@@ -39,19 +39,20 @@ const AssignmentFeed = () => {
     return (
         <div className="assignment-details-page">
             <div className="details-container">
-                <div style={{ marginBottom: '3rem' }}>
-                    <div style={{ marginBottom: '2rem' }}>
-                        <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--primary-900)' }}>Assignment <span style={{ color: 'var(--primary-600)' }}>Marketplace</span></h1>
-                        <p style={{ fontSize: '1.125rem', color: 'var(--gray-500)' }}>Browse open assignments and submit your expertise</p>
+                <div className="assignment-feed-header">
+                    <div>
+                        <h1 className="assignment-feed-title">
+                            Assignment <span className="assignment-feed-title-accent">Marketplace</span>
+                        </h1>
+                        <p className="assignment-feed-subtitle">Browse open assignments and submit your expertise</p>
                     </div>
 
-                    <div style={{ position: 'relative', maxWidth: '600px' }}>
-                        <Search style={{ position: 'absolute', left: '16px', top: '16px', color: 'var(--gray-400)' }} size={20} />
+                    <div className="assignment-search-container">
+                        <Search className="assignment-search-icon" size={20} />
                         <input
                             type="text"
                             placeholder="Search by title or subject..."
-                            className="search-input"
-                            style={{ paddingLeft: '3rem', height: '52px', fontSize: '1rem', width: '100%' }}
+                            className="search-input assignment-search-input"
                         />
                     </div>
                 </div>
@@ -60,14 +61,14 @@ const AssignmentFeed = () => {
                     {/* Filters Sidebar */}
                     <aside className="sticky-sidebar">
                         <div className="assignment-card">
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid var(--gray-50)' }}>
-                                <Filter size={20} style={{ color: 'var(--primary-600)' }} />
-                                <h3 style={{ fontWeight: 800, color: 'var(--primary-900)' }}>Filters</h3>
+                            <div className="filter-header">
+                                <Filter size={20} className="filter-header-icon" />
+                                <h3 className="filter-header-title">Filters</h3>
                             </div>
 
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                            <div className="filter-form-stack">
                                 <div className="form-group">
-                                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 800, color: 'var(--primary-900)', marginBottom: '0.5rem' }}>Subject</label>
+                                    <label className="filter-label">Subject</label>
                                     <select name="subject" value={filters.subject} onChange={handleFilterChange} className="search-input w-full">
                                         <option value="">All Subjects</option>
                                         <option>Computer Science</option>
@@ -78,7 +79,7 @@ const AssignmentFeed = () => {
                                 </div>
 
                                 <div className="form-group">
-                                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 800, color: 'var(--primary-900)', marginBottom: '0.5rem' }}>Academic Level</label>
+                                    <label className="filter-label">Academic Level</label>
                                     <select name="academicLevel" value={filters.academicLevel} onChange={handleFilterChange} className="search-input w-full">
                                         <option value="">All Levels</option>
                                         <option>High School</option>
@@ -88,8 +89,8 @@ const AssignmentFeed = () => {
                                 </div>
 
                                 <div className="form-group">
-                                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 800, color: 'var(--primary-900)', marginBottom: '0.5rem' }}>Budget Range ($)</label>
-                                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                    <label className="filter-label">Budget Range ($)</label>
+                                    <div className="filter-budget-row">
                                         <input type="number" name="minBudget" placeholder="Min" value={filters.minBudget} onChange={handleFilterChange} className="search-input w-full" />
                                         <input type="number" name="maxBudget" placeholder="Max" value={filters.maxBudget} onChange={handleFilterChange} className="search-input w-full" />
                                     </div>
@@ -97,8 +98,7 @@ const AssignmentFeed = () => {
 
                                 <button
                                     onClick={() => setFilters({ subject: '', academicLevel: '', minBudget: '', maxBudget: '' })}
-                                    className="btn btn-secondary"
-                                    style={{ width: '100%', padding: '1rem', marginTop: '0.5rem' }}
+                                    className="btn btn-secondary filter-clear-button"
                                 >
                                     Clear all filters
                                 </button>
@@ -109,8 +109,8 @@ const AssignmentFeed = () => {
                     {/* Assignment List */}
                     <div className="main-content">
                         {loading ? (
-                            <div style={{ display: 'flex', justifyContent: 'center', padding: '5rem' }}>
-                                <Loader2 className="animate-spin" style={{ color: 'var(--primary-600)' }} size={48} />
+                            <div className="loading-center">
+                                <Loader2 className="animate-spin loading-spinner" size={48} />
                             </div>
                         ) : assignments.length > 0 ? (
                             <div className="assignment-grid">
@@ -119,9 +119,9 @@ const AssignmentFeed = () => {
                                 ))}
                             </div>
                         ) : (
-                            <div className="assignment-card" style={{ textAlign: 'center', padding: '5rem 2rem' }}>
-                                <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary-900)', marginBottom: '0.5rem' }}>No Assignments Found</h3>
-                                <p style={{ color: 'var(--gray-500)' }}>Try adjusting your filters or search terms.</p>
+                            <div className="assignment-card empty-state-card">
+                                <h3 className="empty-state-title">No Assignments Found</h3>
+                                <p className="empty-state-text">Try adjusting your filters or search terms.</p>
                             </div>
                         )}
                     </div>
@@ -137,10 +137,7 @@ const AssignmentCard = ({ assignment }) => {
     return (
         <div
             onClick={() => navigate(`/assignments/${assignment._id}`)}
-            className="assignment-card"
-            style={{ cursor: 'pointer', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)', position: 'relative', display: 'flex', flexDirection: 'column' }}
-            onMouseOver={(e) => e.currentTarget.style.boxShadow = 'var(--shadow-lg)'}
-            onMouseOut={(e) => e.currentTarget.style.boxShadow = 'var(--shadow-sm)'}
+            className="assignment-card assignment-card-clickable"
         >
             <div className="assignment-meta-badges">
                 <span className="badge-base badge-primary">
@@ -150,18 +147,18 @@ const AssignmentCard = ({ assignment }) => {
                     {assignment.academicLevel}
                 </span>
             </div>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--primary-900)', marginBottom: '0.75rem', lineHeight: 1.4 }}>
+            <h2 className="assignment-card-title">
                 {assignment.title}
             </h2>
-            <p style={{ color: 'var(--gray-600)', fontSize: '0.875rem', marginBottom: '1.5rem', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden', lineHeight: 1.6 }}>
+            <p className="assignment-card-description">
                 {assignment.description}
             </p>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid var(--gray-50)' }}>
-                <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--primary-600)' }}>
+            <div className="assignment-card-footer">
+                <div className="assignment-budget">
                     ${assignment.budget?.min} - ${assignment.budget?.max}
                 </div>
-                <div className="btn btn-primary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.875rem', borderRadius: '10px' }}>
+                <div className="btn btn-primary assignment-view-button">
                     View Details
                 </div>
             </div>

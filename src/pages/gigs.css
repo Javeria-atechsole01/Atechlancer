@@ -368,3 +368,37 @@ input:checked+.switch-slider:before {
     white-space: nowrap;
     border-width: 0;
 }
+
+/* Gigs Search Bar */
+.gigs-search-bar {
+    max-width: 600px;
+    margin: 2rem auto;
+    display: flex;
+    gap: 1rem;
+}
+
+.gigs-sort-select {
+    width: 200px;
+}
+
+/* Pagination Spacing */
+.pagination-spacing {
+    padding: 0 1rem;
+    font-weight: 500;
+}
+
+/* Loading State */
+.gigs-loading-state {
+    display: flex;
+    justify-content: center;
+    padding: 5rem;
+}
+
+.gigs-loading-spinner {
+    color: var(--primary-600);
+}
+
+/* Empty State Button */
+.empty-state-button {
+    margin-top: 1rem;
+}

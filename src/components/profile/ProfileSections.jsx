@@ -75,12 +75,12 @@ export const ProfileHeader = ({ user, profile, onUpdate, isOwnProfile }) => {
 
             {/* User Info Section */}
             <div className="profile-info-content">
-                <div className="flex-row-between" style={{ alignItems: 'flex-start' }}>
-                    <div className="flex-1 mr-md">
-                        <h2 className="profile-name-h2">{user.name}</h2>
+                <div className="flex-row-between-top">
+                    <div className="profile-info-content">
+                        <h2 className="profile-name-h2">{user?.name || 'Student Name'}</h2>
 
                         {isEditing ? (
-                            <div className="flex-col gap-sm mt-sm" style={{ maxWidth: '300px' }}>
+                            <div className="flex-col gap-sm mt-sm w-max-300">
                                 <input
                                     className="search-input w-full text-sm"
                                     placeholder="Headline / Title"
@@ -137,6 +137,11 @@ export const AboutSection = ({ user, profile, onUpdate, isOwnProfile }) => {
     });
     const [newSkill, setNewSkill] = useState('');
 
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
     const handleSave = async () => {
         await onUpdate({
             bio: formData.bio,
@@ -170,8 +175,9 @@ export const AboutSection = ({ user, profile, onUpdate, isOwnProfile }) => {
                         <label className="profile-label">Professional Title</label>
                         <input
                             className="search-input w-full"
+                            name="title"
                             value={formData.title}
-                            onChange={e => setFormData({ ...formData, title: e.target.value })}
+                            onChange={handleChange}
                             placeholder="e.g. Senior Full Stack Developer"
                         />
                     </div>
@@ -179,20 +185,20 @@ export const AboutSection = ({ user, profile, onUpdate, isOwnProfile }) => {
                         <label className="profile-label">Location</label>
                         <input
                             className="search-input w-full"
+                            name="location"
                             value={formData.location}
-                            onChange={e => setFormData({ ...formData, location: e.target.value })}
+                            onChange={handleChange}
                             placeholder="e.g. New York, USA"
                         />
                     </div>
                     <div className="profile-form-full">
                         <label className="profile-label">Bio</label>
                         <textarea
-                            className="search-input w-full"
-                            style={{ minHeight: '120px', resize: 'vertical' }}
-                            rows="4"
+                            name="bio"
                             value={formData.bio}
-                            onChange={e => setFormData({ ...formData, bio: e.target.value })}
-                            maxLength={500}
+                            onChange={handleChange}
+                            className="search-input w-full mt-sm textarea-bio-height"
+                            placeholder="Write a brief professional bio..."
                         />
                     </div>
                     <div className="profile-form-full">

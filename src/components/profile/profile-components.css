@@ -273,6 +273,7 @@
     margin-bottom: 1rem;
     display: -webkit-box;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -339,4 +340,69 @@
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
+}
+
+/* Supplemental Utilities for Profile Components */
+.flex-row-between-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.w-max-300 {
+    max-width: 300px;
+}
+
+.textarea-bio-height {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.textarea-portfolio-height {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.textarea-experience-height {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.actions-right {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+.pos-abs-top-right {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+.text-xs-meta {
+    font-size: 0.75rem;
+    color: var(--primary-600);
+}
+
+.color-linkedin {
+    color: #0077b5;
+}
+
+.color-behance {
+    color: #1769ff;
+}
+
+.font-bold-behance {
+    font-weight: bold;
+    color: #1769ff;
+}
+
+.mt-025 {
+    margin-top: 0.25rem;
+}
+
+.mt-05 {
+    margin-top: 0.5rem;
 }

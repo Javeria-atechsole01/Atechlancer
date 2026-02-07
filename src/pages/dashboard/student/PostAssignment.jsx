@@ -3,27 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
 import { assignmentService } from '../../../services/assignmentService';
 import {
-    Loader2, BookOpen, Clock, DollarSign, FileText,
-    CheckCircle, ArrowRight, ArrowLeft, Upload, AlertCircle
+    Loader2, Clock, CheckCircle, ArrowRight, ArrowLeft, Upload, AlertCircle
 } from 'lucide-react';
 import './post-assignment.css';
 
 const PostAssignment = () => {
     const navigate = useNavigate();
     const { user, loading: authLoading } = useAuth();
+
+    // All hooks must be declared before any conditional returns
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        if (!authLoading && !user) {
-            navigate('/login', { state: { from: '/dashboard/student/post-assignment' } });
-        }
-    }, [user, authLoading, navigate]);
-
-    if (authLoading) return <div style={{ display: 'flex', justifyContent: 'center', padding: '10rem' }}><Loader2 className="animate-spin" size={48} /></div>;
-    if (!user) return null;
-
-    // Form State
     const [formData, setFormData] = useState({
         title: '',
         subject: 'Computer Science',
@@ -31,13 +21,26 @@ const PostAssignment = () => {
         deadline: '',
         budget: { min: '', max: '' },
         description: '',
-        files: [], // Simplified for now
+        files: [],
         preferences: {
             freelancerLevel: 'mid',
             language: 'English',
             plagiarismFree: true
         }
     });
+
+    useEffect(() => {
+        if (!authLoading && !user) {
+            navigate('/login', { state: { from: '/dashboard/student/post-assignment' } });
+        }
+    }, [user, authLoading, navigate]);
+
+    if (authLoading) return (
+        <div className="loading-container">
+            <Loader2 className="animate-spin text-primary-600" size={48} />
+        </div>
+    );
+    if (!user) return null;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -123,14 +126,20 @@ const PostAssignment = () => {
             <div className="form-input-row">
                 <div className="form-group">
                     <label>Deadline</label>
-                    <div style={{ position: 'relative' }}>
-                        <Clock size={16} style={{ position: 'absolute', left: '12px', top: '14px', color: 'var(--gray-400)' }} />
-                        <input type="date" name="deadline" value={formData.deadline} onChange={handleChange} className="form-input" style={{ paddingLeft: '40px' }} />
+                    <div className="input-icon-wrapper">
+                        <Clock className="input-icon-left" size={16} />
+                        <input
+                            type="date"
+                            name="deadline"
+                            value={formData.deadline}
+                            onChange={handleChange}
+                            className="form-input input-with-left-icon"
+                        />
                     </div>
                 </div>
                 <div className="form-group">
                     <label>Budget Range ($)</label>
-                    <div style={{ display: 'flex', gap: '1rem' }}>
+                    <div className="budget-inputs">
                         <input type="number" name="budget.min" value={formData.budget.min} onChange={handleChange} placeholder="Min" className="form-input" />
                         <input type="number" name="budget.max" value={formData.budget.max} onChange={handleChange} placeholder="Max" className="form-input" />
                     </div>
@@ -148,22 +157,21 @@ const PostAssignment = () => {
                     name="description"
                     value={formData.description}
                     onChange={handleChange}
-                    className="form-input"
-                    style={{ minHeight: '200px' }}
+                    className="form-input textarea-tall"
                     placeholder="Describe your assignment requirements in detail..."
                 />
             </div>
 
-            <div className="upload-box" style={{ border: '2px dashed var(--gray-200)', borderRadius: '1rem', padding: '3rem', textAlign: 'center', backgroundColor: 'var(--gray-50)' }}>
-                <Upload style={{ margin: '0 auto 1rem', color: 'var(--gray-400)' }} size={40} />
-                <p style={{ fontWeight: '700', marginBottom: '4px' }}>Upload Assignment Files</p>
-                <p style={{ fontSize: '0.875rem', color: 'var(--gray-500)' }}>PDF, DOCX, ZIP, or Images (Max 20MB)</p>
-                <input type="file" style={{ display: 'none' }} multiple />
+            <div className="upload-box">
+                <Upload className="upload-box-icon" size={40} />
+                <p className="upload-box-title">Upload Assignment Files</p>
+                <p className="upload-box-hint">PDF, DOCX, ZIP, or Images (Max 20MB)</p>
+                <input type="file" className="hidden" multiple />
             </div>
 
-            <div style={{ marginTop: '2rem', padding: '1rem', backgroundColor: 'var(--primary-50)', borderRadius: '0.75rem', border: '1px solid var(--primary-100)', display: 'flex', gap: '1rem' }}>
+            <div className="tip-box">
                 <AlertCircle className="text-primary-600" size={20} />
-                <p style={{ fontSize: '0.875rem', color: 'var(--primary-800)' }}>
+                <p>
                     <strong>Clarity Tip:</strong> Clear instructions lead to better solutions.
                 </p>
             </div>
@@ -178,7 +186,7 @@ const PostAssignment = () => {
                 <div className="expert-level-grid">
                     {['entry', 'mid', 'expert'].map(level => (
                         <label key={level} className={`level-card ${formData.preferences.freelancerLevel === level ? 'active' : ''}`}>
-                            <input type="radio" name="prefLevel" checked={formData.preferences.freelancerLevel === level} onChange={() => handlePreferenceChange('freelancerLevel', level)} style={{ display: 'none' }} />
+                            <input type="radio" name="prefLevel" checked={formData.preferences.freelancerLevel === level} onChange={() => handlePreferenceChange('freelancerLevel', level)} className="hidden" />
                             <div className="level-name">{level}</div>
                             <div className="level-desc">
                                 {level === 'entry' && 'Standard guidance'}
@@ -192,7 +200,12 @@ const PostAssignment = () => {
 
             <div className="form-group">
                 <label>Language Requirements</label>
-                <select name="prefLang" value={formData.preferences.language} onChange={(e) => handlePreferenceChange('language', e.target.value)} className="form-input" style={{ maxWidth: '400px' }}>
+                <select
+                    name="prefLang"
+                    value={formData.preferences.language}
+                    onChange={(e) => handlePreferenceChange('language', e.target.value)}
+                    className="form-input w-max-400"
+                >
                     <option>English</option>
                     <option>Spanish</option>
                     <option>French</option>
@@ -224,7 +237,7 @@ const PostAssignment = () => {
                 <div className="review-header">
                     <div>
                         <h2 className="review-title">{formData.title || 'Assignment Title'}</h2>
-                        <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
+                        <div className="review-badge-row">
                             <span className="badge">{formData.subject}</span>
                             <span className="badge">{formData.academicLevel}</span>
                         </div>
@@ -235,24 +248,24 @@ const PostAssignment = () => {
                     </div>
                 </div>
 
-                <div className="review-details" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', padding: '1.5rem 0', borderBottom: '1px solid var(--gray-200)' }}>
+                <div className="review-details-grid">
                     <div>
-                        <div style={{ color: 'var(--gray-400)', fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', marginBottom: '4px' }}>Deadline</div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '600' }}>
+                        <div className="review-label">Deadline</div>
+                        <div className="review-value-row">
                             <Clock size={16} /> {formData.deadline || 'Not set'}
                         </div>
                     </div>
                     <div>
-                        <div style={{ color: 'var(--gray-400)', fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', marginBottom: '4px' }}>Level</div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '600' }}>
-                            <CheckCircle size={16} style={{ color: 'var(--accent-500)' }} /> {formData.preferences.freelancerLevel}
+                        <div className="review-label">Level</div>
+                        <div className="review-value-row">
+                            <CheckCircle size={16} className="text-accent-500" /> {formData.preferences.freelancerLevel}
                         </div>
                     </div>
                 </div>
 
-                <div style={{ marginTop: '1.5rem' }}>
-                    <p style={{ fontWeight: '700', marginBottom: '8px' }}>Description:</p>
-                    <p style={{ whiteSpace: 'pre-line', color: 'var(--gray-600)' }}>{formData.description || 'No description provided.'}</p>
+                <div className="review-desc-section">
+                    <p className="review-desc-title">Description:</p>
+                    <p className="review-desc-text">{formData.description || 'No description provided.'}</p>
                 </div>
             </div>
         </div>
@@ -285,7 +298,7 @@ const PostAssignment = () => {
 
             {/* Form Container */}
             <div className="form-card">
-                <div style={{ minHeight: '350px' }}>
+                <div className="form-content-min-height">
                     {step === 1 && <Step1 />}
                     {step === 2 && <Step2 />}
                     {step === 3 && <Step3 />}
@@ -295,18 +308,16 @@ const PostAssignment = () => {
                 <div className="form-actions">
                     <button
                         onClick={handleBack}
-                        className="btn-back"
-                        style={{ visibility: step === 1 ? 'hidden' : 'visible' }}
+                        className={`btn-back ${step === 1 ? 'hidden' : 'visible'}`}
                     >
                         <ArrowLeft size={20} /> Back
                     </button>
 
-                    <div style={{ display: 'flex', gap: '1rem' }}>
+                    <div className="flex gap-md">
                         {step < 4 ? (
                             <button
                                 onClick={handleNext}
-                                className="btn btn-primary"
-                                style={{ padding: '0.75rem 2.5rem' }}
+                                className="btn btn-primary btn-wide"
                             >
                                 Next Step <ArrowRight size={20} />
                             </button>
@@ -314,8 +325,7 @@ const PostAssignment = () => {
                             <button
                                 onClick={handleSubmit}
                                 disabled={loading}
-                                className="btn btn-primary"
-                                style={{ padding: '0.75rem 3rem' }}
+                                className="btn btn-primary btn-publish"
                             >
                                 {loading ? <Loader2 className="animate-spin" /> : 'Publish Assignment'}
                             </button>

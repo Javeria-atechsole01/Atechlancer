@@ -57,14 +57,14 @@ const StudentProfile = () => {
 
     if (loading) {
         return (
-            <div className="flex-center min-h-[400px]">
-                <Loader2 className="animate-spin text-primary" size={48} />
+            <div className="profile-loading-state">
+                <Loader2 className="animate-spin text-primary-600" size={48} />
             </div>
         );
     }
 
     return (
-        <div className="dashboard-page overflow-y-auto">
+        <div className="dashboard-page profile-scroll-container">
             <div className="student-profile-container">
                 {/* Header Section */}
                 <ProfileHeader
