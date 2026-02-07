@@ -1,0 +1,253 @@
+/* Job Details & Apply Page Styles */
+.job-details-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gray-500);
+    text-decoration: none;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    transition: color 0.2s;
+}
+
+.back-link:hover {
+    color: var(--primary-900);
+}
+
+.job-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+    .job-layout {
+        grid-template-columns: 2fr 1fr;
+    }
+}
+
+/* Card Common */
+.card {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: var(--shadow-sm);
+}
+
+/* Header Card */
+.job-header-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+.header-main {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.employer-initial {
+    width: 4rem;
+    height: 4rem;
+    background: var(--primary-50);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--primary-700);
+}
+
+.job-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--primary-900);
+    margin-bottom: 0.5rem;
+}
+
+.job-meta-line {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.875rem;
+    color: var(--gray-500);
+}
+
+.employer-name {
+    font-weight: 700;
+    color: var(--primary-600);
+}
+
+.dot-separator {
+    width: 4px;
+    height: 4px;
+    background: var(--gray-300);
+    border-radius: 50%;
+}
+
+.badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+.badge-pill {
+    padding: 0.375rem 0.875rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.badge-blue {
+    background: #eff6ff;
+    color: #1d4ed8;
+}
+
+.badge-green {
+    background: #f0fdf4;
+    color: #15803d;
+}
+
+.badge-purple {
+    background: #faf5ff;
+    color: #7e22ce;
+}
+
+/* Content Sections */
+.job-section {
+    margin-top: 2rem;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-900);
+    margin-bottom: 1rem;
+}
+
+.prose-content {
+    color: var(--gray-600);
+    line-height: 1.8;
+    white-space: pre-line;
+}
+
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.skill-tag {
+    background: var(--gray-100);
+    color: var(--gray-700);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* Sidebar */
+.sticky-sidebar {
+    position: sticky;
+    top: 6rem;
+}
+
+.overview-table {
+    width: 100%;
+}
+
+.overview-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--gray-50);
+}
+
+.overview-row:last-child {
+    border-bottom: none;
+}
+
+.overview-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gray-500);
+    font-size: 0.875rem;
+}
+
+.overview-value {
+    font-weight: 700;
+    color: var(--primary-900);
+}
+
+.btn-full {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 12px;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+}
+
+.apply-btn {
+    background: var(--primary-600);
+    color: white;
+    margin-top: 1.5rem;
+    box-shadow: var(--shadow-md);
+}
+
+.apply-btn:hover {
+    background: var(--primary-700);
+    transform: translateY(-1px);
+}
+
+.save-btn {
+    background: white;
+    border: 1px solid var(--gray-200);
+    color: var(--gray-700);
+    margin-top: 0.75rem;
+}
+
+.employer-mini-card {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+/* Apply Page Banner */
+.apply-banner {
+    background: var(--primary-900);
+    color: white;
+    padding: 3rem 2rem;
+    text-align: center;
+    border-radius: 16px 16px 0 0;
+}
+
+.apply-banner h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 1rem 0;
+}
+
+.apply-form-container {
+    padding: 2.5rem;
+}

@@ -1,0 +1,331 @@
+/* Project Details Page Styles */
+.project-details-page {
+    background-color: #f8fafc;
+    min-height: 100vh;
+    padding-bottom: 3rem;
+}
+
+/* Hero Section */
+.project-hero {
+    background-color: var(--primary-900);
+    padding: 6rem 0 5rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.1;
+    background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
+}
+
+.hero-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    position: relative;
+    z-index: 10;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #cbd5e1;
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 2rem;
+    transition: color 0.2s;
+}
+
+.back-link:hover {
+    color: white;
+}
+
+.hero-content-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    .hero-content-row {
+        flex-direction: row;
+    }
+}
+
+.hero-info {
+    max-width: 800px;
+}
+
+.category-badge-strip {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.category-tag {
+    padding: 0.375rem 1rem;
+    background: rgba(36, 62, 86, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--primary-100);
+    backdrop-filter: blur(4px);
+}
+
+.hero-info h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+}
+
+@media (min-width: 768px) {
+    .hero-info h1 {
+        font-size: 3.5rem;
+    }
+}
+
+.hero-summary {
+    font-size: 1.25rem;
+    color: #cbd5e1;
+    line-height: 1.6;
+    font-weight: 300;
+}
+
+/* Hero Actions */
+.hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-shrink: 0;
+}
+
+.btn-live {
+    background: var(--primary-600);
+    color: white;
+    padding: 0.875rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    box-shadow: 0 10px 15px -3px rgba(36, 62, 86, 0.3);
+    transition: all 0.2s;
+}
+
+.btn-live:hover {
+    background: var(--primary-500);
+    transform: translateY(-2px);
+}
+
+.btn-repo {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 0.875rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(4px);
+    transition: all 0.2s;
+}
+
+/* Main Content Grid */
+.project-content-grid {
+    max-width: 1280px;
+    margin: -3rem auto 0;
+    padding: 0 1.5rem;
+    position: relative;
+    z-index: 20;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+    .project-content-grid {
+        grid-template-columns: 1fr 380px;
+    }
+}
+
+/* Content Cards */
+.project-card {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.project-details-body {
+    padding: 2.5rem;
+}
+
+/* Prose replacement */
+.rich-content h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-900);
+    margin: 2rem 0 1rem;
+}
+
+.rich-content p {
+    color: var(--gray-600);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+
+.quote-box {
+    background: #eff6ff;
+    padding: 2rem;
+    border-radius: 12px;
+    border-left: 4px solid var(--primary-500);
+    font-style: italic;
+    color: #1e40af;
+    margin: 2rem 0;
+}
+
+/* Sidebar */
+.sidebar-sticky {
+    position: sticky;
+    top: 100px;
+}
+
+.student-card {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 1.5rem;
+}
+
+.student-header {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.profile-initial {
+    width: 4rem;
+    height: 4rem;
+    background: var(--primary-900);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.5rem;
+    border: 2px solid white;
+}
+
+.student-name h3 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--primary-900);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.student-title {
+    font-size: 0.8125rem;
+    color: var(--gray-500);
+    font-weight: 500;
+}
+
+/* Interaction Cards */
+.stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--gray-100);
+}
+
+.stat-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid var(--gray-200);
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.stat-btn.active {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #dc2626;
+}
+
+.stat-val {
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+
+.stat-lbl {
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--gray-400);
+}
+
+.stat-btn.active .stat-lbl {
+    color: #f87171;
+}
+
+/* Tech Tags */
+.tags-card {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 16px;
+    padding: 1.5rem;
+}
+
+.tags-card h4 {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--gray-400);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag-item {
+    padding: 0.375rem 0.75rem;
+    background: var(--gray-50);
+    color: var(--gray-600);
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
