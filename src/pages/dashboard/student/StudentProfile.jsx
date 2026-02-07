@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../../context/AuthContext';
 import { profileService } from '../../../services/profileService';
 import { Loader2 } from 'lucide-react';
+import './student.css';
 import {
     ProfileHeader,
     AboutSection
@@ -56,64 +57,66 @@ const StudentProfile = () => {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center h-full p-20">
-                <Loader2 className="animate-spin text-primary-600" size={40} />
+            <div className="flex-center min-h-[400px]">
+                <Loader2 className="animate-spin text-primary" size={48} />
             </div>
         );
     }
 
     return (
-        <div className="dashboard-page max-w-5xl mx-auto space-y-6 pb-20">
-            {/* Header Section */}
-            <ProfileHeader
-                user={user}
-                profile={profile}
-                onUpdate={handleUpdate}
-                isOwnProfile={true}
-            />
+        <div className="dashboard-page overflow-y-auto">
+            <div className="student-profile-container">
+                {/* Header Section */}
+                <ProfileHeader
+                    user={user}
+                    profile={profile}
+                    onUpdate={handleUpdate}
+                    isOwnProfile={true}
+                />
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Main Content */}
-                <div className="lg:col-span-2 space-y-6">
-                    <AboutSection
-                        user={user}
-                        profile={profile}
-                        onUpdate={handleUpdate}
-                        isOwnProfile={true}
-                    />
+                <div className="student-grid-layout mt-lg">
+                    {/* Main Content */}
+                    <div className="profile-main-stack">
+                        <AboutSection
+                            user={user}
+                            profile={profile}
+                            onUpdate={handleUpdate}
+                            isOwnProfile={true}
+                        />
 
-                    <ExperienceSection
-                        experience={profile.experience}
-                        onUpdate={handleUpdate}
-                        isOwnProfile={true}
-                    />
+                        <ExperienceSection
+                            experience={profile.experience}
+                            onUpdate={handleUpdate}
+                            isOwnProfile={true}
+                        />
 
-                    <EducationSection
-                        education={profile.education}
-                        onUpdate={handleUpdate}
-                        isOwnProfile={true}
-                    />
+                        <EducationSection
+                            education={profile.education}
+                            onUpdate={handleUpdate}
+                            isOwnProfile={true}
+                        />
 
-                    <PortfolioSection
-                        projects={profile.projects}
-                        onUpdate={handleUpdate}
-                        isOwnProfile={true}
-                    />
-                </div>
+                        <PortfolioSection
+                            projects={profile.projects}
+                            onUpdate={handleUpdate}
+                            isOwnProfile={true}
+                        />
+                    </div>
 
-                {/* Sidebar */}
-                <div className="space-y-6">
-                    <SocialLinksSection
-                        socialLinks={profile.socialLinks}
-                        onUpdate={handleUpdate}
-                        isOwnProfile={true}
-                    />
+                    {/* Sidebar */}
+                    <div className="flex-col gap-lg">
+                        <SocialLinksSection
+                            socialLinks={profile.socialLinks}
+                            onUpdate={handleUpdate}
+                            isOwnProfile={true}
+                        />
 
-                    <CertificationSection
-                        certifications={profile.certifications}
-                        onUpdate={handleUpdate}
-                        isOwnProfile={true}
-                    />
+                        <CertificationSection
+                            certifications={profile.certifications}
+                            onUpdate={handleUpdate}
+                            isOwnProfile={true}
+                        />
+                    </div>
                 </div>
             </div>
         </div>

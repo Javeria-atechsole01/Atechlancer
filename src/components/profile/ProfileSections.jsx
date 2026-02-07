@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
-import { Camera, MapPin, Link as LinkIcon, Edit2, CheckCircle, Loader2 } from 'lucide-react';
+import { Camera, MapPin, Edit2, Loader2 } from 'lucide-react';
 import { profileService } from '../../services/profileService';
+import './profile-components.css';
 
 export const ProfileHeader = ({ user, profile, onUpdate, isOwnProfile }) => {
     const [uploading, setUploading] = useState(false);
@@ -48,57 +49,24 @@ export const ProfileHeader = ({ user, profile, onUpdate, isOwnProfile }) => {
         setIsEditing(false);
     };
 
-    // Maxi-D Card Style
-    const cardStyle = {
-        backgroundColor: '#fff',
-        border: '1px solid #e5e7eb',
-        borderRadius: '12px',
-        padding: '24px',
-        marginBottom: '24px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '24px',
-        boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
-    };
-
-    const inputStyle = {
-        width: '100%',
-        padding: '6px 10px',
-        border: '1px solid #d1d5db',
-        borderRadius: '6px',
-        fontSize: '14px',
-        marginBottom: '8px',
-        outline: 'none'
-    };
-
     return (
-        <div style={cardStyle}>
+        <div className="profile-card profile-header-card">
             {/* Avatar Section */}
             <div
                 onClick={handlePhotoClick}
-                style={{
-                    position: 'relative',
-                    width: '100px',
-                    height: '100px',
-                    borderRadius: '50%',
-                    overflow: 'hidden',
-                    backgroundColor: '#f3f4f6',
-                    flexShrink: 0,
-                    cursor: isOwnProfile ? 'pointer' : 'default',
-                    border: '1px solid #e5e7eb'
-                }}
+                className={`profile-avatar-wrapper ${isOwnProfile ? 'editable' : ''}`}
             >
                 {profile.photo ? (
-                    <img src={profile.photo} alt={user.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <img src={profile.photo} alt={user.name} className="profile-avatar-img" />
                 ) : (
-                    <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '32px', fontWeight: 'bold', color: '#9ca3af' }}>
+                    <div className="profile-avatar-placeholder">
                         {user.name?.substring(0, 2).toUpperCase()}
                     </div>
                 )}
 
                 {uploading && (
-                    <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Loader2 className="animate-spin" color="white" size={24} />
+                    <div className="avatar-upload-overlay">
+                        <Loader2 className="animate-spin text-white" size={24} />
                     </div>
                 )}
 
@@ -106,45 +74,35 @@ export const ProfileHeader = ({ user, profile, onUpdate, isOwnProfile }) => {
             </div>
 
             {/* User Info Section */}
-            <div style={{ flex: 1 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                    <div style={{ flex: 1, marginRight: '16px' }}>
-                        <h2 style={{ fontSize: '20px', fontWeight: '700', color: '#111827', margin: '0 0 4px 0' }}>{user.name}</h2>
+            <div className="profile-info-content">
+                <div className="flex-row-between" style={{ alignItems: 'flex-start' }}>
+                    <div className="flex-1 mr-md">
+                        <h2 className="profile-name-h2">{user.name}</h2>
 
                         {isEditing ? (
-                            <div style={{ marginTop: '8px', maxWidth: '300px' }}>
+                            <div className="flex-col gap-sm mt-sm" style={{ maxWidth: '300px' }}>
                                 <input
-                                    style={inputStyle}
+                                    className="search-input w-full text-sm"
                                     placeholder="Headline / Title"
                                     value={headerData.title}
                                     onChange={e => setHeaderData({ ...headerData, title: e.target.value })}
                                 />
                                 <input
-                                    style={inputStyle}
+                                    className="search-input w-full text-sm"
                                     placeholder="Location"
                                     value={headerData.location}
                                     onChange={e => setHeaderData({ ...headerData, location: e.target.value })}
                                 />
-                                <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
-                                    <button
-                                        onClick={handleSave}
-                                        style={{ padding: '4px 12px', backgroundColor: '#111827', color: 'white', borderRadius: '4px', fontSize: '13px', border: 'none', cursor: 'pointer' }}
-                                    >
-                                        Save
-                                    </button>
-                                    <button
-                                        onClick={() => setIsEditing(false)}
-                                        style={{ padding: '4px 12px', backgroundColor: '#f3f4f6', color: '#374151', borderRadius: '4px', fontSize: '13px', border: '1px solid #e5e7eb', cursor: 'pointer' }}
-                                    >
-                                        Cancel
-                                    </button>
+                                <div className="flex-row-gap gap-sm mt-sm">
+                                    <button onClick={handleSave} className="btn btn-primary btn-sm">Save</button>
+                                    <button onClick={() => setIsEditing(false)} className="btn btn-secondary btn-sm">Cancel</button>
                                 </div>
                             </div>
                         ) : (
                             <>
-                                <p style={{ fontSize: '15px', color: '#4b5563', margin: 0 }}>{profile.title || user.role}</p>
+                                <p className="profile-title-p">{profile.title || user.role}</p>
                                 {profile.location && (
-                                    <p style={{ fontSize: '14px', color: '#6b7280', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                    <p className="profile-meta-item">
                                         <MapPin size={14} /> {profile.location}
                                     </p>
                                 )}
@@ -158,19 +116,7 @@ export const ProfileHeader = ({ user, profile, onUpdate, isOwnProfile }) => {
                                 setHeaderData({ title: profile.title || '', location: profile.location || '' });
                                 setIsEditing(true);
                             }}
-                            style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '6px',
-                                padding: '6px 12px',
-                                border: '1px solid #d1d5db',
-                                borderRadius: '6px',
-                                backgroundColor: '#fff',
-                                color: '#374151',
-                                fontSize: '14px',
-                                fontWeight: '500',
-                                cursor: 'pointer'
-                            }}
+                            className="btn btn-secondary btn-sm flex-row-gap gap-sm"
                         >
                             Edit <Edit2 size={14} />
                         </button>
@@ -212,121 +158,69 @@ export const AboutSection = ({ user, profile, onUpdate, isOwnProfile }) => {
         setFormData(prev => ({ ...prev, skills: prev.skills.filter(s => s !== skill) }));
     };
 
-    const cardStyle = {
-        backgroundColor: '#fff',
-        border: '1px solid #e5e7eb',
-        borderRadius: '12px',
-        padding: '24px',
-        marginBottom: '24px',
-        boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
-    };
-
-    const headerStyle = {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: '24px',
-        borderBottom: '1px solid #f3f4f6',
-        paddingBottom: '16px'
-    };
-
-    const titleStyle = {
-        fontSize: '18px',
-        fontWeight: '600',
-        color: '#111827',
-        margin: 0
-    };
-
-    const editBtnStyle = {
-        display: 'flex',
-        alignItems: 'center',
-        gap: '6px',
-        padding: '6px 12px',
-        border: '1px solid #d1d5db',
-        borderRadius: '6px',
-        backgroundColor: '#fff',
-        color: '#374151',
-        fontSize: '14px',
-        fontWeight: '500',
-        cursor: 'pointer'
-    };
-
-    const labelStyle = {
-        display: 'block',
-        fontSize: '14px',
-        color: '#6b7280',
-        marginBottom: '4px'
-    };
-
-    const valueStyle = {
-        display: 'block',
-        fontSize: '16px',
-        color: '#111827',
-        fontWeight: '500'
-    };
-
     if (isEditing) {
         return (
-            <div style={cardStyle}>
-                <div style={headerStyle}>
-                    <h3 style={titleStyle}>Personal Information</h3>
+            <div className="profile-card">
+                <div className="profile-section-header">
+                    <h3 className="profile-section-title">Personal Information</h3>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+                <div className="profile-form-grid">
                     <div>
-                        <label style={labelStyle}>Professional Title</label>
+                        <label className="profile-label">Professional Title</label>
                         <input
-                            style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px', fontSize: '15px', outline: 'none' }}
+                            className="search-input w-full"
                             value={formData.title}
                             onChange={e => setFormData({ ...formData, title: e.target.value })}
                             placeholder="e.g. Senior Full Stack Developer"
                         />
                     </div>
                     <div>
-                        <label style={labelStyle}>Location</label>
+                        <label className="profile-label">Location</label>
                         <input
-                            style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px', fontSize: '15px', outline: 'none' }}
+                            className="search-input w-full"
                             value={formData.location}
                             onChange={e => setFormData({ ...formData, location: e.target.value })}
                             placeholder="e.g. New York, USA"
                         />
                     </div>
-                    <div style={{ gridColumn: '1 / -1' }}>
-                        <label style={labelStyle}>Bio</label>
+                    <div className="profile-form-full">
+                        <label className="profile-label">Bio</label>
                         <textarea
-                            style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px', fontSize: '15px', outline: 'none', resize: 'vertical' }}
+                            className="search-input w-full"
+                            style={{ minHeight: '120px', resize: 'vertical' }}
                             rows="4"
                             value={formData.bio}
                             onChange={e => setFormData({ ...formData, bio: e.target.value })}
                             maxLength={500}
                         />
                     </div>
-                    <div style={{ gridColumn: '1 / -1' }}>
-                        <label style={labelStyle}>Skills</label>
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '8px' }}>
+                    <div className="profile-form-full">
+                        <label className="profile-label">Skills</label>
+                        <div className="skills-wrap mb-sm">
                             {formData.skills.map(skill => (
-                                <span key={skill} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '4px 10px', backgroundColor: '#f3f4f6', borderRadius: '4px', fontSize: '14px', color: '#1f2937' }}>
+                                <span key={skill} className="skill-tag">
                                     {skill}
-                                    <button onClick={() => removeSkill(skill)} style={{ border: 'none', background: 'none', cursor: 'pointer', color: '#6b7280' }}>&times;</button>
+                                    <button onClick={() => removeSkill(skill)} className="skill-tag-remove">&times;</button>
                                 </span>
                             ))}
                         </div>
-                        <div style={{ display: 'flex', gap: '8px' }}>
+                        <div className="flex-row-gap gap-sm">
                             <input
-                                style={{ flex: 1, padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px', fontSize: '15px', outline: 'none' }}
+                                className="search-input flex-1"
                                 value={newSkill}
                                 onChange={e => setNewSkill(e.target.value)}
                                 onKeyDown={e => e.key === 'Enter' && addSkill()}
                                 placeholder="Add a skill..."
                             />
-                            <button type="button" onClick={addSkill} style={{ padding: '8px 16px', backgroundColor: '#f3f4f6', border: '1px solid #d1d5db', borderRadius: '6px', cursor: 'pointer', fontWeight: '500' }}>Add</button>
+                            <button type="button" onClick={addSkill} className="btn btn-secondary">Add</button>
                         </div>
                     </div>
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '24px', paddingTop: '16px', borderTop: '1px solid #f3f4f6' }}>
-                    <button onClick={() => setIsEditing(false)} style={{ ...editBtnStyle, border: 'none' }}>Cancel</button>
-                    <button onClick={handleSave} style={{ ...editBtnStyle, backgroundColor: '#111827', color: '#fff', border: '1px solid #111827' }}>Save Changes</button>
+                <div className="profile-actions-row">
+                    <button onClick={() => setIsEditing(false)} className="btn btn-ghost">Cancel</button>
+                    <button onClick={handleSave} className="btn btn-primary">Save Changes</button>
                 </div>
             </div>
         );
@@ -334,53 +228,53 @@ export const AboutSection = ({ user, profile, onUpdate, isOwnProfile }) => {
 
     // View Mode
     return (
-        <div style={cardStyle}>
-            <div style={headerStyle}>
-                <h3 style={titleStyle}>Personal Information</h3>
+        <div className="profile-card">
+            <div className="profile-section-header">
+                <h3 className="profile-section-title">Personal Information</h3>
                 {isOwnProfile && (
-                    <button onClick={() => setIsEditing(true)} style={editBtnStyle}>
+                    <button onClick={() => setIsEditing(true)} className="btn btn-secondary btn-sm flex-row-gap gap-sm">
                         Edit <Edit2 size={14} />
                     </button>
                 )}
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '24px' }}>
+            <div className="profile-form-grid">
                 <div>
-                    <span style={labelStyle}>Full Name</span>
-                    <span style={valueStyle}>{user?.name || 'User'}</span>
+                    <span className="profile-label">Full Name</span>
+                    <span className="profile-value-display">{user?.name || 'User'}</span>
                 </div>
 
                 <div>
-                    <span style={labelStyle}>Position</span>
-                    <span style={valueStyle}>{profile.title || 'Not Set'}</span>
+                    <span className="profile-label">Position</span>
+                    <span className="profile-value-display">{profile.title || 'Not Set'}</span>
                 </div>
 
                 <div>
-                    <span style={labelStyle}>Location</span>
-                    <span style={valueStyle}>{profile.location || 'Not Set'}</span>
+                    <span className="profile-label">Location</span>
+                    <span className="profile-value-display">{profile.location || 'Not Set'}</span>
                 </div>
 
                 <div>
-                    <span style={labelStyle}>Email Address</span>
-                    <span style={valueStyle}>{user.email || 'hidden'}</span>
+                    <span className="profile-label">Email Address</span>
+                    <span className="profile-value-display">{user.email || 'hidden'}</span>
                 </div>
 
-                <div style={{ gridColumn: '1 / -1' }}>
-                    <span style={labelStyle}>Bio</span>
-                    <p style={{ marginTop: '4px', fontSize: '15px', color: '#374151', lineHeight: '1.6' }}>
+                <div className="profile-form-full">
+                    <span className="profile-label">Bio</span>
+                    <p className="profile-bio-text">
                         {profile.bio || 'No bio provided.'}
                     </p>
                 </div>
 
-                <div style={{ gridColumn: '1 / -1' }}>
-                    <span style={labelStyle}>Skills</span>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '6px' }}>
+                <div className="profile-form-full">
+                    <span className="profile-label">Skills</span>
+                    <div className="skills-wrap">
                         {profile.skills && profile.skills.length > 0 ? (
                             profile.skills.map(skill => (
-                                <span key={skill} style={{ padding: '4px 10px', backgroundColor: '#f3f4f6', borderRadius: '6px', fontSize: '13px', fontWeight: '500', color: '#374151' }}>{skill}</span>
+                                <span key={skill} className="skill-tag">{skill}</span>
                             ))
                         ) : (
-                            <span style={{ color: '#9ca3af', fontSize: '14px' }}>No skills listed.</span>
+                            <span className="text-muted text-sm italic">No skills listed.</span>
                         )}
                     </div>
                 </div>

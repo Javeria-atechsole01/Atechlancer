@@ -1,0 +1,168 @@
+/* Student Dashboard Styles */
+
+.student-profile-container {
+    max-width: 1024px;
+    margin: 0 auto;
+    padding-bottom: 5rem;
+}
+
+.student-grid-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+    .student-grid-layout {
+        grid-template-columns: minmax(0, 2fr) 1fr;
+    }
+}
+
+/* Profile Sections - Main Content */
+.profile-main-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Post Project Stepper */
+.progress-stepper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.step-item {
+    display: flex;
+    align-items: center;
+}
+
+.step-item.flex-1 {
+    flex: 1;
+}
+
+.step-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.125rem;
+    border: 2px solid var(--gray-200);
+    background-color: white;
+    transition: all 0.3s;
+    z-index: 10;
+}
+
+.step-circle.active {
+    border-color: var(--primary-600);
+    color: var(--primary-600);
+    box-shadow: 0 0 0 4px var(--primary-50);
+    transform: scale(1.1);
+}
+
+.step-circle.completed {
+    border-color: var(--primary-600);
+    background-color: var(--primary-600);
+    color: white;
+}
+
+.step-label {
+    margin-left: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--gray-400);
+}
+
+.step-label.active {
+    color: var(--primary-900);
+    font-weight: 600;
+}
+
+.step-line {
+    height: 4px;
+    flex: 1;
+    margin: 0 1rem;
+    border-radius: 2px;
+    background-color: var(--gray-100);
+    transition: background-color 0.3s;
+}
+
+.step-line.completed {
+    background-color: var(--primary-600);
+}
+
+/* Upload Forms */
+.upload-form-container {
+    background-color: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 24px;
+    padding: 2rem;
+    min-height: 500px;
+    box-shadow: var(--shadow-sm);
+}
+
+.dropzone-area {
+    position: relative;
+    border: 2px dashed var(--gray-300);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.dropzone-area:hover {
+    background-color: var(--gray-50);
+}
+
+.dropzone-area.active {
+    border-color: var(--primary-500);
+    background-color: rgba(var(--primary-rgb), 0.05);
+}
+
+.preview-thumbnail {
+    height: 200px;
+    width: 100%;
+    object-fit: contain;
+    border-radius: 12px;
+}
+
+/* Tags/Chips */
+.chips-container {
+    border: 1px solid var(--gray-300);
+    border-radius: 12px;
+    padding: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    background-color: white;
+}
+
+.chips-container:focus-within {
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 2px var(--primary-100);
+}
+
+.chip-item {
+    background-color: var(--primary-50);
+    color: var(--primary-700);
+    padding: 0.25rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--primary-100);
+}
+
+/* Navigation Buttons */
+.step-nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+}

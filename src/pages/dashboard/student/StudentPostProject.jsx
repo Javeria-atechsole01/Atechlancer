@@ -1,6 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Layers, Image, FileText, Link as LinkIcon, CheckCircle, ArrowRight, ArrowLeft, Eye, UploadCloud, X, Save } from 'lucide-react';
+import { Image, FileText, Link as LinkIcon, CheckCircle, ArrowRight, ArrowLeft, Eye, UploadCloud, X, Save } from 'lucide-react';
+import './student.css';
 // import { projectService } from '../../../services/projectService'; // To be implemented
 
 const StudentPostProject = () => {
@@ -13,7 +14,7 @@ const StudentPostProject = () => {
         title: '',
         category: 'Web Development',
         summary: '',
-        tags: [], // Array for chips
+        tags: [],
 
         // Step 2: Content
         thumbnail: null, // File object
@@ -27,6 +28,7 @@ const StudentPostProject = () => {
         problemStatement: '',
         solutionOverview: '',
         techStack: '',
+        learningOutcomes: '', // Added this field based on Step3 content
 
         // Step 4
         visibility: 'public'
@@ -92,9 +94,9 @@ const StudentPostProject = () => {
 
     /** Step 1: Basics */
     const Step1 = () => (
-        <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
+        <div className="flex-col gap-lg animate-fade-in">
             <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Project Title <span className="text-red-500">*</span></label>
+                <label className="form-label mb-sm block" style={{ fontWeight: 700 }}>Project Title <span className="text-red-500">*</span></label>
                 <input
                     name="title"
                     value={formData.title}
@@ -106,7 +108,7 @@ const StudentPostProject = () => {
             </div>
 
             <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Category <span className="text-red-500">*</span></label>
+                <label className="form-label mb-sm block" style={{ fontWeight: 700 }}>Category <span className="text-red-500">*</span></label>
                 <select name="category" value={formData.category} onChange={handleChange} className="search-input w-full">
                     <option>Web Development</option>
                     <option>Mobile App Development</option>
@@ -120,7 +122,7 @@ const StudentPostProject = () => {
             </div>
 
             <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Short Summary (Tagline) <span className="text-red-500">*</span></label>
+                <label className="form-label mb-sm block" style={{ fontWeight: 700 }}>Short Summary (Tagline) <span className="text-red-500">*</span></label>
                 <input
                     name="summary"
                     value={formData.summary}
@@ -129,75 +131,76 @@ const StudentPostProject = () => {
                     placeholder="A brief 1-line description appearing on project cards..."
                     maxLength={100}
                 />
-                <p className="text-xs text-right text-gray-400 mt-1">{formData.summary.length}/100</p>
+                <p className="text-xs text-right text-muted mt-sm">{formData.summary.length}/100</p>
             </div>
 
             <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Tags / Technologies</label>
-                <div className="border border-gray-300 rounded-xl p-2 flex flex-wrap gap-2 focus-within:ring-2 focus-within:ring-primary-500 focus-within:border-transparent bg-white">
+                <label className="form-label mb-sm block" style={{ fontWeight: 700 }}>Tags / Technologies</label>
+                <div className="chips-container">
                     {formData.tags.map(tag => (
-                        <span key={tag} className="bg-primary-50 text-primary-700 px-2 py-1 rounded-lg text-sm font-medium flex items-center gap-1 border border-primary-100">
+                        <span key={tag} className="chip-item">
                             {tag}
-                            <button onClick={() => removeTag(tag)} className="hover:text-primary-900"><X size={14} /></button>
+                            <button onClick={() => removeTag(tag)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex' }}><X size={14} /></button>
                         </span>
                     ))}
                     <input
                         value={tagInput}
                         onChange={e => setTagInput(e.target.value)}
                         onKeyDown={handleTagKeyDown}
-                        className="flex-1 outline-none min-w-[120px] p-1"
+                        className="flex-1 outline-none min-w-[120px] p-xs"
+                        style={{ border: 'none', background: 'transparent' }}
                         placeholder="Type and press Enter..."
                     />
                 </div>
-                <p className="text-xs text-gray-500 mt-1">Add up to 5 tags (e.g. React, Python, Figma)</p>
+                <p className="text-xs text-muted mt-sm">Add up to 5 tags (e.g. React, Python, Figma)</p>
             </div>
         </div>
     );
 
     /** Step 2: Media & Links */
     const Step2 = () => (
-        <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-300">
+        <div className="flex-col gap-xl animate-fade-in">
             {/* Thumbnail Upload */}
             <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">Project Thumbnail</label>
-                <div className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all ${formData.thumbnailPreview ? 'border-primary-500 bg-primary-50/10' : 'border-gray-300 hover:bg-gray-50'}`}>
+                <label className="form-label mb-sm block" style={{ fontWeight: 700 }}>Project Thumbnail</label>
+                <div className={`dropzone-area ${formData.thumbnailPreview ? 'active' : ''}`}>
                     <input
                         type="file"
                         accept="image/*"
                         onChange={handleThumbnailChange}
-                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0, cursor: 'pointer' }}
                     />
 
                     {formData.thumbnailPreview ? (
-                        <div className="relative h-48 w-full">
-                            <img src={formData.thumbnailPreview} alt="Preview" className="h-full w-full object-contain rounded-lg" />
-                            <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 hover:opacity-100 transition-opacity rounded-lg">
-                                <span className="text-white font-bold flex items-center gap-2"><UploadCloud size={20} /> Change Image</span>
+                        <div style={{ position: 'relative', height: '200px' }}>
+                            <img src={formData.thumbnailPreview} alt="Preview" className="preview-thumbnail" />
+                            <div className="flex-center" style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)', opacity: 0, borderRadius: '12px' }}>
+                                <span className="text-white font-bold flex-row-gap gap-sm"><UploadCloud size={20} /> Change Image</span>
                             </div>
                         </div>
                     ) : (
-                        <div className="flex flex-col items-center py-6">
-                            <div className="w-16 h-16 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mb-4">
+                        <div className="flex-col items-center py-lg">
+                            <div className="icon-circle mb-md" style={{ background: 'var(--primary-50)', color: 'var(--primary-600)' }}>
                                 <Image size={32} />
                             </div>
                             <h4 className="font-bold text-navy-900 text-lg">Upload Thumbnail</h4>
-                            <p className="text-sm text-gray-500 mt-1">Drag & drop or click to browse</p>
-                            <p className="text-xs text-gray-400 mt-2">Recommended: 1600x900px JPG/PNG</p>
+                            <p className="text-sm text-muted mt-xs">Drag & drop or click to browse</p>
+                            <p className="text-xs text-muted mt-xs">Recommended: 1600x900px JPG/PNG</p>
                         </div>
                     )}
                 </div>
             </div>
 
             {/* Links Section */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="layout-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                 <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-1 flex items-center gap-2">
+                    <label className="form-label mb-sm block flex-row-gap gap-sm" style={{ fontWeight: 700 }}>
                         <LinkIcon size={14} /> GitHub Repository
                     </label>
                     <input name="repoUrl" value={formData.repoUrl} onChange={handleChange} className="search-input w-full" placeholder="https://github.com/..." />
                 </div>
                 <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-1 flex items-center gap-2">
+                    <label className="form-label mb-sm block flex-row-gap gap-sm" style={{ fontWeight: 700 }}>
                         <Eye size={14} /> Live Demo URL
                     </label>
                     <input name="liveUrl" value={formData.liveUrl} onChange={handleChange} className="search-input w-full" placeholder="https://myproject.com" />
@@ -205,7 +208,7 @@ const StudentPostProject = () => {
             </div>
 
             <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1 flex items-center gap-2">
+                <label className="form-label mb-sm block flex-row-gap gap-sm" style={{ fontWeight: 700 }}>
                     Video Demo (YouTube/Vimeo)
                 </label>
                 <input name="videoUrl" value={formData.videoUrl} onChange={handleChange} className="search-input w-full" placeholder="https://youtube.com/watch?v=..." />
@@ -213,16 +216,16 @@ const StudentPostProject = () => {
 
             {/* Document Upload */}
             <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">Project Report (PDF)</label>
-                <div className="flex items-center gap-4 border border-gray-200 p-4 rounded-xl bg-gray-50">
-                    <div className="w-10 h-10 bg-red-100 text-red-600 rounded-lg flex items-center justify-center">
+                <label className="form-label mb-sm block" style={{ fontWeight: 700 }}>Project Report (PDF)</label>
+                <div className="flex-row-gap gap-md card" style={{ padding: '1rem', backgroundColor: 'var(--gray-50)', border: '1px solid var(--gray-200)' }}>
+                    <div className="icon-box" style={{ background: 'var(--red-100)', color: 'var(--red-600)' }}>
                         <FileText size={20} />
                     </div>
                     <div className="flex-1">
                         <p className="text-sm font-bold text-navy-900">Upload Case Study / Report</p>
-                        <p className="text-xs text-gray-500">Max 10MB. PDF only.</p>
+                        <p className="text-xs text-muted">Max 10MB. PDF only.</p>
                     </div>
-                    <button className="text-primary-600 text-sm font-bold hover:underline">Browse</button>
+                    <button className="text-primary-600 text-sm font-bold hover:underline" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>Browse</button>
                     {/* Input hidden for visual demo */}
                 </div>
             </div>
@@ -231,44 +234,51 @@ const StudentPostProject = () => {
 
     /** Step 3: Deep Dive */
     const Step3 = () => (
-        <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
+        <div className="flex-col gap-lg animate-fade-in">
             <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Problem Statement</label>
+                <label className="form-label mb-sm block" style={{ fontWeight: 700 }}>Problem Statement</label>
                 <textarea
                     name="problemStatement"
                     value={formData.problemStatement}
                     onChange={handleChange}
-                    className="search-input w-full min-h-[120px]"
+                    className="search-input w-full"
+                    style={{ minHeight: '120px', resize: 'vertical' }}
                     placeholder="Describe the problem you set out to solve. What was the user pain point?"
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Solution & Approach</label>
+                <label className="form-label mb-sm block" style={{ fontWeight: 700 }}>Solution & Approach</label>
                 <textarea
                     name="solutionOverview"
                     value={formData.solutionOverview}
                     onChange={handleChange}
-                    className="search-input w-full min-h-[140px]"
+                    className="search-input w-full"
+                    style={{ minHeight: '140px', resize: 'vertical' }}
                     placeholder="How did you solve it? Describe your methodology and architectural decisions."
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Tech Stack & Tools Used</label>
+                <label className="form-label mb-sm block" style={{ fontWeight: 700 }}>Tech Stack & Tools Used</label>
                 <textarea
                     name="techStack"
                     value={formData.techStack}
                     onChange={handleChange}
-                    className="search-input w-full min-h-[100px]"
+                    className="search-input w-full"
+                    style={{ minHeight: '100px', resize: 'vertical' }}
                     placeholder="List languages, frameworks, and tools involved (e.g. React, Node.js, AWS)."
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Learning Outcomes</label>
+                <label className="form-label mb-sm block" style={{ fontWeight: 700 }}>Learning Outcomes</label>
                 <textarea
-                    className="search-input w-full min-h-[100px]"
+                    name="learningOutcomes"
+                    value={formData.learningOutcomes}
+                    onChange={handleChange}
+                    className="search-input w-full"
+                    style={{ minHeight: '100px', resize: 'vertical' }}
                     placeholder="What did you learn from this project? What challenges did you overcome?"
                 />
             </div>
@@ -277,57 +287,49 @@ const StudentPostProject = () => {
 
     /** Step 4: Review */
     const Step4 = () => (
-        <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
-            <h3 className="text-lg font-bold text-navy-900 border-b pb-2">Preview Card</h3>
-            <div className="flex justify-center py-4">
-                <div className="w-full max-w-sm bg-white border border-gray-200 rounded-xl overflow-hidden shadow-lg">
-                    <div className="h-48 bg-gray-100 flex items-center justify-center overflow-hidden">
+        <div className="flex-col gap-xl animate-fade-in">
+            <h3 className="card-title border-bottom pb-sm">Preview Card</h3>
+            <div className="flex-center py-lg">
+                <div className="project-card" style={{ maxWidth: '360px', width: '100%', margin: 0, boxShadow: 'var(--shadow-lg)' }}>
+                    <div style={{ height: '180px', backgroundColor: 'var(--gray-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
                         {formData.thumbnailPreview ? (
-                            <img src={formData.thumbnailPreview} alt="Preview" className="w-full h-full object-cover" />
+                            <img src={formData.thumbnailPreview} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                         ) : (
-                            <span className="text-gray-400 flex flex-col items-center gap-2"><Image /> No Image</span>
+                            <span className="text-muted flex-col items-center gap-sm"><Image /> No Image</span>
                         )}
                     </div>
-                    <div className="p-5">
-                        <div className="flex justify-between items-start mb-2">
-                            <div>
-                                <span className="text-xs font-bold text-primary-600 uppercase tracking-wider">{formData.category}</span>
-                                <h3 className="font-bold text-lg text-navy-900 leading-tight mt-1">{formData.title || 'Untitled Project'}</h3>
-                            </div>
+                    <div style={{ padding: '1.25rem' }}>
+                        <div className="mb-sm">
+                            <span className="text-xs font-bold text-primary-600 uppercase tracking-wider">{formData.category}</span>
+                            <h3 className="font-bold text-lg text-navy-900 mt-xs leading-tight">{formData.title || 'Untitled Project'}</h3>
                         </div>
-                        <p className="text-sm text-gray-600 mb-4 line-clamp-2">{formData.summary || 'No summary provided.'}</p>
+                        <p className="text-sm text-gray-600 mb-md line-clamp-2">{formData.summary || 'No summary provided.'}</p>
 
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex-row-gap gap-sm">
                             {formData.tags.length > 0 ? formData.tags.slice(0, 3).map((s, i) => (
-                                <span key={i} className="bg-gray-100 text-gray-600 px-2 py-0.5 rounded text-xs font-semibold">{s}</span>
-                            )) : <span className="text-xs text-gray-400">No tags</span>}
-                            {formData.tags.length > 3 && <span className="text-xs text-gray-500">+{formData.tags.length - 3} more</span>}
+                                <span key={i} className="tag tag-sm" style={{ fontSize: '0.7rem' }}>{s}</span>
+                            )) : <span className="text-xs text-muted">No tags</span>}
+                            {formData.tags.length > 3 && <span className="text-xs text-muted">+{formData.tags.length - 3} more</span>}
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className="bg-blue-50 p-6 rounded-xl border border-blue-100 flex items-start gap-4">
-                <div className="bg-white p-2 rounded-full shadow-sm text-blue-600">
+            <div className="banner banner-blue">
+                <div className="icon-circle" style={{ background: 'white', color: 'var(--primary-600)' }}>
                     <Eye size={20} />
                 </div>
-                <div>
+                <div style={{ flex: 1 }}>
                     <h4 className="font-bold text-navy-900">Visibility Settings</h4>
-                    <p className="text-sm text-gray-600 mb-3">Control who can see your project.</p>
-                    <div className="flex gap-6">
-                        <label className="flex items-center gap-2 cursor-pointer group">
-                            <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${formData.visibility === 'public' ? 'border-primary-600' : 'border-gray-400'}`}>
-                                {formData.visibility === 'public' && <div className="w-2 h-2 bg-primary-600 rounded-full"></div>}
-                            </div>
-                            <input type="radio" name="visibility" value="public" checked={formData.visibility === 'public'} onChange={handleChange} className="hidden" />
-                            <span className="font-medium text-gray-800 group-hover:text-primary-700">Public</span>
+                    <p className="text-sm text-gray-600 mb-md">Control who can see your project.</p>
+                    <div className="flex-row-gap gap-xl">
+                        <label className="flex-row-gap gap-sm cursor-pointer">
+                            <input type="radio" name="visibility" value="public" checked={formData.visibility === 'public'} onChange={handleChange} />
+                            <span className="font-bold">Public</span>
                         </label>
-                        <label className="flex items-center gap-2 cursor-pointer group">
-                            <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${formData.visibility === 'private' ? 'border-primary-600' : 'border-gray-400'}`}>
-                                {formData.visibility === 'private' && <div className="w-2 h-2 bg-primary-600 rounded-full"></div>}
-                            </div>
-                            <input type="radio" name="visibility" value="private" checked={formData.visibility === 'private'} onChange={handleChange} className="hidden" />
-                            <span className="font-medium text-gray-800 group-hover:text-primary-700">Private (Draft)</span>
+                        <label className="flex-row-gap gap-sm cursor-pointer">
+                            <input type="radio" name="visibility" value="private" checked={formData.visibility === 'private'} onChange={handleChange} />
+                            <span className="font-bold">Private (Draft)</span>
                         </label>
                     </div>
                 </div>
@@ -336,80 +338,78 @@ const StudentPostProject = () => {
     );
 
     return (
-        <div className="dashboard-page max-w-4xl mx-auto py-8 px-4">
-            <div className="flex justify-between items-end mb-8">
-                <div>
-                    <h1 className="text-3xl font-extrabold text-navy-900">Upload Project</h1>
-                    <p className="text-gray-500 mt-1">Showcase your best work to get noticed by recruiters.</p>
-                </div>
-                <button
-                    onClick={() => handleSubmit(true)}
-                    className="text-gray-500 hover:text-navy-900 font-medium flex items-center gap-2 transition-colors"
-                >
-                    <Save size={18} /> Save Draft
-                </button>
-            </div>
-
-            {/* Progress Stepper */}
-            <div className="flex items-center justify-between mb-8">
-                {[
-                    { n: 1, label: 'Basics' },
-                    { n: 2, label: 'Content' },
-                    { n: 3, label: 'Details' },
-                    { n: 4, label: 'Review' }
-                ].map((s, i) => (
-                    <div key={s.n} className={`flex items-center ${i < 3 ? 'flex-1' : ''}`}>
-                        <div className={`
-                            w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg border-2 z-10 bg-white transition-all
-                            ${step >= s.n ? 'border-primary-600 text-primary-600 shadow-sm' : 'border-gray-200 text-gray-400'}
-                            ${step === s.n ? 'ring-4 ring-primary-50 scale-110' : ''}
-                         `}>
-                            {step > s.n ? <CheckCircle size={20} className="fill-current" /> : s.n}
-                        </div>
-                        <div className={`ml-3 hidden md:block font-medium text-sm ${step >= s.n ? 'text-navy-900' : 'text-gray-400'}`}>
-                            {s.label}
-                        </div>
-                        {i < 3 && (
-                            <div className={`h-1 flex-1 mx-4 rounded-full transition-all ${step > s.n ? 'bg-primary-600' : 'bg-gray-100'}`}></div>
-                        )}
+        <div className="dashboard-page overflow-y-auto">
+            <div className="student-profile-container" style={{ paddingTop: '2rem' }}>
+                <div className="flex-row-between mb-xl">
+                    <div>
+                        <h1 className="text-3xl font-extrabold text-navy-900">Upload Project</h1>
+                        <p className="text-muted mt-xs">Showcase your best work to get noticed by recruiters.</p>
                     </div>
-                ))}
-            </div>
-
-            {/* Form Content */}
-            <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-8 min-h-[500px] relative">
-                {step === 1 && <Step1 />}
-                {step === 2 && <Step2 />}
-                {step === 3 && <Step3 />}
-                {step === 4 && <Step4 />}
-            </div>
-
-            {/* Navigation Actions */}
-            <div className="flex justify-between items-center mt-8">
-                <button
-                    onClick={handleBack}
-                    disabled={step === 1}
-                    className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all ${step === 1 ? 'opacity-0 pointer-events-none' : 'text-gray-600 hover:text-navy-900 hover:bg-gray-100'}`}
-                >
-                    <ArrowLeft size={18} /> Back
-                </button>
-
-                {step < 4 ? (
                     <button
-                        onClick={handleNext}
-                        className="flex items-center gap-2 bg-navy-900 text-white px-8 py-3 rounded-xl font-bold hover:bg-navy-800 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                        onClick={() => handleSubmit(true)}
+                        className="btn-ghost flex-row-gap gap-sm text-muted hover-navy"
                     >
-                        Next Step <ArrowRight size={18} />
+                        <Save size={18} /> Save Draft
                     </button>
-                ) : (
+                </div>
+
+                {/* Progress Stepper */}
+                <div className="progress-stepper">
+                    {[
+                        { n: 1, label: 'Basics' },
+                        { n: 2, label: 'Content' },
+                        { n: 3, label: 'Details' },
+                        { n: 4, label: 'Review' }
+                    ].map((s, i) => (
+                        <div key={s.n} className={`step-item ${i < 3 ? 'flex-1' : ''}`}>
+                            <div className={`step-circle ${step === s.n ? 'active' : ''} ${step > s.n ? 'completed' : ''}`}>
+                                {step > s.n ? <CheckCircle size={24} /> : s.n}
+                            </div>
+                            <div className={`step-label hidden md:block ${step >= s.n ? 'active' : ''}`}>
+                                {s.label}
+                            </div>
+                            {i < 3 && (
+                                <div className={`step-line ${step > s.n ? 'completed' : ''}`}></div>
+                            )}
+                        </div>
+                    ))}
+                </div>
+
+                {/* Form Content */}
+                <div className="upload-form-container">
+                    {step === 1 && <Step1 />}
+                    {step === 2 && <Step2 />}
+                    {step === 3 && <Step3 />}
+                    {step === 4 && <Step4 />}
+                </div>
+
+                {/* Navigation Actions */}
+                <div className="step-nav-buttons">
                     <button
-                        onClick={() => handleSubmit(false)}
-                        disabled={loading}
-                        className="flex items-center gap-2 bg-primary-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-primary-500 transition-all shadow-lg hover:shadow-xl hover:shadow-primary-600/20 hover:-translate-y-0.5 disabled:opacity-70 disabled:transform-none"
+                        onClick={handleBack}
+                        disabled={step === 1}
+                        className={`btn btn-secondary flex-row-gap gap-sm ${step === 1 ? 'opacity-0 pointer-events-none' : ''}`}
                     >
-                        {loading ? 'Publishing...' : 'Publish Project'}
+                        <ArrowLeft size={18} /> Back
                     </button>
-                )}
+
+                    {step < 4 ? (
+                        <button
+                            onClick={handleNext}
+                            className="btn btn-primary flex-row-gap gap-sm btn-lg"
+                        >
+                            Next Step <ArrowRight size={18} />
+                        </button>
+                    ) : (
+                        <button
+                            onClick={() => handleSubmit(false)}
+                            disabled={loading}
+                            className="btn btn-primary flex-row-gap gap-sm btn-lg"
+                        >
+                            {loading ? 'Publishing...' : 'Publish Project'}
+                        </button>
+                    )}
+                </div>
             </div>
         </div>
     );
