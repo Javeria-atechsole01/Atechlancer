@@ -699,3 +699,30 @@
         transform: translateY(0) scale(1);
     }
 }
+
+/* Utility Classes */
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.min-h-screen {
+    min-height: 100vh;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+@media (min-width: 1024px) {
+    .lg-hidden {
+        display: none !important;
+    }
+}

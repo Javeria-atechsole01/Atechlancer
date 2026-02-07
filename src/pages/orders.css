@@ -1,0 +1,235 @@
+/* Orders & Order Details Page Styles */
+.orders-page {
+    background-color: var(--gray-50);
+    min-height: 100vh;
+    padding: 3rem 1.5rem;
+}
+
+.orders-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Order Details Specific */
+.order-details-page {
+    background-color: #f8fafc;
+    min-height: 100vh;
+    padding: 2.5rem 1rem;
+}
+
+.order-details-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+.order-id-section h1 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primary-900);
+    margin-bottom: 0.5rem;
+}
+
+.order-meta-info {
+    font-size: 0.875rem;
+    color: var(--gray-500);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dot-separator {
+    width: 4px;
+    height: 4px;
+    background-color: var(--gray-300);
+    border-radius: 50%;
+}
+
+.order-price-status {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.order-total-price {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primary-900);
+}
+
+/* Grid Layout */
+.order-layout-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+    .order-layout-grid {
+        grid-template-columns: 2fr 1fr;
+    }
+}
+
+/* Content Cards */
+.order-card {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 1.5rem;
+}
+
+.order-card-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--primary-900);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--gray-100);
+}
+
+/* Gig Brief in Order */
+.gig-brief-row {
+    display: flex;
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--gray-50);
+}
+
+.gig-brief-image {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    object-fit: cover;
+    background-color: var(--gray-100);
+}
+
+.gig-brief-details h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary-900);
+    margin-bottom: 0.25rem;
+}
+
+.package-badges {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.package-badge-mini {
+    background-color: var(--gray-50);
+    color: var(--gray-500);
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+}
+
+/* Instructions Box */
+.instructions-box {
+    background-color: var(--gray-50);
+    border: 1px solid var(--gray-100);
+    border-radius: 12px;
+    padding: 1.25rem;
+}
+
+.instructions-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.instructions-text {
+    font-size: 0.9375rem;
+    color: var(--gray-700);
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+/* Action Banners */
+.action-banner {
+    padding: 1.25rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.banner-blue {
+    background-color: #eff6ff;
+    border: 1px solid #dbeafe;
+}
+
+.banner-green {
+    background-color: #f0fdf4;
+    border: 1px solid #dcfce7;
+}
+
+.banner-text h4 {
+    font-weight: 800;
+    margin-bottom: 0.125rem;
+}
+
+.banner-text-blue h4 {
+    color: #1e3a8a;
+}
+
+.banner-text-blue p {
+    color: #1e40af;
+    font-size: 0.875rem;
+}
+
+.banner-text-green h4 {
+    color: #14532d;
+}
+
+.banner-text-green p {
+    color: #15803d;
+    font-size: 0.875rem;
+}
+
+/* File List */
+.file-link-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+}
+
+.file-link-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--primary-600);
+    text-decoration: none;
+    padding: 0.5rem 0;
+}
+
+.file-link-item:hover {
+    text-decoration: underline;
+}
+
+/* Empty placeholder */
+.empty-placeholder-box {
+    text-align: center;
+    padding: 2rem;
+    background-color: var(--gray-50);
+    border: 2px dashed var(--gray-200);
+    border-radius: 12px;
+    color: var(--gray-400);
+}

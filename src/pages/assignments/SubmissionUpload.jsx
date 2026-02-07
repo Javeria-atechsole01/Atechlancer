@@ -5,6 +5,7 @@ import {
     Loader2, Upload, CheckCircle, FileText, Send,
     ArrowLeft, AlertCircle, Clock
 } from 'lucide-react';
+import './assignments.css';
 
 const SubmissionUpload = () => {
     const { id } = useParams();
@@ -35,70 +36,73 @@ const SubmissionUpload = () => {
     };
 
     if (submitted) return (
-        <div className="min-h-screen bg-white flex items-center justify-center p-4">
-            <div className="text-center animate-in fade-in zoom-in duration-500">
-                <div className="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-8">
-                    <CheckCircle className="text-green-600" size={48} />
+        <div className="success-screen">
+            <div style={{ maxWidth: '400px' }}>
+                <div className="success-icon-wrap">
+                    <CheckCircle size={48} />
                 </div>
-                <h1 className="text-3xl font-bold text-navy-900 mb-4">Submission Successful!</h1>
-                <p className="text-gray-500 max-w-sm mx-auto">
+                <h1 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--primary-900)', marginBottom: '1rem' }}>Submission Successful!</h1>
+                <p style={{ color: 'var(--gray-500)', lineHeight: 1.6 }}>
                     Your solution has been sent to the student. They will review it and release payment or request a revision.
                 </p>
-                <p className="text-gray-400 text-sm mt-8">Redirecting you to the project details...</p>
+                <p style={{ color: 'var(--gray-400)', fontSize: '0.875rem', marginTop: '2rem' }}>Redirecting you to the project details...</p>
             </div>
         </div>
     );
 
     return (
-        <div className="bg-gray-50 min-h-screen py-12 px-4">
-            <div className="max-w-3xl mx-auto">
+        <div className="submission-page">
+            <div className="submission-container">
                 <button
                     onClick={() => navigate(-1)}
-                    className="flex items-center gap-2 text-gray-500 hover:text-navy-900 transition-colors mb-8 font-bold"
+                    className="back-link"
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, marginBottom: '2rem' }}
                 >
                     <ArrowLeft size={20} /> Back
                 </button>
 
-                <div className="bg-white border border-gray-100 rounded-3xl p-8 md:p-12 shadow-xl">
-                    <div className="mb-10">
-                        <h1 className="text-3xl font-bold text-navy-900 mb-2">Upload Submission</h1>
-                        <p className="text-gray-500">Submit your final solution or progress draft for review.</p>
+                <div className="submission-card">
+                    <div style={{ marginBottom: '2.5rem' }}>
+                        <h1 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--primary-900)', marginBottom: '0.5rem' }}>Upload Submission</h1>
+                        <p style={{ color: 'var(--gray-500)' }}>Submit your final solution or progress draft for review.</p>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-8">
-                        <div className="border-2 border-dashed border-gray-200 rounded-2xl p-10 text-center bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer group">
-                            <Upload className="mx-auto text-gray-300 mb-4 group-hover:text-primary-600 transition-colors" size={48} />
-                            <p className="text-navy-900 font-bold mb-1">Select Solution Files</p>
-                            <p className="text-gray-500 text-sm">Upload PDF, ZIP, or separate source files.</p>
-                            <input type="file" className="hidden" multiple />
+                    <form onSubmit={handleSubmit}>
+                        <div className="upload-area">
+                            <Upload style={{ margin: '0 auto 1rem', color: 'var(--gray-300)' }} size={48} />
+                            <p style={{ fontWeight: 800, color: 'var(--primary-900)', marginBottom: '4px' }}>Select Solution Files</p>
+                            <p style={{ fontSize: '0.875rem', color: 'var(--gray-500)' }}>Upload PDF, ZIP, or separate source files.</p>
+                            <input type="file" style={{ display: 'none' }} multiple />
                         </div>
 
-                        <div>
-                            <label className="block text-sm font-bold text-navy-900 mb-3 flex items-center gap-2">
-                                <FileText size={18} className="text-primary-600" /> Comments & Notes
+                        <div className="form-group">
+                            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.875rem', fontWeight: 800, color: 'var(--primary-900)', marginBottom: '0.75rem' }}>
+                                <FileText size={18} style={{ color: 'var(--primary-600)' }} /> Comments & Notes
                             </label>
                             <textarea
                                 value={comments}
                                 onChange={(e) => setComments(e.target.value)}
-                                className="search-input w-full min-h-[150px]"
+                                className="search-input"
+                                style={{ width: '100%', minHeight: '150px', padding: '1rem' }}
                                 placeholder="Explain your approach, list any specific software needed to run the solution, or provide guidance for the student..."
                             />
                         </div>
 
-                        <div className="bg-navy-900 p-6 rounded-2xl text-white flex gap-4">
-                            <div className="w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center shrink-0">
+                        <div className="delivery-box">
+                            <div className="delivery-icon">
                                 <Clock size={20} />
                             </div>
-                            <div className="text-sm">
-                                <p className="font-bold mb-1 uppercase tracking-wider text-primary-400">Timely Delivery</p>
-                                <p className="text-gray-400">Ensure your submission is uploaded before the deadline to maintain your expert rating.</p>
+                            <div>
+                                <p style={{ fontWeight: 800, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em', color: 'var(--accent-400)', marginBottom: '2px' }}>Timely Delivery</p>
+                                <p style={{ fontSize: '0.875rem', color: 'var(--gray-300)', lineHeight: 1.4 }}>Ensure your submission is uploaded before the deadline to maintain your expert rating.</p>
                             </div>
                         </div>
 
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-primary-600 text-white py-4 rounded-2xl font-bold text-lg hover:bg-primary-700 transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary-100"
+                            className="btn btn-primary"
+                            style={{ width: '100%', padding: '1.25rem', fontSize: '1.125rem', marginTop: '2rem', justifyContent: 'center' }}
                         >
                             {loading ? <Loader2 className="animate-spin" /> : <>Complete Submission <Send size={20} /></>}
                         </button>

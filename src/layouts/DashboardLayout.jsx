@@ -18,8 +18,8 @@ const DashboardLayout = ({ role: propRole }) => {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center min-h-screen">
-                <Loader2 className="animate-spin text-primary" size={40} />
+            <div className="flex-center min-h-screen">
+                <Loader2 className="animate-spin text-accent" size={40} />
             </div>
         );
     }
@@ -61,8 +61,7 @@ const DashboardLayout = ({ role: propRole }) => {
             {/* Overlay for mobile sidebar closing */}
             {isSidebarOpen && (
                 <div
-                    className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
-                    style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 40, backgroundColor: 'rgba(0,0,0,0.5)' }}
+                    className="overlay lg-hidden"
                     onClick={() => setSidebarOpen(false)}
                 ></div>
             )}

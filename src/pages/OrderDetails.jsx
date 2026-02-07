@@ -6,7 +6,8 @@ import RevisionForm from '../components/RevisionForm';
 import OrderStatusBadge from '../components/OrderStatusBadge';
 import OrderProgress from '../components/marketplace/OrderProgress';
 import { useAuth } from '../context/AuthContext';
-import { Loader2, MessageSquare, FileText, Download, ShieldCheck } from 'lucide-react';
+import { Loader2, MessageSquare, FileText, Download, ShieldCheck, Check } from 'lucide-react';
+import './orders.css';
 
 const OrderDetails = () => {
   const { id } = useParams();
@@ -43,166 +44,181 @@ const OrderDetails = () => {
     load();
   };
 
-  if (loading) return <div className="flex justify-center p-20 min-h-screen items-center"><Loader2 className="animate-spin text-primary-600" /></div>;
-  if (!order) return <div className="p-20 text-center">Order not found</div>;
+  if (loading) return (
+    <div className="flex-center min-h-screen">
+      <Loader2 className="animate-spin text-accent" size={48} />
+    </div>
+  );
+
+  if (!order) return <div className="empty-placeholder-box" style={{ margin: '5rem auto', maxWidth: '400px' }}>Order not found</div>;
 
   const isSeller = order.sellerId?._id === user?.id || order.sellerId?._id === user?._id;
   const isBuyer = order.buyerId?._id === user?.id || order.buyerId?._id === user?._id;
 
   return (
-    <div className="max-w-6xl mx-auto py-10 px-4 min-h-screen bg-gray-50/50">
-      {/* Header Area */}
-      <div className="flex justify-between items-start mb-8">
-        <div>
-          <h1 className="text-2xl font-bold text-navy-900 mb-2">Order #{order._id.substring(0, 8)}</h1>
-          <div className="text-sm text-gray-500 font-medium flex items-center gap-2">
-            View Order Details <span className="w-1 h-1 rounded-full bg-gray-300"></span> {new Date(order.createdAt).toLocaleDateString()}
-          </div>
-        </div>
-        <div className="flex items-center gap-4">
-          <span className="text-2xl font-bold text-navy-900">${order.totalPrice}</span>
-          <OrderStatusBadge status={order.status} />
-        </div>
-      </div>
+    <div className="order-details-page">
+      <div className="order-details-container">
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Main Action Area (Left) */}
-        <div className="lg:col-span-2 space-y-6">
-
-          {/* Progress Tracker */}
-          <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-sm">
-            <OrderProgress status={order.status} />
-          </div>
-
-          {/* Order Requirements / Context */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-            <h3 className="font-bold text-navy-900 mb-4 flex items-center gap-2">
-              <FileText size={20} className="text-gray-400" /> Order Requirements
-            </h3>
-
-            <div className="flex items-start gap-4 mb-6 pb-6 border-b border-gray-100">
-              <div className="w-16 h-16 bg-gray-100 rounded-lg shrink-0 overflow-hidden">
-                {order.gigId?.images?.[0] && <img src={order.gigId.images[0]} className="w-full h-full object-cover" alt="Gig" />}
-              </div>
-              <div>
-                <h3 className="font-bold text-navy-900 mb-1">{order.gigId?.title}</h3>
-                <div className="flex gap-2 text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                  <span className="bg-gray-100 px-2 py-1 rounded">Standard Package</span>
-                  <span className="bg-gray-100 px-2 py-1 rounded">{order.gigId?.deliveryTime} Days</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-              <p className="text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Instructions</p>
-              <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">
-                {order.requirements?.message || <span className="text-gray-400 italic">No specific instructions provided.</span>}
-              </p>
-
-              {order.requirements?.files?.length > 0 && (
-                <div className="mt-4 pt-4 border-t border-gray-200">
-                  <p className="text-xs font-bold text-gray-500 uppercase mb-2">Attachments</p>
-                  <ul className="space-y-2">
-                    {order.requirements.files.map((file, i) => (
-                      <li key={i}>
-                        <a href={file} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-primary-600 hover:underline">
-                          <Download size={14} /> Attachment {i + 1}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+        {/* Header Area */}
+        <div className="order-header">
+          <div className="order-id-section">
+            <h1>Order #{order._id.substring(0, 8)}</h1>
+            <div className="order-meta-info">
+              <span>View Order Details</span>
+              <span className="dot-separator"></span>
+              <span>{new Date(order.createdAt).toLocaleDateString()}</span>
             </div>
           </div>
+          <div className="order-price-status">
+            <span className="order-total-price">${order.totalPrice}</span>
+            <OrderStatusBadge status={order.status} />
+          </div>
+        </div>
 
-          {/* Actions based on Role */}
-          {isSeller && (
-            <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-              <h3 className="font-bold text-navy-900 mb-4 flex items-center gap-2">
-                <FileText size={20} /> Seller Actions
+        <div className="order-layout-grid">
+          {/* Main Action Area (Left) */}
+          <div className="order-main-content">
+
+            {/* Progress Tracker */}
+            <div className="order-card">
+              <OrderProgress status={order.status} />
+            </div>
+
+            {/* Order Requirements / Context */}
+            <div className="order-card">
+              <h3 className="order-card-title">
+                <FileText size={20} style={{ color: 'var(--gray-400)' }} /> Order Requirements
               </h3>
 
-              {order.status === 'pending' && (
-                <div className="bg-blue-50 border border-blue-100 p-4 rounded-lg flex items-center justify-between">
-                  <div>
-                    <p className="font-bold text-blue-900">Start Order</p>
-                    <p className="text-sm text-blue-700">Confirm you have everything you need to start.</p>
+              <div className="gig-brief-row">
+                <img
+                  src={order.gigId?.images?.[0] || 'https://via.placeholder.com/64'}
+                  className="gig-brief-image"
+                  alt="Gig"
+                />
+                <div className="gig-brief-details">
+                  <h3>{order.gigId?.title}</h3>
+                  <div className="package-badges">
+                    <span className="package-badge-mini">Standard Package</span>
+                    <span className="package-badge-mini">{order.gigId?.deliveryTime} Days</span>
                   </div>
-                  <button
-                    className="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-blue-700 transition-colors"
-                    onClick={() => changeStatus('in_progress')}
-                  >
-                    Start Working
-                  </button>
                 </div>
-              )}
+              </div>
 
-              {(order.status === 'in_progress' || order.status === 'revision') && (
-                <div className="mt-4">
-                  <h4 className="font-semibold text-gray-700 mb-3">Deliver Your Work</h4>
-                  <DeliveryBox onDeliver={deliver} />
+              <div className="instructions-box">
+                <p className="instructions-label">Instructions</p>
+                <div className="instructions-text">
+                  {order.requirements?.message || <span style={{ color: 'var(--gray-400)', fontStyle: 'italic' }}>No specific instructions provided.</span>}
                 </div>
-              )}
+
+                {order.requirements?.files?.length > 0 && (
+                  <div style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--gray-200)' }}>
+                    <p className="instructions-label">Attachments</p>
+                    <ul className="file-link-list">
+                      {order.requirements.files.map((file, i) => (
+                        <li key={i}>
+                          <a href={file} target="_blank" rel="noopener noreferrer" className="file-link-item">
+                            <Download size={14} /> Attachment {i + 1}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
             </div>
-          )}
 
-          {isBuyer && (
-            <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-              <h3 className="font-bold text-navy-900 mb-4 flex items-center gap-2">
-                <ShieldCheck size={20} /> Buyer Actions
-              </h3>
+            {/* Actions based on Role */}
+            {isSeller && (
+              <div className="order-card">
+                <h3 className="order-card-title">
+                  <FileText size={20} /> Seller Actions
+                </h3>
 
-              {order.status === 'delivered' && (
-                <div className="space-y-6">
-                  <div className="bg-green-50 border border-green-100 p-5 rounded-lg">
-                    <h4 className="font-bold text-green-900 mb-2 flex items-center gap-2"><Check size={18} /> Order Delivered</h4>
-                    <p className="text-green-800 text-sm mb-4">The seller has delivered your work. Please review it.</p>
+                {order.status === 'pending' && (
+                  <div className="action-banner banner-blue">
+                    <div className="banner-text banner-text-blue">
+                      <h4>Start Order</h4>
+                      <p>Confirm you have everything you need to start.</p>
+                    </div>
+                    <button
+                      className="btn btn-primary"
+                      style={{ padding: '0.75rem 1.5rem' }}
+                      onClick={() => changeStatus('in_progress')}
+                    >
+                      Start Working
+                    </button>
+                  </div>
+                )}
 
-                    <div className="flex gap-3">
-                      <button
-                        className="bg-green-600 text-white px-6 py-2.5 rounded-lg font-bold hover:bg-green-700 transition-colors shadow-sm"
-                        onClick={() => changeStatus('completed')}
-                      >
-                        Accept & Complete
-                      </button>
-                      <button className="bg-white text-gray-700 border border-gray-300 px-4 py-2.5 rounded-lg font-bold hover:bg-gray-50 transition-colors">
-                        Download Files
-                      </button>
+                {(order.status === 'in_progress' || order.status === 'revision') && (
+                  <div style={{ marginTop: '1rem' }}>
+                    <h4 style={{ fontWeight: 700, color: 'var(--gray-700)', marginBottom: '1rem' }}>Deliver Your Work</h4>
+                    <DeliveryBox onDeliver={deliver} />
+                  </div>
+                )}
+              </div>
+            )}
+
+            {isBuyer && (
+              <div className="order-card">
+                <h3 className="order-card-title">
+                  <ShieldCheck size={20} /> Buyer Actions
+                </h3>
+
+                {order.status === 'delivered' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                    <div className="action-banner banner-green">
+                      <div className="banner-text banner-text-green">
+                        <h4 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <Check size={18} /> Order Delivered
+                        </h4>
+                        <p>The seller has delivered your work. Please review it.</p>
+                      </div>
+
+                      <div style={{ display: 'flex', gap: '0.75rem' }}>
+                        <button
+                          className="btn btn-primary"
+                          style={{ padding: '0.75rem 1.5rem' }}
+                          onClick={() => changeStatus('completed')}
+                        >
+                          Accept & Complete
+                        </button>
+                      </div>
+                    </div>
+
+                    <div style={{ paddingTop: '1.5rem', borderTop: '1px solid var(--gray-100)' }}>
+                      <h4 style={{ fontWeight: 700, color: 'var(--gray-700)', marginBottom: '1rem' }}>Request a Revision</h4>
+                      <RevisionForm onRequest={requestRevision} />
                     </div>
                   </div>
-
-                  <div className="border-t border-gray-200 pt-6">
-                    <h4 className="font-semibold text-gray-700 mb-3">Request a Revision</h4>
-                    <RevisionForm onRequest={requestRevision} />
+                )}
+                {order.status === 'completed' && (
+                  <div className="empty-placeholder-box">
+                    This order is complete. Leave a review?
                   </div>
-                </div>
-              )}
-              {order.status === 'completed' && (
-                <div className="bg-gray-50 p-4 rounded-lg text-center text-gray-500 font-medium">
-                  This order is complete. Leave a review?
-                </div>
-              )}
-            </div>
-          )}
+                )}
+              </div>
+            )}
 
-        </div>
-
-        {/* Sidebar Info (Right) */}
-        <div className="space-y-6">
-          <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-            <h3 className="font-bold text-gray-900 mb-4">Support</h3>
-            <p className="text-sm text-gray-500 mb-4">Having issues with this order?</p>
-            <button className="w-full py-2.5 border border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-2 transition-colors">
-              <MessageSquare size={16} /> Contact Support
-            </button>
           </div>
 
-          <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-            <h3 className="font-bold text-gray-900 mb-4">Files</h3>
-            <div className="text-center py-8 bg-gray-50 rounded-lg border border-dashed border-gray-300">
-              <Download className="mx-auto text-gray-400 mb-2" size={24} />
-              <p className="text-sm text-gray-500 font-medium">No files uploaded yet</p>
+          {/* Sidebar Info (Right) */}
+          <div className="order-sidebar">
+            <div className="order-card">
+              <h3 style={{ fontWeight: 800, color: 'var(--primary-900)', marginBottom: '1rem' }}>Support</h3>
+              <p style={{ fontSize: '0.875rem', color: 'var(--gray-500)', marginBottom: '1.5rem' }}>Having issues with this order?</p>
+              <button className="btn btn-secondary w-full" style={{ justifyContent: 'center', display: 'flex', gap: '0.5rem' }}>
+                <MessageSquare size={16} /> Contact Support
+              </button>
+            </div>
+
+            <div className="order-card">
+              <h3 style={{ fontWeight: 800, color: 'var(--primary-900)', marginBottom: '1rem' }}>Files</h3>
+              <div className="empty-placeholder-box" style={{ padding: '3rem 1rem' }}>
+                <Download style={{ margin: '0 auto 1rem', color: 'var(--gray-300)' }} size={32} />
+                <p style={{ fontSize: '0.875rem', color: 'var(--gray-400)', fontWeight: 600 }}>No files uploaded yet</p>
+              </div>
             </div>
           </div>
         </div>

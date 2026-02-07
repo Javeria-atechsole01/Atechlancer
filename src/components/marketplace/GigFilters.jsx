@@ -78,16 +78,16 @@ const GigFilters = ({ filters, onChange, onClear }) => {
             </div>
 
             {/* Verified Only Switch */}
-            <div className="mb-6 p-3 bg-gray-50 rounded-lg flex items-center justify-between">
-                <span className="text-sm font-semibold text-gray-700">Verified Sellers Only</span>
-                <label className="relative inline-flex items-center cursor-pointer">
+            <div className="filter-switch-row">
+                <span className="switch-label">Verified Sellers Only</span>
+                <label className="switch-toggle">
                     <input
                         type="checkbox"
                         className="sr-only peer"
                         checked={localFilters.verified || false}
                         onChange={(e) => handleChange('verified', e.target.checked)}
                     />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent-500"></div>
+                    <div className="switch-slider"></div>
                 </label>
             </div>
 
