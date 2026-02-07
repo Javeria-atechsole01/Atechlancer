@@ -1,0 +1,92 @@
+/* Why Atechlancer Styles */
+.why-page {
+    background-color: white;
+}
+
+.why-hero {
+    background-color: var(--primary-600);
+    padding: 6rem 1rem;
+    color: white;
+    text-align: center;
+}
+
+.why-hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.why-hero p {
+    font-size: 1.25rem;
+    color: var(--primary-100);
+    max-width: 54rem;
+    margin: 0 auto;
+}
+
+.why-section {
+    padding: 6rem 1rem;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.why-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+}
+
+@media (min-width: 768px) {
+    .why-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.why-card {
+    background: var(--gray-50);
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--gray-200);
+}
+
+.why-card-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    background-color: white;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-600);
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.why-card h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-600);
+    margin-bottom: 1rem;
+}
+
+.why-card p {
+    color: var(--gray-600);
+    line-height: 1.6;
+}
+
+.cta-section {
+    background-color: var(--gray-50);
+    padding: 5rem 1rem;
+    text-align: center;
+}
+
+.cta-wrap {
+    max-width: 48rem;
+    margin: 0 auto;
+}
+
+.cta-wrap h2 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--primary-600);
+    margin-bottom: 1.5rem;
+}

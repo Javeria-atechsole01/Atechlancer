@@ -263,13 +263,24 @@ button {
   margin-bottom: 0.75rem;
 }
 
-.mega-menu-col a {
+.mega-menu-col a,
+.mega-menu-col button,
+.mega-menu-col .skill-item {
   font-size: 0.875rem;
   color: var(--gray-600);
   transition: color 0.2s;
+  background: none;
+  padding: 0;
+  text-align: left;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  display: block;
 }
 
-.mega-menu-col a:hover {
+.mega-menu-col a:hover,
+.mega-menu-col button:hover,
+.mega-menu-col .skill-item:hover {
   color: var(--accent-500);
 }
 

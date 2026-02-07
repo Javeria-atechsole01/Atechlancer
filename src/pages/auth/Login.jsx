@@ -61,11 +61,14 @@ const Login = () => {
             }
 
         } catch (err) {
+            console.error("Login Error:", err);
             setError(err.message || 'Login failed.');
         } finally {
             setIsLoading(false);
         }
     };
+
+    console.log("Login component rendering...");
 
     return (
         <div className="auth-page">

@@ -7,6 +7,7 @@ import About from './pages/About';
 import HowItWorks from './pages/HowItWorks';
 import Pricing from './pages/Pricing';
 import Contact from './pages/Contact';
+import WhyAtechlancer from './pages/WhyAtechlancer';
 import FAQ from './pages/FAQ';
 import Signup from './pages/auth/Signup';
 import Login from './pages/auth/Login';
@@ -81,6 +82,7 @@ function App() {
           <Routes>
             {/* Public Website Routes */}
             <Route path="/" element={<Layout><Home /></Layout>} />
+            <Route path="/why-atechlancer" element={<Layout><WhyAtechlancer /></Layout>} />
             <Route path="/about" element={<Layout><About /></Layout>} />
             <Route path="/how-it-works" element={<Layout><HowItWorks /></Layout>} />
             <Route path="/pricing" element={<Layout><Pricing /></Layout>} />

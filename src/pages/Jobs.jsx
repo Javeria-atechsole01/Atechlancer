@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { jobService } from '../services/jobService';
 import JobCard from '../components/jobs/JobCard';
 import { Loader2, Search, Filter } from 'lucide-react';
+import './jobs.css';
 
 const Jobs = () => {
   const [jobs, setJobs] = useState([]);
@@ -72,19 +73,20 @@ const Jobs = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto py-8 px-4">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-navy-900">Find Jobs</h1>
-          <p className="text-gray-600 mt-1">Explore the latest opportunities</p>
+    <div className="jobs-page">
+      <div className="jobs-header">
+        <div className="jobs-title-section">
+          <h1>Find Jobs</h1>
+          <p>Explore the latest opportunities</p>
         </div>
 
         {/* Search Bar */}
-        <div className="relative w-full md:w-96">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+        <div className="search-container">
+          <Search className="search-icon" size={20} />
           <input
             type="text"
-            className="search-input w-full pl-10"
+            className="form-input"
+            style={{ paddingLeft: '2.5rem' }}
             placeholder="Search by title or keyword..."
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
@@ -92,21 +94,21 @@ const Jobs = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <div className="jobs-grid-layout">
         {/* Filters Sidebar */}
-        <div className="lg:col-span-1 space-y-6">
-          <div className="card">
-            <div className="flex items-center gap-2 mb-4 text-navy-900 font-bold">
+        <div className="filter-sidebar">
+          <div className="filter-card">
+            <div className="filter-header">
               <Filter size={20} />
               <h3>Filters</h3>
             </div>
 
-            <div className="space-y-4">
+            <div className="filter-content">
               {/* Category */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <div className="filter-group">
+                <label className="filter-label">Category</label>
                 <select
-                  className="search-input w-full"
+                  className="form-input"
                   value={filters.category}
                   onChange={(e) => handleFilterChange('category', e.target.value)}
                 >
@@ -120,20 +122,20 @@ const Jobs = () => {
               </div>
 
               {/* Budget */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Budget Range</label>
-                <div className="grid grid-cols-2 gap-2">
+              <div className="filter-group">
+                <label className="filter-label">Budget Range</label>
+                <div className="budget-inputs">
                   <input
                     type="number"
                     placeholder="Min"
-                    className="search-input"
+                    className="form-input"
                     value={filters.minBudget}
                     onChange={(e) => handleFilterChange('minBudget', e.target.value)}
                   />
                   <input
                     type="number"
                     placeholder="Max"
-                    className="search-input"
+                    className="form-input"
                     value={filters.maxBudget}
                     onChange={(e) => handleFilterChange('maxBudget', e.target.value)}
                   />
@@ -141,10 +143,10 @@ const Jobs = () => {
               </div>
 
               {/* Sort */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Sort By</label>
+              <div className="filter-group">
+                <label className="filter-label">Sort By</label>
                 <select
-                  className="search-input w-full"
+                  className="form-input"
                   value={filters.sort}
                   onChange={(e) => handleFilterChange('sort', e.target.value)}
                 >
@@ -156,7 +158,8 @@ const Jobs = () => {
               </div>
 
               <button
-                className="btn btn-outline w-full mt-2"
+                className="btn btn-secondary"
+                style={{ width: '100%', marginTop: '1rem' }}
                 onClick={() => {
                   setSearchInput('');
                   setFilters({
@@ -175,39 +178,39 @@ const Jobs = () => {
         </div>
 
         {/* Job List */}
-        <div className="lg:col-span-3">
+        <div className="jobs-list-section">
           {loading ? (
-            <div className="flex justify-center py-20">
-              <Loader2 className="animate-spin text-primary-600" size={40} />
+            <div style={{ display: 'flex', justifyContent: 'center', padding: '5rem' }}>
+              <Loader2 className="animate-spin" style={{ color: 'var(--primary-600)' }} size={40} />
             </div>
           ) : jobs.length > 0 ? (
-            <div className="grid grid-cols-1 gap-6">
+            <div className="jobs-list-container">
               {jobs.map(job => (
                 <JobCard key={job._id} job={job} />
               ))}
             </div>
           ) : (
-            <div className="text-center py-20 bg-gray-50 rounded-xl border border-dashed border-gray-300">
-              <h3 className="text-xl font-semibold text-gray-600">No jobs found</h3>
-              <p className="text-gray-500 mt-2">Try adjusting your search or filters</p>
+            <div className="empty-state">
+              <h3>No jobs found</h3>
+              <p>Try adjusting your search or filters</p>
             </div>
           )}
 
           {/* Pagination */}
           {!loading && totalPages > 1 && (
-            <div className="flex justify-center mt-8 gap-2">
+            <div className="pagination-controls">
               <button
-                className="btn btn-outline"
+                className="btn btn-secondary"
                 disabled={page === 1}
                 onClick={() => setPage(p => Math.max(1, p - 1))}
               >
                 Previous
               </button>
-              <span className="flex items-center px-4 font-medium text-gray-700">
+              <span style={{ padding: '0 1rem', fontWeight: '500' }}>
                 Page {page} of {totalPages}
               </span>
               <button
-                className="btn btn-outline"
+                className="btn btn-secondary"
                 disabled={page === totalPages}
                 onClick={() => setPage(p => Math.min(totalPages, p + 1))}
               >
@@ -220,5 +223,6 @@ const Jobs = () => {
     </div>
   );
 };
+
 
 export default Jobs;

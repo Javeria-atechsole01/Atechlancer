@@ -1,0 +1,133 @@
+/* Gigs Page Styles */
+.gigs-page {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.gigs-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.gigs-header h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--primary-600);
+}
+
+.gigs-header p {
+    color: var(--gray-600);
+    margin-top: 0.5rem;
+}
+
+.gigs-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 640px) {
+    .gigs-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .gigs-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1280px) {
+    .gigs-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.gig-card {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.gig-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.gig-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    background-color: var(--gray-100);
+}
+
+.gig-content {
+    padding: 1.25rem;
+}
+
+.gig-user {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.user-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: var(--primary-100);
+    color: var(--primary-600);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.user-info {
+    font-size: 0.875rem;
+}
+
+.user-name {
+    font-weight: 600;
+    color: var(--gray-900);
+}
+
+.gig-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gray-800);
+    margin-bottom: 1rem;
+    height: 3rem;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.gig-footer {
+    padding: 1rem 1.25rem;
+    border-top: 1px solid var(--gray-100);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gig-price-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--gray-400);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.gig-price-value {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--primary-600);
+}

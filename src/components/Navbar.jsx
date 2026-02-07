@@ -65,18 +65,12 @@ const Navbar = () => {
 
     const findWorkLinks = [
         { name: 'Browse Jobs', path: '/jobs', icon: <Briefcase size={18} /> },
-        { name: 'Browse Gigs', path: '/marketplace', icon: <Globe size={18} /> },
+        { name: 'Browse Gigs', path: '/gigs', icon: <Globe size={18} /> },
         { name: 'Assignments', path: '/assignments', icon: <GraduationCap size={18} /> },
     ];
 
-    const whyAtechlancerItems = [
-        { name: 'Trust & Safety', path: '/trust', icon: <Shield size={18} /> },
-        { name: 'Identity Verification', path: '/verification', icon: <CheckCircle size={18} /> },
-        { name: 'Student Opportunities', path: '/students', icon: <GraduationCap size={18} /> },
-        { name: 'Secure Payments', path: '/payments', icon: <DollarSign size={18} /> },
-    ];
-
     const staticLinks = [
+        { name: 'Why Atechlancer', path: '/why-atechlancer' },
         { name: 'About', path: '/about' },
         { name: 'How It Works', path: '/how-it-works' },
         { name: 'Pricing', path: '/pricing' },
@@ -114,7 +108,8 @@ const Navbar = () => {
                                                     <ul>
                                                         {cat.items.map((item, i) => (
                                                             <li key={i}>
-                                                                <Link to={`/marketplace?category=${item}`}>{item}</Link>
+                                                                {/* TODO: Wire this to filter search results or navigate to /freelancers?skill={item} when ready */}
+                                                                <span className="skill-item">{item}</span>
                                                             </li>
                                                         ))}
                                                     </ul>
@@ -145,25 +140,6 @@ const Navbar = () => {
                                 )}
                             </div>
 
-                            {/* Dropdown: Why Atechlancer */}
-                            <div className="nav-dropdown-wrapper">
-                                <button
-                                    className={`nav-menu-btn ${activeDropdown === 'why' ? 'active' : ''}`}
-                                    onClick={() => toggleDropdown('why')}
-                                >
-                                    Why Atechlancer <ChevronDown size={14} />
-                                </button>
-                                {activeDropdown === 'why' && (
-                                    <div className="standard-dropdown">
-                                        {whyAtechlancerItems.map((link, idx) => (
-                                            <Link key={idx} to={link.path} className="dropdown-item">
-                                                <span className="item-icon">{link.icon}</span>
-                                                <span className="item-name">{link.name}</span>
-                                            </Link>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
 
                             {/* Static Links */}
                             {staticLinks.map((link) => (
@@ -188,7 +164,7 @@ const Navbar = () => {
                                 </>
                             ) : (
                                 <>
-                                    <Link to="/auth/login" className="navbar-link">Login</Link>
+                                    <Link to="/login" className="navbar-link">Login</Link>
                                     <Link to="/signup" className="navbar-cta">
                                         Get Verified
                                     </Link>
@@ -219,7 +195,10 @@ const Navbar = () => {
                             {activeDropdown === 'm-hire' && (
                                 <div className="mobile-sub-menu">
                                     {hireFreelancerCategories.map(cat => cat.items.map((item, i) => (
-                                        <Link key={i} to={`/marketplace?category=${item}`}>{item}</Link>
+                                        <span key={i} className="navbar-mobile-link" style={{ fontSize: '0.9rem', border: 'none', padding: '0.5rem 0' }}>
+                                            {/* TODO: Wire this to filter search results or navigate to /freelancers?skill={item} when ready */}
+                                            {item}
+                                        </span>
                                     )))}
                                 </div>
                             )}
@@ -234,7 +213,7 @@ const Navbar = () => {
                                 <Link to={`/dashboard/${user.role}`} className="navbar-mobile-cta">Dashboard</Link>
                             ) : (
                                 <div className="flex flex-col gap-3">
-                                    <Link to="/auth/login" className="navbar-mobile-link text-center">Login</Link>
+                                    <Link to="/login" className="navbar-mobile-link text-center">Login</Link>
                                     <Link to="/signup" className="navbar-mobile-cta">Get Verified</Link>
                                 </div>
                             )}
