@@ -469,6 +469,10 @@
     flex-shrink: 0;
 }
 
+.space-y-1>*+* {
+    margin-top: 0.25rem;
+}
+
 .space-y-2>*+* {
     margin-top: 0.5rem;
 }
@@ -487,6 +491,89 @@
 
 .mb-12 {
     margin-bottom: 3rem;
+}
+
+/* Empty State & Buttons */
+.courses-page .text-center {
+    text-align: center;
+}
+
+.courses-page .py-20 {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+}
+
+.courses-page .bg-white {
+    background-color: white;
+}
+
+.courses-page .rounded-2xl {
+    border-radius: 1rem;
+}
+
+.courses-page .border {
+    border-width: 1px;
+}
+
+.courses-page .border-gray-100 {
+    border-color: var(--gray-100);
+}
+
+.courses-page .text-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+}
+
+.courses-page .text-gray-500 {
+    color: var(--gray-500);
+}
+
+.courses-page .justify-center {
+    justify-content: center;
+}
+
+.courses-page .text-gray-300 {
+    color: var(--gray-300);
+}
+
+.courses-page button {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.courses-page .mt-6 {
+    margin-top: 1.5rem;
+}
+
+.courses-page .px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+.courses-page .py-2 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.courses-page .bg-primary-600 {
+    background-color: var(--primary-600);
+}
+
+.courses-page .text-white {
+    color: white;
+}
+
+.courses-page .rounded-lg {
+    border-radius: 0.5rem;
+}
+
+.courses-page button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.courses-page button:active {
+    transform: translateY(0);
 }
 
 /* Progress Section */
