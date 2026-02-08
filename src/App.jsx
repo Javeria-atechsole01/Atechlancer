@@ -36,6 +36,7 @@ import PostAssignment from './pages/dashboard/student/PostAssignment';
 import SubmissionUpload from './pages/assignments/SubmissionUpload';
 import NotificationsPage from './pages/notifications/NotificationsPage';
 import ChatPage from './pages/chat/ChatPage';
+import WalletPage from './pages/wallet/WalletPage';
 
 // Dashboard Imports
 // Dashboard Imports
@@ -137,6 +138,13 @@ function App() {
             <Route path="/chat/:conversationId" element={
               <ProtectedRoute>
                 <Layout><ChatPage /></Layout>
+              </ProtectedRoute>
+            } />
+
+            {/* Wallet */}
+            <Route path="/wallet" element={
+              <ProtectedRoute>
+                <Layout><WalletPage /></Layout>
               </ProtectedRoute>
             } />
             <Route path="/dashboard/student/post-assignment" element={<ProtectedRoute><Layout><PostAssignment /></Layout></ProtectedRoute>} />
