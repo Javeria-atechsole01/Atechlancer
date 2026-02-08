@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { verificationService } from '../../services/verificationService';
 import { Calendar, Clock, CheckCircle, Loader2, AlertCircle, ChevronLeft, ChevronRight } from 'lucide-react';
-import './verification.css';
+import '../../pages/verification/verification.css';
 
 const InterviewBooking = ({ onComplete }) => {
     const [selectedDate, setSelectedDate] = useState(new Date());

@@ -1,6 +1,6 @@
 import React from 'react';
 import { CheckCircle, Shield } from 'lucide-react';
-import './verification.css';
+import '../../pages/verification/verification.css';
 
 const VerificationBadge = ({ verified = false, level = 'basic', size = 'medium', showLabel = true }) => {
     const sizeClasses = {

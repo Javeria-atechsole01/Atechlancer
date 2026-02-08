@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { verificationService } from '../../services/verificationService';
 import { Upload, FileText, Image, CheckCircle, X, Loader2, AlertCircle } from 'lucide-react';
-import './verification.css';
+import '../../pages/verification/verification.css';
 
 const DocumentUpload = ({ onComplete }) => {
     const [documents, setDocuments] = useState({

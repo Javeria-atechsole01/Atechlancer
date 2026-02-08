@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { verificationService } from '../../services/verificationService';
 import { Clock, CheckCircle, XCircle, Loader2, AlertCircle } from 'lucide-react';
-import './verification.css';
+import '../../pages/verification/verification.css';
 
 const SkillTest = ({ category, onComplete }) => {
     const [test, setTest] = useState(null);
