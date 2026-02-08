@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Shield, Facebook, Twitter, Linkedin, Instagram, Mail, MapPin, Phone } from 'lucide-react';
+import { Facebook, Twitter, Linkedin, Instagram, Mail, MapPin, Phone } from 'lucide-react';
+import logo from '../assets/atechlancer_logo.png';
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
@@ -34,7 +35,7 @@ const Footer = () => {
                         {/* Brand Section */}
                         <div className="footer-brand">
                             <Link to="/" className="footer-brand-link">
-                                <img src="/logo.png" alt="AtechLancer" className="footer-logo-img" style={{ height: '72px', width: 'auto' }} />
+                                <img src={logo} alt="AtechLancer" className="footer-logo-img" style={{ height: '72px', width: 'auto' }} />
                             </Link>
                             <p className="footer-description">
                                 Where Skills, Education & Freelancing Meet. The most trusted platform for verified opportunities.

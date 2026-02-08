@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { courseService } from '../../services/courseService';
 import { Download, Printer, ShieldCheck, Award, Loader2, ChevronLeft } from 'lucide-react';
+import logo from '../../assets/atechlancer_logo.png';
 
 const Certificate = () => {
     const { enrollmentId } = useParams();
@@ -62,7 +63,7 @@ const Certificate = () => {
                 <div className="absolute bottom-0 left-0 w-32 h-32 bg-accent-400 rotate-45 -translate-x-16 translate-y-16"></div>
 
                 <div className="mb-8">
-                    <img src="/logo.png" alt="Atechlancer" className="h-16 mx-auto mb-2" />
+                    <img src={logo} alt="Atechlancer" className="h-16 mx-auto mb-2" />
                     <div className="text-2xl font-black tracking-tighter text-navy-900">
                         ATECH<span className="text-green-600">LANCER</span>
                     </div>

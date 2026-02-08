@@ -549,8 +549,8 @@
 }
 
 .hero-title-accent {
-    color: #4ade80;
-    /* accent-400 */
+    color: var(--primary-600);
+    /* Deep Navy - matches brand theme */
 }
 
 .hero-subtitle {

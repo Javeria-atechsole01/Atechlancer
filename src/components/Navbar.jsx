@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown, Search, Shield, Briefcase, GraduationCap, DollarSign, CheckCircle, Globe, PlayCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import logo from '../assets/atechlancer_logo.png';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -85,7 +86,7 @@ const Navbar = () => {
                     {/* LEFT SIDE: Brand + Naval Menus */}
                     <div className="navbar-left">
                         <Link to="/" className="navbar-brand">
-                            <img src="/logo.png" alt="AL" className="navbar-logo-icon" />
+                            <img src={logo} alt="Atechlancer" className="navbar-logo-icon" />
                             <span className="navbar-logo-text">
                                 <span className="text-navy">Atech</span><span className="text-green">lancer</span>
                             </span>
