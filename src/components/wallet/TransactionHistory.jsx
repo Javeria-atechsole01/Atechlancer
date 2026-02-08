@@ -4,7 +4,7 @@ import {
     Filter, Download, ArrowUpRight, ArrowDownLeft,
     RefreshCw, Loader2, AlertCircle
 } from 'lucide-react';
-import './wallet.css';
+import '../../pages/wallet/wallet.css';
 
 const TransactionHistory = () => {
     const [transactions, setTransactions] = useState([]);
@@ -172,8 +172,8 @@ const TransactionHistory = () => {
                                         </td>
                                         <td>
                                             <span className={`transaction-amount ${['credit', 'earning', 'refund'].includes(transaction.type)
-                                                    ? 'positive'
-                                                    : 'negative'
+                                                ? 'positive'
+                                                : 'negative'
                                                 }`}>
                                                 {['credit', 'earning', 'refund'].includes(transaction.type) ? '+' : '-'}
                                                 ${Math.abs(transaction.amount).toFixed(2)}

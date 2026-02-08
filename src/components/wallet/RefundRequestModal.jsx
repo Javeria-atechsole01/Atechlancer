@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { walletService } from '../../services/walletService';
 import { X, Loader2, AlertCircle, Upload } from 'lucide-react';
-import './wallet.css';
+import '../../pages/wallet/wallet.css';
 
 const RefundRequestModal = ({ orderId, orderAmount, onClose, onSuccess }) => {
     const [reason, setReason] = useState('');

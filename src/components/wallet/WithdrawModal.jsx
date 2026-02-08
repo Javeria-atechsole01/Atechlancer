@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { walletService } from '../../services/walletService';
 import { X, Loader2, AlertCircle, CreditCard, Building } from 'lucide-react';
-import './wallet.css';
+import '../../pages/wallet/wallet.css';
 
 const WithdrawModal = ({ availableBalance, onClose, onSuccess }) => {
     const [amount, setAmount] = useState('');
