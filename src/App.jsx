@@ -37,6 +37,11 @@ import SubmissionUpload from './pages/assignments/SubmissionUpload';
 import NotificationsPage from './pages/notifications/NotificationsPage';
 import ChatPage from './pages/chat/ChatPage';
 import WalletPage from './pages/wallet/WalletPage';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import UserManagement from './pages/admin/UserManagement';
+import VerificationPanel from './pages/admin/VerificationPanel';
+import ContentModeration from './pages/admin/ContentModeration';
+import Analytics from './pages/admin/Analytics';
 
 // Dashboard Imports
 // Dashboard Imports
@@ -145,6 +150,33 @@ function App() {
             <Route path="/wallet" element={
               <ProtectedRoute>
                 <Layout><WalletPage /></Layout>
+              </ProtectedRoute>
+            } />
+
+            {/* Admin Routes */}
+            <Route path="/admin" element={
+              <ProtectedRoute>
+                <Layout><AdminDashboard /></Layout>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/users" element={
+              <ProtectedRoute>
+                <Layout><UserManagement /></Layout>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/verifications" element={
+              <ProtectedRoute>
+                <Layout><VerificationPanel /></Layout>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/reports" element={
+              <ProtectedRoute>
+                <Layout><ContentModeration /></Layout>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/analytics" element={
+              <ProtectedRoute>
+                <Layout><Analytics /></Layout>
               </ProtectedRoute>
             } />
             <Route path="/dashboard/student/post-assignment" element={<ProtectedRoute><Layout><PostAssignment /></Layout></ProtectedRoute>} />
