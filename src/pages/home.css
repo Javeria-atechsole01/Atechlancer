@@ -69,11 +69,12 @@
 
 /* --- HERO SECTION --- */
 .hero-section {
-    padding: 6rem 0;
+    padding: 0 0 6rem;
+    /* Top padding removed because .layout-main handles the offset */
     background: linear-gradient(135deg, #162635 0%, #0f1a24 100%);
-    min-height: 90vh;
+    min-height: calc(100vh - 80px);
+    /* Fill remaining screen height precisely */
     display: flex;
-    align-items: center;
     position: relative;
     overflow: hidden;
     color: white;

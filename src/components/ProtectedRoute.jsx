@@ -12,7 +12,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 
   if (!user) {
     // Redirect to login while saving the attempted url
-    return <Navigate to="/auth/login" state={{ from: location }} replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   if (allowedRoles && !allowedRoles.includes(user.role)) {
@@ -21,27 +21,27 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     let redirectPath = '/';
     switch (user.role) {
       case 'student':
-        redirectPath = '/student/dashboard';
+        redirectPath = '/dashboard/student';
         break;
       case 'freelancer':
-        redirectPath = '/freelancer/dashboard';
+        redirectPath = '/dashboard/freelancer';
         break;
       case 'teacher':
-        redirectPath = '/teacher/dashboard';
+        redirectPath = '/dashboard/teacher';
         break;
       case 'employer':
-        redirectPath = '/employer/dashboard';
+        redirectPath = '/dashboard/employer';
         break;
       case 'admin':
-        redirectPath = '/admin/dashboard';
+        redirectPath = '/dashboard/admin';
         break;
       default:
         redirectPath = '/';
     }
-    
+
     // Prevent infinite redirect loop if they are already on their dashboard
     if (location.pathname.startsWith(redirectPath)) {
-        return children;
+      return children;
     }
 
     return <Navigate to={redirectPath} replace />;

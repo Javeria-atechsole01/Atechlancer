@@ -528,3 +528,196 @@
 .empty-state-text {
     color: var(--gray-500);
 }
+
+/* Assignment Landing Specific Styles */
+.assignment-landing {
+    background: white;
+}
+
+.hero-section {
+    background: #0f172a;
+    padding: 100px 20px;
+    /* This is the internal content padding, but let's check if it pushes it down too much */
+    text-align: center;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 1.5rem;
+}
+
+.hero-title-accent {
+    color: #4ade80;
+    /* accent-400 */
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: #94a3b8;
+    /* gray-400 */
+    max-width: 700px;
+    margin: 0 auto 3rem;
+    line-height: 1.6;
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.btn-secondary-outline {
+    padding: 1.25rem 2.5rem;
+    font-size: 1.125rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-secondary-outline:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.assignment-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 80px 20px;
+}
+
+/* How It Works Section */
+.how-it-works {
+    text-align: center;
+    margin-bottom: 100px;
+}
+
+.how-it-works h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 12px;
+}
+
+.how-it-works .subtitle {
+    color: #64748b;
+    font-size: 1.125rem;
+    margin-bottom: 60px;
+}
+
+.steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 32px;
+}
+
+.step {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    padding: 40px 30px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.step:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.step-icon-box {
+    width: 64px;
+    height: 64px;
+    background: #f1f5f9;
+    color: #2563eb;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+}
+
+.step h4 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 12px;
+}
+
+.step p {
+    color: #64748b;
+    line-height: 1.6;
+    font-size: 0.9375rem;
+}
+
+/* Integrity Section */
+.integrity {
+    background: #f8fafc;
+    padding: 60px;
+    border-radius: 32px;
+    border: 1px solid #f1f5f9;
+}
+
+.integrity-icon-large {
+    color: #10b981;
+    margin-bottom: 24px;
+}
+
+.integrity h2 {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 20px;
+}
+
+.integrity p {
+    color: #334155;
+    font-size: 1.125rem;
+    line-height: 1.8;
+    margin-bottom: 40px;
+    max-width: 800px;
+}
+
+.integrity-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.integrity-list li {
+    padding-left: 32px;
+    color: #334155;
+    font-weight: 500;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.integrity-list li::before {
+    content: "✔";
+    position: absolute;
+    left: 0;
+    color: #10b981;
+    font-weight: 900;
+    font-size: 1.125rem;
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .integrity {
+        padding: 40px 24px;
+    }
+
+    .integrity h2 {
+        font-size: 1.75rem;
+    }
+}

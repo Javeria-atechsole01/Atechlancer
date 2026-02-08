@@ -15,33 +15,26 @@ const GigFilters = ({ filters, onChange, onClear }) => {
     };
 
     return (
-        <div className="filter-card">
-            <div className="filter-header">
-                <h3 className="filter-title">
-                    <Filter size={18} /> Filters
-                </h3>
-                {Object.values(filters).some(x => x) && (
-                    <button onClick={onClear} className="clear-filters-btn">
-                        <X size={12} /> Clear All
-                    </button>
-                )}
+        <div className="sidebar">
+            <div className="sidebar-header">
+                <h3 className="sidebar-title">Filters</h3>
+                <button onClick={onClear} className="clear-all-link">Clear All</button>
             </div>
 
+            <div className="divider"></div>
+
             {/* Categories */}
-            <div className="filter-group">
+            <div className="filter-section">
                 <h4 className="filter-label">Category</h4>
-                <div className="filter-options">
+                <div className="filter-list">
                     {['Web Development', 'Mobile Apps', 'Design', 'Writing', 'Marketing', 'Data Science'].map(cat => (
-                        <label key={cat} className={`filter-option ${localFilters.category === cat ? 'active' : ''}`}>
-                            <div className="custom-radio">
-                                {localFilters.category === cat && <Check size={10} className="check-icon" />}
-                            </div>
+                        <label key={cat} className="filter-option">
                             <input
                                 type="radio"
                                 name="category"
                                 checked={localFilters.category === cat}
                                 onChange={() => handleChange('category', cat)}
-                                className="hidden"
+                                className="filter-radio"
                             />
                             <span className="option-text">{cat}</span>
                         </label>
@@ -50,67 +43,56 @@ const GigFilters = ({ filters, onChange, onClear }) => {
             </div>
 
             {/* Price Range */}
-            <div className="filter-group">
+            <div className="filter-section">
                 <h4 className="filter-label">Price Range</h4>
-                <div className="price-inputs">
-                    <div className="price-field">
-                        <span className="currency">$</span>
-                        <input
-                            type="number"
-                            placeholder="Min"
-                            value={localFilters.minPrice || ''}
-                            onChange={e => handleChange('minPrice', e.target.value)}
-                            className="price-input"
-                        />
+                <div className="price-range-container">
+                    <div className="price-input-wrapper">
+                        <label className="input-sub-label">Min Price</label>
+                        <div className="input-with-symbol">
+                            <span className="currency-symbol">$</span>
+                            <input
+                                type="number"
+                                placeholder="Min"
+                                value={localFilters.minPrice || ''}
+                                onChange={e => handleChange('minPrice', e.target.value)}
+                                className="price-field"
+                            />
+                        </div>
                     </div>
-                    <span className="separator">-</span>
-                    <div className="price-field">
-                        <span className="currency">$</span>
-                        <input
-                            type="number"
-                            placeholder="Max"
-                            value={localFilters.maxPrice || ''}
-                            onChange={e => handleChange('maxPrice', e.target.value)}
-                            className="price-input"
-                        />
+                    <span className="price-dash">–</span>
+                    <div className="price-input-wrapper">
+                        <label className="input-sub-label">Max Price</label>
+                        <div className="input-with-symbol">
+                            <span className="currency-symbol">$</span>
+                            <input
+                                type="number"
+                                placeholder="Max"
+                                value={localFilters.maxPrice || ''}
+                                onChange={e => handleChange('maxPrice', e.target.value)}
+                                className="price-field"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
 
-            {/* Verified Only Switch */}
-            <div className="filter-switch-row">
-                <span className="switch-label">Verified Sellers Only</span>
-                <label className="switch-toggle">
-                    <input
-                        type="checkbox"
-                        className="sr-only peer"
-                        checked={localFilters.verified || false}
-                        onChange={(e) => handleChange('verified', e.target.checked)}
-                    />
-                    <div className="switch-slider"></div>
-                </label>
-            </div>
-
             {/* Delivery Time */}
-            <div className="filter-group">
+            <div className="filter-section">
                 <h4 className="filter-label">Delivery Time</h4>
-                <div className="filter-options">
+                <div className="filter-list">
                     {[
                         { label: 'Up to 24 hours', value: 1 },
                         { label: 'Up to 3 days', value: 3 },
                         { label: 'Up to 7 days', value: 7 },
                         { label: 'Anytime', value: '' },
                     ].map(opt => (
-                        <label key={opt.label} className={`filter-option ${localFilters.deliveryTime == opt.value ? 'active' : ''}`}>
-                            <div className="custom-radio-round">
-                                {localFilters.deliveryTime == opt.value && <div className="dot" />}
-                            </div>
+                        <label key={opt.label} className="filter-option">
                             <input
                                 type="radio"
                                 name="deliveryTime"
                                 checked={localFilters.deliveryTime == opt.value}
                                 onChange={() => handleChange('deliveryTime', opt.value)}
-                                className="hidden"
+                                className="filter-radio"
                             />
                             <span className="option-text">{opt.label}</span>
                         </label>
@@ -118,26 +100,47 @@ const GigFilters = ({ filters, onChange, onClear }) => {
                 </div>
             </div>
 
+            {/* Verified Sellers Toggle */}
+            <div className="filter-section">
+                <h4 className="filter-label">Seller Type</h4>
+                <div className="seller-toggle-wrapper">
+                    <label className="toggle-label-group">
+                        <div className="toggle-main">
+                            <input
+                                type="checkbox"
+                                checked={localFilters.verified || false}
+                                onChange={(e) => handleChange('verified', e.target.checked)}
+                                className="filter-checkbox"
+                            />
+                            <span className="option-text">Verified Sellers Only</span>
+                        </div>
+                        <p className="helper-text">Trusted & approved sellers with high performance</p>
+                    </label>
+                </div>
+            </div>
+
             {/* Rating */}
-            <div className="filter-group">
+            <div className="filter-section">
                 <h4 className="filter-label">Rating</h4>
-                <div className="filter-options">
+                <div className="filter-list">
                     {[4, 3, 2, 1].map(r => (
-                        <label key={r} className={`filter-option ${Number(localFilters.rating) === r ? 'active' : ''}`}>
+                        <label key={r} className="filter-option star-filter-option">
                             <input
                                 type="radio"
                                 name="rating"
                                 checked={Number(localFilters.rating) === r}
                                 onChange={() => handleChange('rating', r)}
-                                className="hidden"
+                                className="filter-radio"
                             />
-                            <div className="custom-radio">
-                                {Number(localFilters.rating) === r && <Check size={10} className="check-icon" />}
-                            </div>
-                            <div className="rating-stars">
-                                <span className="stars">
-                                    {[...Array(r)].map((_, i) => <Star key={i} size={14} fill="currentColor" />)}
-                                </span>
+                            <div className="stars-inline">
+                                {[...Array(5)].map((_, i) => (
+                                    <Star
+                                        key={i}
+                                        size={14}
+                                        fill={i < r ? "#FFB33E" : "transparent"}
+                                        color={i < r ? "#FFB33E" : "#E5E7EB"}
+                                    />
+                                ))}
                                 <span className="up-text">& Up</span>
                             </div>
                         </label>
@@ -145,6 +148,9 @@ const GigFilters = ({ filters, onChange, onClear }) => {
                 </div>
             </div>
 
+            <button className="apply-filters-btn" onClick={() => onChange(localFilters)}>
+                Apply Filters
+            </button>
         </div>
     );
 };
