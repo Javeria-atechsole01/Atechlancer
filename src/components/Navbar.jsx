@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown, Search, Shield, Briefcase, GraduationCap, DollarSign, CheckCircle, Globe, PlayCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import NotificationBell from './notifications/NotificationBell';
 import logo from '../assets/atechlancer_logo.png';
 
 const Navbar = () => {
@@ -159,6 +160,7 @@ const Navbar = () => {
                     {/* RIGHT SIDE: Auth / Search / CTA */}
                     <div className="navbar-right">
                         <div className="navbar-auth-actions">
+                            {user && <NotificationBell />}
                             {user ? (
                                 <>
                                     <Link to={`/dashboard/${user.role}`} className="navbar-link">Dashboard</Link>

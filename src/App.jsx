@@ -34,6 +34,7 @@ import AssignmentFeed from './pages/assignments/AssignmentFeed';
 import AssignmentDetails from './pages/assignments/AssignmentDetails';
 import PostAssignment from './pages/dashboard/student/PostAssignment';
 import SubmissionUpload from './pages/assignments/SubmissionUpload';
+import NotificationsPage from './pages/notifications/NotificationsPage';
 
 // Dashboard Imports
 // Dashboard Imports
@@ -118,6 +119,13 @@ function App() {
             <Route path="/assignments/feed" element={<Layout><AssignmentFeed /></Layout>} />
             <Route path="/assignments/:id" element={<Layout><AssignmentDetails /></Layout>} />
             <Route path="/assignments/:id/submit" element={<Layout><SubmissionUpload /></Layout>} />
+
+            {/* Notifications */}
+            <Route path="/notifications" element={
+              <ProtectedRoute>
+                <Layout><NotificationsPage /></Layout>
+              </ProtectedRoute>
+            } />
             <Route path="/dashboard/student/post-assignment" element={<ProtectedRoute><Layout><PostAssignment /></Layout></ProtectedRoute>} />
 
             {/* Project Upload Route */}
