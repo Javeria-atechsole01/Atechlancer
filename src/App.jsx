@@ -14,6 +14,11 @@ import Login from './pages/auth/Login';
 import EmailVerification from './pages/auth/EmailVerification';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import ResetPassword from './pages/auth/ResetPassword';
+import CourseListing from './pages/courses/CourseListing';
+import CoursePreview from './pages/courses/CoursePreview';
+import MyCourses from './pages/courses/MyCourses';
+import CoursePlayer from './pages/courses/CoursePlayer';
+import Certificate from './pages/courses/Certificate';
 import ProtectedRoute from './components/ProtectedRoute';
 import Gigs from './pages/Gigs';
 import GigDetails from './pages/GigDetails';
@@ -88,6 +93,11 @@ function App() {
             <Route path="/pricing" element={<Layout><Pricing /></Layout>} />
             <Route path="/contact" element={<Layout><Contact /></Layout>} />
             <Route path="/faq" element={<Layout><FAQ /></Layout>} />
+            <Route path="/courses" element={<Layout><CourseListing /></Layout>} />
+            <Route path="/courses/:id" element={<Layout><CoursePreview /></Layout>} />
+            <Route path="/my-courses" element={<ProtectedRoute><Layout><MyCourses /></Layout></ProtectedRoute>} />
+            <Route path="/my-courses/:courseId/lesson/:lessonId" element={<ProtectedRoute><CoursePlayer /></ProtectedRoute>} />
+            <Route path="/certificate/:enrollmentId" element={<ProtectedRoute><Certificate /></ProtectedRoute>} />
             <Route path="/gigs" element={<Layout><Gigs /></Layout>} />
             <Route path="/gigs/:id" element={<Layout><GigDetails /></Layout>} />
             <Route path="/jobs" element={<Layout><Jobs /></Layout>} />

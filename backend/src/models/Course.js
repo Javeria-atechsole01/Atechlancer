@@ -24,15 +24,41 @@ const CourseSchema = new mongoose.Schema(
             type: String,
             default: ''
         },
-        lessons: [{
+        category: {
+            type: String,
+            required: true,
+            enum: ['Web Development', 'Mobile Development', 'Data Science', 'AI & Machine Learning', 'Design', 'Business', 'Marketing', 'Photography', 'Music', 'Other']
+        },
+        level: {
+            type: String,
+            required: true,
+            enum: ['Beginner', 'Intermediate', 'Advanced', 'All Levels'],
+            default: 'Beginner'
+        },
+        whatYouWillLearn: [String],
+        requirements: [String],
+        sections: [{
             title: String,
-            content: String, // Or URL to video
-            duration: Number // In minutes
+            lessons: [{
+                title: String,
+                videoUrl: String,
+                duration: Number, // In minutes
+                description: String,
+                isPreview: { type: Boolean, default: false }
+            }]
         }],
-        enrolledStudents: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
-        }]
+        rating: {
+            type: Number,
+            default: 0
+        },
+        reviewCount: {
+            type: Number,
+            default: 0
+        },
+        enrolledStudentsCount: {
+            type: Number,
+            default: 0
+        }
     },
     { timestamps: true }
 );

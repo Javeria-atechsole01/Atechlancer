@@ -19,6 +19,7 @@ const assignmentRoutes = require('./routes/assignment.routes');
 const bidRoutes = require('./routes/bid.routes');
 const submissionRoutes = require('./routes/submission.routes');
 const paymentRoutes = require('c:/Users/Shani/Desktop/AtechLancer/Atechlancer/backend/src/routes/payment.routes.js');
+const courseRoutes = require('./routes/course.routes');
 
 // Validate environment variables
 try {
@@ -51,6 +52,7 @@ app.use('/api/assignments', assignmentRoutes);
 app.use('/api/bids', bidRoutes);
 app.use('/api/submissions', submissionRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/courses', courseRoutes);
 
 // Base route
 app.get('/', (req, res) => {

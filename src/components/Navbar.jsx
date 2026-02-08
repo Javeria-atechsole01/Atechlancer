@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, Search, Shield, Briefcase, GraduationCap, DollarSign, CheckCircle, Globe } from 'lucide-react';
+import { Menu, X, ChevronDown, Search, Shield, Briefcase, GraduationCap, DollarSign, CheckCircle, Globe, PlayCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
@@ -67,6 +67,7 @@ const Navbar = () => {
         { name: 'Browse Jobs', path: '/jobs', icon: <Briefcase size={18} /> },
         { name: 'Browse Gigs', path: '/gigs', icon: <Globe size={18} /> },
         { name: 'Assignments', path: '/assignments', icon: <GraduationCap size={18} /> },
+        { name: 'Course Marketplace', path: '/courses', icon: <PlayCircle size={18} /> },
     ];
 
     const staticLinks = [
@@ -205,6 +206,7 @@ const Navbar = () => {
                         </div>
 
                         <Link to="/jobs" className="navbar-mobile-link">Find Work</Link>
+                        <Link to="/courses" className="navbar-mobile-link">Course Marketplace</Link>
                         <Link to="/how-it-works" className="navbar-mobile-link">How It Works</Link>
                         <Link to="/pricing" className="navbar-mobile-link">Pricing</Link>
 
