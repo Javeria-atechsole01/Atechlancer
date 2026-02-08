@@ -42,6 +42,7 @@ import UserManagement from './pages/admin/UserManagement';
 import VerificationPanel from './pages/admin/VerificationPanel';
 import ContentModeration from './pages/admin/ContentModeration';
 import Analytics from './pages/admin/Analytics';
+import VerificationPage from './pages/verification/VerificationPage';
 
 // Dashboard Imports
 // Dashboard Imports
@@ -177,6 +178,13 @@ function App() {
             <Route path="/admin/analytics" element={
               <ProtectedRoute>
                 <Layout><Analytics /></Layout>
+              </ProtectedRoute>
+            } />
+
+            {/* Verification */}
+            <Route path="/verification" element={
+              <ProtectedRoute>
+                <Layout><VerificationPage /></Layout>
               </ProtectedRoute>
             } />
             <Route path="/dashboard/student/post-assignment" element={<ProtectedRoute><Layout><PostAssignment /></Layout></ProtectedRoute>} />
