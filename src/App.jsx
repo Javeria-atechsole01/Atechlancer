@@ -35,6 +35,7 @@ import AssignmentDetails from './pages/assignments/AssignmentDetails';
 import PostAssignment from './pages/dashboard/student/PostAssignment';
 import SubmissionUpload from './pages/assignments/SubmissionUpload';
 import NotificationsPage from './pages/notifications/NotificationsPage';
+import ChatPage from './pages/chat/ChatPage';
 
 // Dashboard Imports
 // Dashboard Imports
@@ -124,6 +125,18 @@ function App() {
             <Route path="/notifications" element={
               <ProtectedRoute>
                 <Layout><NotificationsPage /></Layout>
+              </ProtectedRoute>
+            } />
+
+            {/* Chat */}
+            <Route path="/chat" element={
+              <ProtectedRoute>
+                <Layout><ChatPage /></Layout>
+              </ProtectedRoute>
+            } />
+            <Route path="/chat/:conversationId" element={
+              <ProtectedRoute>
+                <Layout><ChatPage /></Layout>
               </ProtectedRoute>
             } />
             <Route path="/dashboard/student/post-assignment" element={<ProtectedRoute><Layout><PostAssignment /></Layout></ProtectedRoute>} />
