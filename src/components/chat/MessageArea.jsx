@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Send, Paperclip, Loader2, X } from 'lucide-react';
 import MessageBubble from './MessageBubble';
 import TypingIndicator from './TypingIndicator';
-import './chat.css';
+import '../../pages/chat/chat.css';
 
 const MessageArea = ({
     conversation,

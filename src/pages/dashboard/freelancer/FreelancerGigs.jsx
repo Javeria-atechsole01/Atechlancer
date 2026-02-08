@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Briefcase, Clock, DollarSign, CheckCircle, Plus, X, Eye, Edit2, Trash2 } from 'lucide-react';
 import { gigsService } from '../../../services/gigsService';
+import './gig-form.css';
 
 const FreelancerGigs = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,7 +44,6 @@ const FreelancerGigs = () => {
             deliveryTime: Number(gigData.deliveryTime),
             revisions: Number(gigData.revisions)
         };
-        // Ensure category fallback
         if (!payload.category) payload.category = 'general';
         if (editingGig) {
             const id = editingGig._id || editingGig.id;
@@ -207,157 +207,225 @@ const GigModal = ({ onClose, onSave, initialData }) => {
     };
 
     return (
-        <div style={{
-            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-            backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1000,
-            display: 'flex', alignItems: 'center', justifyContent: 'center'
-        }}>
-            <div className="card" style={{ width: '100%', maxWidth: '800px', maxHeight: '90vh', overflowY: 'auto', padding: '2rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '1px solid #e5e7eb', paddingBottom: '1rem' }}>
-                    <h3 className="card-title">{initialData ? 'Edit Gig' : 'Create New Gig'}</h3>
-                    <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#6b7280' }}>
+        <div className="gig-modal-overlay" onClick={onClose}>
+            <div className="gig-modal-content" onClick={(e) => e.stopPropagation()}>
+                <div className="gig-modal-header">
+                    <h3>
+                        <Briefcase size={24} />
+                        {initialData ? 'Edit Gig' : 'Create New Gig'}
+                    </h3>
+                    <button className="gig-modal-close-btn" onClick={onClose}>
                         <X size={24} />
                     </button>
                 </div>
 
-                <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-                    {/* Basic Info */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="col-span-2">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Gig Title</label>
-                            <input
-                                name="title"
-                                className="search-input w-full"
-                                placeholder="e.g. I will build a React website"
-                                value={formData.title}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                            <input
-                                name="category"
-                                className="search-input w-full"
-                                placeholder="e.g. Web Development"
-                                value={formData.category}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Tags (comma separated)</label>
-                            <input
-                                name="tags"
-                                className="search-input w-full"
-                                placeholder="e.g. react, node, ui"
-                                value={formData.tags}
-                                onChange={handleChange}
-                            />
-                        </div>
-                    </div>
-
-                    {/* Pricing & Delivery */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 p-4 rounded-lg">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Price ($)</label>
-                            <input
-                                type="number"
-                                name="price"
-                                className="search-input w-full"
-                                min="5"
-                                value={formData.price}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Delivery (Days)</label>
-                            <input
-                                type="number"
-                                name="deliveryTime"
-                                className="search-input w-full"
-                                min="1"
-                                value={formData.deliveryTime}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Revisions</label>
-                            <input
-                                type="number"
-                                name="revisions"
-                                className="search-input w-full"
-                                min="0"
-                                value={formData.revisions}
-                                onChange={handleChange}
-                            />
-                        </div>
-                    </div>
-
-                    {/* Description */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                        <textarea
-                            name="description"
-                            className="search-input w-full"
-                            rows="5"
-                            value={formData.description}
-                            onChange={handleChange}
-                            required
-                        ></textarea>
-                    </div>
-
-                    {/* Features */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Included Features (one per line)</label>
-                        <textarea
-                            name="features"
-                            className="search-input w-full"
-                            rows="3"
-                            placeholder="Source Code&#10;Commercial Use&#10;Responsive Design"
-                            value={formData.features}
-                            onChange={handleChange}
-                        ></textarea>
-                    </div>
-
-                    {/* FAQs */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Frequently Asked Questions</label>
-                        <div className="space-y-3 mb-4">
-                            {formData.faqs.map((faq, index) => (
-                                <div key={index} className="bg-gray-50 p-3 rounded flex justify-between items-start">
-                                    <div>
-                                        <p className="font-medium text-sm">Q: {faq.question}</p>
-                                        <p className="text-gray-600 text-sm">A: {faq.answer}</p>
-                                    </div>
-                                    <button type="button" onClick={() => handleRemoveFaq(index)} className="text-red-500 hover:text-red-700">
-                                        <Trash2 size={16} />
-                                    </button>
+                <form onSubmit={handleSubmit}>
+                    <div className="gig-modal-body">
+                        {/* Basic Information Section */}
+                        <div className="gig-form-section">
+                            <h4 className="gig-form-section-title">
+                                📝 Basic Information
+                            </h4>
+                            <div className="gig-form-grid">
+                                <div>
+                                    <label className="gig-form-label required">Gig Title</label>
+                                    <input
+                                        type="text"
+                                        name="title"
+                                        className="gig-form-input"
+                                        placeholder="e.g., I will build a React website"
+                                        value={formData.title}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                    <span className="gig-input-helper">Make it clear and descriptive</span>
                                 </div>
-                            ))}
+
+                                <div className="gig-form-grid-2">
+                                    <div>
+                                        <label className="gig-form-label required">Category</label>
+                                        <input
+                                            type="text"
+                                            name="category"
+                                            className="gig-form-input"
+                                            placeholder="e.g., Web Development"
+                                            value={formData.category}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="gig-tags-input">
+                                        <label className="gig-form-label">Tags</label>
+                                        <input
+                                            type="text"
+                                            name="tags"
+                                            className="gig-form-input"
+                                            placeholder="react, node, ui"
+                                            value={formData.tags}
+                                            onChange={handleChange}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div className="flex gap-2">
-                            <input
-                                className="search-input flex-1"
-                                placeholder="Question"
-                                value={newFaq.question}
-                                onChange={e => setNewFaq({ ...newFaq, question: e.target.value })}
-                            />
-                            <input
-                                className="search-input flex-1"
-                                placeholder="Answer"
-                                value={newFaq.answer}
-                                onChange={e => setNewFaq({ ...newFaq, answer: e.target.value })}
-                            />
-                            <button type="button" onClick={handleAddFaq} className="btn btn-secondary whitespace-nowrap">Add FAQ</button>
+
+                        {/* Pricing & Delivery Section */}
+                        <div className="gig-form-section">
+                            <h4 className="gig-form-section-title">
+                                💰 Pricing & Delivery
+                            </h4>
+                            <div className="gig-pricing-section">
+                                <div className="gig-form-grid-3">
+                                    <div>
+                                        <label className="gig-form-label required">
+                                            <DollarSign size={16} style={{ display: 'inline', marginRight: '0.25rem', verticalAlign: 'middle' }} />
+                                            Price ($)
+                                        </label>
+                                        <input
+                                            type="number"
+                                            name="price"
+                                            className="gig-form-input"
+                                            min="5"
+                                            placeholder="50"
+                                            value={formData.price}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="gig-form-label required">
+                                            <Clock size={16} style={{ display: 'inline', marginRight: '0.25rem', verticalAlign: 'middle' }} />
+                                            Delivery (Days)
+                                        </label>
+                                        <input
+                                            type="number"
+                                            name="deliveryTime"
+                                            className="gig-form-input"
+                                            min="1"
+                                            placeholder="3"
+                                            value={formData.deliveryTime}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="gig-form-label">
+                                            <CheckCircle size={16} style={{ display: 'inline', marginRight: '0.25rem', verticalAlign: 'middle' }} />
+                                            Revisions
+                                        </label>
+                                        <input
+                                            type="number"
+                                            name="revisions"
+                                            className="gig-form-input"
+                                            min="0"
+                                            placeholder="2"
+                                            value={formData.revisions}
+                                            onChange={handleChange}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Description Section */}
+                        <div className="gig-form-section">
+                            <h4 className="gig-form-section-title">
+                                📄 Description
+                            </h4>
+                            <div>
+                                <label className="gig-form-label required">Gig Description</label>
+                                <textarea
+                                    name="description"
+                                    className="gig-form-textarea"
+                                    rows="5"
+                                    placeholder="Describe what you'll deliver, your process, and what makes your service unique..."
+                                    value={formData.description}
+                                    onChange={handleChange}
+                                    required
+                                ></textarea>
+                                <span className="gig-char-counter">{formData.description.length} characters</span>
+                            </div>
+                        </div>
+
+                        {/* Features Section */}
+                        <div className="gig-form-section">
+                            <h4 className="gig-form-section-title">
+                                ✨ Included Features
+                            </h4>
+                            <div>
+                                <label className="gig-form-label">Features (one per line)</label>
+                                <textarea
+                                    name="features"
+                                    className="gig-form-textarea gig-features-textarea"
+                                    rows="4"
+                                    placeholder="Source Code&#10;Commercial Use&#10;Responsive Design&#10;SEO Optimization"
+                                    value={formData.features}
+                                    onChange={handleChange}
+                                ></textarea>
+                                <span className="gig-input-helper">List what's included in your gig</span>
+                            </div>
+                        </div>
+
+                        {/* FAQs Section */}
+                        <div className="gig-form-section">
+                            <h4 className="gig-form-section-title">
+                                ❓ Frequently Asked Questions
+                            </h4>
+                            {formData.faqs.length > 0 && (
+                                <div className="gig-faq-list">
+                                    {formData.faqs.map((faq, index) => (
+                                        <div key={index} className="gig-faq-item">
+                                            <div className="gig-faq-content">
+                                                <p className="gig-faq-question">Q: {faq.question}</p>
+                                                <p className="gig-faq-answer">A: {faq.answer}</p>
+                                            </div>
+                                            <button
+                                                type="button"
+                                                className="gig-faq-remove-btn"
+                                                onClick={() => handleRemoveFaq(index)}
+                                            >
+                                                <Trash2 size={16} />
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                            <div className="gig-faq-add-row">
+                                <div style={{ flex: 1 }}>
+                                    <label className="gig-form-label">Question</label>
+                                    <input
+                                        type="text"
+                                        className="gig-form-input"
+                                        placeholder="What do you need from me?"
+                                        value={newFaq.question}
+                                        onChange={e => setNewFaq({ ...newFaq, question: e.target.value })}
+                                    />
+                                </div>
+                                <div style={{ flex: 1 }}>
+                                    <label className="gig-form-label">Answer</label>
+                                    <input
+                                        type="text"
+                                        className="gig-form-input"
+                                        placeholder="Your requirements and preferences"
+                                        value={newFaq.answer}
+                                        onChange={e => setNewFaq({ ...newFaq, answer: e.target.value })}
+                                    />
+                                </div>
+                                <button type="button" className="gig-faq-add-btn" onClick={handleAddFaq}>
+                                    <Plus size={18} />
+                                    Add FAQ
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
-                        <button type="button" className="btn btn-outline" onClick={onClose}>Cancel</button>
-                        <button type="submit" className="btn btn-primary">{initialData ? 'Update Gig' : 'Create Gig'}</button>
+                    <div className="gig-modal-footer">
+                        <button type="button" className="btn btn-secondary" onClick={onClose}>
+                            Cancel
+                        </button>
+                        <button type="submit" className="btn btn-primary">
+                            {initialData ? 'Update Gig' : 'Create Gig'}
+                        </button>
                     </div>
                 </form>
             </div>

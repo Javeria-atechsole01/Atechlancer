@@ -1,5 +1,5 @@
 import React from 'react';
-import './chat.css';
+import '../../pages/chat/chat.css';
 
 const TypingIndicator = ({ userName }) => {
     return (

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { reviewService } from '../../services/reviewService';
 import { Star, X, Loader2, AlertCircle } from 'lucide-react';
-import './reviews.css';
+import '../../components/reviews/reviews.css';
 
 const ReviewSubmissionModal = ({
     entityType,

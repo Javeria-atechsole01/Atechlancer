@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { reviewService } from '../../services/reviewService';
 import { Star, ThumbsUp, Loader2, AlertCircle } from 'lucide-react';
-import './reviews.css';
+import '../../components/reviews/reviews.css';
 
 const ReviewsList = ({ entityType, entityId, showStats = true }) => {
     const [reviews, setReviews] = useState([]);

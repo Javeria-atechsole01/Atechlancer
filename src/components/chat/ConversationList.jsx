@@ -1,6 +1,6 @@
 import React from 'react';
 import { Circle } from 'lucide-react';
-import './chat.css';
+import '../../pages/chat/chat.css';
 
 const ConversationList = ({
     conversations,

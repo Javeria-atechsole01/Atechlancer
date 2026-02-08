@@ -1,6 +1,6 @@
 import React from 'react';
 import { Download, FileText, Image as ImageIcon, File } from 'lucide-react';
-import './chat.css';
+import '../../pages/chat/chat.css';
 
 const MessageBubble = ({ message, isOwnMessage, senderName }) => {
     const formatTime = (timestamp) => {

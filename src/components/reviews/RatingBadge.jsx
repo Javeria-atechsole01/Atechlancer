@@ -1,6 +1,6 @@
 import React from 'react';
 import { Star } from 'lucide-react';
-import './reviews.css';
+import '../../pages/reviews/reviews.css';
 
 const RatingBadge = ({ rating, reviewCount, size = 'medium', showCount = true }) => {
     const sizeClasses = {
