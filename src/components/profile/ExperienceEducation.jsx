@@ -8,9 +8,11 @@ export const EducationSection = ({ education = [], onUpdate, isOwnProfile }) => 
         institution: '', degree: '', fieldOfStudy: '', startYear: '', endYear: '', description: ''
     });
 
+    const safeEducation = education || [];
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const newEdu = [...education, formData];
+        const newEdu = [...safeEducation, formData];
         await onUpdate({ education: newEdu });
         setIsAdding(false);
         setFormData({ institution: '', degree: '', fieldOfStudy: '', startYear: '', endYear: '', description: '' });
@@ -18,7 +20,7 @@ export const EducationSection = ({ education = [], onUpdate, isOwnProfile }) => 
 
     const handleDelete = async (index) => {
         if (window.confirm('Are you sure you want to delete this education entry?')) {
-            const newEdu = education.filter((_, i) => i !== index);
+            const newEdu = safeEducation.filter((_, i) => i !== index);
             await onUpdate({ education: newEdu });
         }
     };
@@ -36,6 +38,7 @@ export const EducationSection = ({ education = [], onUpdate, isOwnProfile }) => 
 
             {isAdding && (
                 <form onSubmit={handleSubmit} className="banner banner-gray mb-lg">
+                    {/* ... form fields same as before ... */}
                     <div className="profile-form-grid">
                         <div className="profile-form-full">
                             <label className="profile-label">Institution</label>
@@ -67,7 +70,7 @@ export const EducationSection = ({ education = [], onUpdate, isOwnProfile }) => 
             )}
 
             <div className="profile-list-stack">
-                {education.map((edu, index) => (
+                {safeEducation.map((edu, index) => (
                     <div key={index} className="profile-item-row group">
                         <div className="profile-item-icon"><GraduationCap size={24} /></div>
                         <div className="profile-item-body">
@@ -84,7 +87,7 @@ export const EducationSection = ({ education = [], onUpdate, isOwnProfile }) => 
                         )}
                     </div>
                 ))}
-                {education.length === 0 && !isAdding && <p className="text-muted text-sm italic">No education history added.</p>}
+                {safeEducation.length === 0 && !isAdding && <p className="text-muted text-sm italic">No education history added.</p>}
             </div>
         </div>
     );
@@ -96,9 +99,11 @@ export const ExperienceSection = ({ experience = [], onUpdate, isOwnProfile }) =
         title: '', company: '', startYear: '', endYear: '', description: ''
     });
 
+    const safeExperience = experience || [];
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const newExp = [...experience, formData];
+        const newExp = [...safeExperience, formData];
         await onUpdate({ experience: newExp });
         setIsAdding(false);
         setFormData({ title: '', company: '', startYear: '', endYear: '', description: '' });
@@ -106,7 +111,7 @@ export const ExperienceSection = ({ experience = [], onUpdate, isOwnProfile }) =
 
     const handleDelete = async (index) => {
         if (window.confirm('Are you sure you want to delete this experience entry?')) {
-            const newExp = experience.filter((_, i) => i !== index);
+            const newExp = safeExperience.filter((_, i) => i !== index);
             await onUpdate({ experience: newExp });
         }
     };
@@ -155,7 +160,7 @@ export const ExperienceSection = ({ experience = [], onUpdate, isOwnProfile }) =
             )}
 
             <div className="profile-list-stack">
-                {experience.map((exp, index) => (
+                {safeExperience.map((exp, index) => (
                     <div key={index} className="profile-item-row group">
                         <div className="profile-item-icon"><Briefcase size={24} /></div>
                         <div className="profile-item-body">
@@ -173,7 +178,7 @@ export const ExperienceSection = ({ experience = [], onUpdate, isOwnProfile }) =
                         )}
                     </div>
                 ))}
-                {experience.length === 0 && !isAdding && <p className="text-muted text-sm italic">No experience added yet.</p>}
+                {safeExperience.length === 0 && !isAdding && <p className="text-muted text-sm italic">No experience added yet.</p>}
             </div>
         </div>
     );

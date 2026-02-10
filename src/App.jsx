@@ -84,6 +84,7 @@ import AdminPayments from './pages/dashboard/admin/AdminPayments';
 import EmployerApplications from './pages/dashboard/employer/EmployerApplications';
 
 import ApplyJob from './pages/ApplyJob';
+import DataSeeder from './components/debug/DataSeeder';
 
 import { AuthProvider } from './context/AuthContext';
 import { SearchProvider } from './context/SearchContext';
@@ -127,6 +128,9 @@ function App() {
             <Route path="/assignments/feed" element={<Layout><AssignmentFeed /></Layout>} />
             <Route path="/assignments/:id" element={<Layout><AssignmentDetails /></Layout>} />
             <Route path="/assignments/:id/submit" element={<Layout><SubmissionUpload /></Layout>} />
+
+            {/* Temporary Seed Route */}
+            <Route path="/seed" element={<Layout><div style={{ padding: '5rem 0' }}><DataSeeder /></div></Layout>} />
 
             {/* Notifications */}
             <Route path="/notifications" element={

@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Bell, Search, Menu, ChevronDown, CheckCircle, RefreshCw } from 'lucide-react';
+import { Search, Menu, ChevronDown, CheckCircle, RefreshCw } from 'lucide-react';
 import { useSearch } from '../../context/SearchContext';
 import { useAuth } from '../../context/AuthContext';
+import NotificationBell from '../notifications/NotificationBell';
 
 const DashboardHeader = ({ user, toggleSidebar }) => {
     const { searchQuery, setSearchQuery } = useSearch();
@@ -96,10 +97,9 @@ const DashboardHeader = ({ user, toggleSidebar }) => {
 
                 <div className="role-separator"></div>
 
-                <button className="notification-btn">
-                    <Bell size={20} />
-                    <span className="notification-badge"></span>
-                </button>
+                <div className="dashboard-notification-wrapper">
+                    <NotificationBell />
+                </div>
 
                 <div className="user-profile">
                     <div className="user-avatar">

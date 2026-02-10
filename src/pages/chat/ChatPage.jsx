@@ -23,9 +23,17 @@ const ChatPage = () => {
     }, []);
 
     useEffect(() => {
+        let interval;
         if (conversationId) {
             loadMessages(conversationId);
+            // Poll for new messages every 10 seconds
+            interval = setInterval(() => {
+                loadMessages(conversationId, true); // true = silent load
+            }, 10000);
         }
+        return () => {
+            if (interval) clearInterval(interval);
+        };
     }, [conversationId]);
 
     const loadConversations = async () => {
@@ -46,8 +54,8 @@ const ChatPage = () => {
         }
     };
 
-    const loadMessages = async (convId) => {
-        setMessagesLoading(true);
+    const loadMessages = async (convId, silent = false) => {
+        if (!silent) setMessagesLoading(true);
         try {
             const data = await chatService.getMessages(convId);
             setMessages(data.messages || []);

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { assignmentService } from '../../services/assignmentService';
+import { chatService } from '../../services/chatService';
 import {
     Loader2, Clock, DollarSign, FileText, CheckCircle,
     ArrowLeft, ShieldCheck, MessageSquare, Send, Calendar,
@@ -70,6 +71,25 @@ const AssignmentDetails = () => {
         } catch (error) {
             console.error(error);
             alert("Failed to accept bid.");
+        }
+    };
+
+    const handleContactStudent = async () => {
+        if (!user || !user._id) {
+            navigate('/login', { state: { from: `/assignments/${id}` } });
+            return;
+        }
+
+        try {
+            const conversation = await chatService.getOrCreateConversation(assignment.studentId._id, {
+                type: 'assignment',
+                id: assignment._id,
+                title: assignment.title
+            });
+            navigate(`/chat/${conversation._id}`);
+        } catch (err) {
+            console.error('Failed to start conversation', err);
+            alert('Failed to start conversation. Please try again.');
         }
     };
 
@@ -255,6 +275,16 @@ const AssignmentDetails = () => {
                                         Submit New Bid
                                     </button>
                                 )
+                            )}
+
+                            {assignment.status === 'open' && !isOwner && !alreadyBid && (
+                                <button
+                                    onClick={handleContactStudent}
+                                    className="btn"
+                                    style={{ width: '100%', marginTop: '1rem', background: 'white', border: '1px solid var(--primary-200)', color: 'var(--primary-700)', padding: '0.75rem', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                                >
+                                    <MessageSquare size={18} /> Message Student
+                                </button>
                             )}
 
                             {isOwner && (

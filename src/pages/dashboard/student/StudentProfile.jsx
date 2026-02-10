@@ -55,7 +55,7 @@ const StudentProfile = () => {
         }
     };
 
-    if (loading) {
+    if (loading || !user) {
         return (
             <div className="profile-loading-state">
                 <Loader2 className="animate-spin text-primary-600" size={48} />

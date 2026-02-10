@@ -60,7 +60,7 @@ export const ProfileHeader = ({ user, profile, onUpdate, isOwnProfile }) => {
                     <img src={profile.photo} alt={user.name} className="profile-avatar-img" />
                 ) : (
                     <div className="profile-avatar-placeholder">
-                        {user.name?.substring(0, 2).toUpperCase()}
+                        {user.name && user.name.length >= 2 ? user.name.substring(0, 2).toUpperCase() : 'US'}
                     </div>
                 )}
 

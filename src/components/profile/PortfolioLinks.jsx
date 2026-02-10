@@ -8,13 +8,15 @@ export const PortfolioSection = ({ projects = [], onUpdate, isOwnProfile }) => {
         title: '', description: '', technologies: '', projectUrl: '', repoUrl: ''
     });
 
+    const safeProjects = projects || [];
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const newProject = {
             ...formData,
             technologies: formData.technologies.split(',').map(t => t.trim())
         };
-        const newProjects = [...projects, newProject];
+        const newProjects = [...safeProjects, newProject];
         await onUpdate({ projects: newProjects });
         setIsAdding(false);
         setFormData({ title: '', description: '', technologies: '', projectUrl: '', repoUrl: '' });
@@ -22,7 +24,7 @@ export const PortfolioSection = ({ projects = [], onUpdate, isOwnProfile }) => {
 
     const handleDelete = async (index) => {
         if (window.confirm('Are you sure you want to delete this project?')) {
-            const newProjects = projects.filter((_, i) => i !== index);
+            const newProjects = safeProjects.filter((_, i) => i !== index);
             await onUpdate({ projects: newProjects });
         }
     };
@@ -71,7 +73,7 @@ export const PortfolioSection = ({ projects = [], onUpdate, isOwnProfile }) => {
             )}
 
             <div className="portfolio-grid">
-                {projects.map((proj, index) => (
+                {safeProjects.map((proj, index) => (
                     <div key={index} className="portfolio-project-card group">
                         <h4 className="portfolio-card-title">{proj.title}</h4>
                         <p className="portfolio-card-desc">{proj.description}</p>
@@ -105,7 +107,7 @@ export const PortfolioSection = ({ projects = [], onUpdate, isOwnProfile }) => {
                         )}
                     </div>
                 ))}
-                {projects.length === 0 && !isAdding && (
+                {safeProjects.length === 0 && !isAdding && (
                     <div className="profile-form-full text-center py-xl border-dashed border-2 border-gray-200 rounded-lg text-muted italic">
                         No projects added to portfolio yet.
                     </div>
@@ -116,6 +118,8 @@ export const PortfolioSection = ({ projects = [], onUpdate, isOwnProfile }) => {
 };
 
 export const SocialLinksSection = ({ socialLinks = {}, onUpdate, isOwnProfile }) => {
+    // SocialLinksSection handles {} defaults safely already because it's an object, not iterated directly
+    // But let's check the rest
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({ ...socialLinks });
 
@@ -199,9 +203,11 @@ export const CertificationSection = ({ certifications = [], onUpdate, isOwnProfi
     const [isAdding, setIsAdding] = useState(false);
     const [formData, setFormData] = useState({ name: '', issuer: '', year: '', url: '' });
 
+    const safeCertifications = certifications || [];
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const newCerts = [...certifications, formData];
+        const newCerts = [...safeCertifications, formData];
         await onUpdate({ certifications: newCerts });
         setIsAdding(false);
         setFormData({ name: '', issuer: '', year: '', url: '' });
@@ -209,7 +215,7 @@ export const CertificationSection = ({ certifications = [], onUpdate, isOwnProfi
 
     const handleDelete = async (index) => {
         if (window.confirm('Delete this certification?')) {
-            const newCerts = certifications.filter((_, i) => i !== index);
+            const newCerts = safeCertifications.filter((_, i) => i !== index);
             await onUpdate({ certifications: newCerts });
         }
     };
@@ -253,7 +259,7 @@ export const CertificationSection = ({ certifications = [], onUpdate, isOwnProfi
             )}
 
             <div className="profile-list-stack">
-                {certifications.map((cert, index) => (
+                {safeCertifications.map((cert, index) => (
                     <div key={index} className="profile-item-row group">
                         <div className="profile-item-icon gold"><Award size={20} /></div>
                         <div className="profile-item-body">
@@ -268,7 +274,7 @@ export const CertificationSection = ({ certifications = [], onUpdate, isOwnProfi
                         )}
                     </div>
                 ))}
-                {certifications.length === 0 && !isAdding && <p className="text-muted text-sm italic">No certifications listed.</p>}
+                {safeCertifications.length === 0 && !isAdding && <p className="text-muted text-sm italic">No certifications listed.</p>}
             </div>
         </div>
     );
