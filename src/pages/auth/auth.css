@@ -1,12 +1,13 @@
 /* Authentication Pages Styles */
 
 .auth-page {
-    min-height: calc(100vh - 8rem);
+    min-height: calc(100vh - 80px);
     background-color: var(--gray-50);
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    padding: 3rem 1rem;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1rem;
 }
 
 .auth-header {
@@ -295,7 +296,7 @@
 }
 
 .verification-status {
-    text-center: center;
+    text-align: center;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { User, Briefcase, GraduationCap, Building2, Eye, EyeOff, Loader2 } from 'lucide-react';
 import './auth.css';
@@ -7,11 +7,22 @@ import './auth.css';
 const Signup = () => {
     const navigate = useNavigate();
     const { signup } = useAuth();
+    const location = useLocation();
     const [step, setStep] = useState(1); // 1: Role, 2: Form
     const [role, setRole] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const roleParam = params.get('role');
+        const validRoles = ['student', 'freelancer', 'teacher', 'employer'];
+        if (roleParam && validRoles.includes(roleParam)) {
+            setRole(roleParam);
+            setStep(2);
+        }
+    }, [location]);
 
     const [formData, setFormData] = useState({
         name: '',

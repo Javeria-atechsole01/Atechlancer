@@ -10,7 +10,18 @@ const FreelancerGigsManager = () => {
     setGigs(items);
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const items = await gigsService.mine();
+        if (mounted) setGigs(items);
+      } catch {
+        if (mounted) setGigs([]);
+      }
+    })();
+    return () => { mounted = false; };
+  }, []);
 
   const create = async (e) => {
     e.preventDefault();

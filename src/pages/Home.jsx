@@ -10,92 +10,76 @@ import {
     Building2,
     ShieldCheck,
     Lock,
-    Globe
+    Globe,
+    Search
 } from 'lucide-react';
 
 const Home = () => {
     return (
         <div className="home-container">
-            {/* 1. HERO SECTION (Investor-Ready) */}
+            {/* 1. HERO SECTION (Upwork-Style Redesign) */}
             <section className="hero-section">
                 <div className="container">
                     <div className="hero-grid">
                         <div className="hero-content">
                             <div className="hero-badge">
-                                <ShieldCheck size={16} className="text-accent" />
+                                <ShieldCheck size={16} />
                                 <span>The Verified Tech Ecosystem</span>
                             </div>
                             <h1 className="hero-title">
                                 Verified Talent. <br />
-                                <span className="text-primary">Real Projects.</span>
+                                <span className="text-green">Real Projects.</span>
                             </h1>
                             <p className="hero-sub">
                                 The vetted platform where universities, freelancers, and enterprises collaborate.
                                 Secure payments, identity verification, and proven skill sets.
                             </p>
-                            <div className="hero-actions">
-                                <Link to="/register" className="btn btn-primary">
-                                    Get Started
-                                </Link>
-                                <Link to="/how-it-works" className="btn btn-outline">
-                                    Why Atechlancer?
-                                </Link>
-                            </div>
-                            <div className="trust-micro">
-                                <div className="tm-item">
-                                    <CheckCircle size={16} className="text-accent" /> Identity Verified
-                                </div>
-                                <div className="tm-item">
-                                    <CheckCircle size={16} className="text-accent" /> Escrow Secured
+
+                            {/* SEARCH BAR (Upwork Level) */}
+                            <div className="hero-search-wrapper">
+                                <form className="hero-search-container" onSubmit={(e) => {
+                                    e.preventDefault();
+                                    const query = e.target.search.value;
+                                    // Redirect to gigs with search query if UI is stable, or just same page
+                                    if (query) {
+                                        window.location.href = `/gigs?search=${encodeURIComponent(query)}`;
+                                    }
+                                }}>
+                                    <input
+                                        type="text"
+                                        name="search"
+                                        placeholder="Search by skills, roles, or keywords"
+                                    />
+                                    <button type="submit" className="hero-search-btn">
+                                        <Search size={20} />
+                                        <span>Search</span>
+                                    </button>
+                                </form>
+                                <div className="popular-searches">
+                                    <span>Popular:</span>
+                                    {/* TODO: Wire these to filter search results when ready. Currently non-navigational to avoid blank pages. */}
+                                    <span className="search-chip">Web Development</span>
+                                    <Link to="/assignments" className="search-chip">Assignment Help</Link>
+                                    <span className="search-chip">Graphic Design</span>
+                                    <span className="search-chip">AI & Data</span>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Abstract Dashboard Visual (CSS Drawn) */}
-                        <div className="hero-visual">
-                            <div className="glass-card main-card">
-                                <div className="gc-header">
-                                    <div className="gc-dots"></div>
-                                    <div className="gc-badge">Verified Pro</div>
-                                </div>
-                                <div className="gc-body">
-                                    <div className="gc-row">
-                                        <div className="gc-avatar"></div>
-                                        <div className="gc-lines">
-                                            <div className="gc-line w-60"></div>
-                                            <div className="gc-line w-40"></div>
-                                        </div>
-                                    </div>
-                                    <div className="gc-stats">
-                                        <div className="gc-stat">
-                                            <div className="stat-val text-accent">98%</div>
-                                            <div className="stat-lbl">Success</div>
-                                        </div>
-                                        <div className="gc-stat">
-                                            <div className="stat-val text-primary">$12k+</div>
-                                            <div className="stat-lbl">Earned</div>
-                                        </div>
-                                    </div>
-                                    <div className="gc-skills">
-                                        <div className="gc-pill">React</div>
-                                        <div className="gc-pill">Node.js</div>
-                                        <div className="gc-pill">Python</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="glass-card floating-card-1">
-                                <ShieldCheck size={24} className="text-accent" />
-                                <div>
-                                    <div className="fc-title">Skill Verified</div>
-                                    <div className="fc-sub">Top 5% Talent</div>
-                                </div>
-                            </div>
-                            <div className="glass-card floating-card-2">
-                                <Lock size={24} className="text-primary" />
-                                <div>
-                                    <div className="fc-title">Escrow Safe</div>
-                                    <div className="fc-sub">Funds Protected</div>
-                                </div>
+                        {/* RIGHT SIDE: BRAND VIDEO */}
+                        <div className="hero-video-wrapper">
+                            <div className="hero-video-container">
+                                <video
+                                    className="hero-video"
+                                    autoPlay
+                                    muted
+                                    loop
+                                    playsInline
+                                >
+                                    <source src="/video/brand-hero.mp4" type="video/mp4" />
+                                    Your browser does not support the video tag.
+                                </video>
+                                <div className="hero-video-overlay"></div>
                             </div>
                         </div>
                     </div>
@@ -139,25 +123,25 @@ const Home = () => {
                             <div className="ac-icon"><GraduationCap size={28} /></div>
                             <h3>Students</h3>
                             <p>Showcase projects & earn from real assignments.</p>
-                            <Link to="/register?role=student" className="ac-link">Join as Student <ArrowRight size={16} /></Link>
+                            <Link to="/signup?role=student" className="ac-link">Join as Student <ArrowRight size={16} /></Link>
                         </div>
                         <div className="audience-card">
                             <div className="ac-icon"><Briefcase size={28} /></div>
                             <h3>Freelancers</h3>
                             <p>Access high-value, verified tech projects.</p>
-                            <Link to="/register?role=freelancer" className="ac-link">Join as Freelancer <ArrowRight size={16} /></Link>
+                            <Link to="/signup?role=freelancer" className="ac-link">Join as Freelancer <ArrowRight size={16} /></Link>
                         </div>
                         <div className="audience-card">
                             <div className="ac-icon"><Users size={28} /></div>
                             <h3>Teachers</h3>
                             <p>Issue certificates & mentor the next generation.</p>
-                            <Link to="/register?role=teacher" className="ac-link">Join as Teacher <ArrowRight size={16} /></Link>
+                            <Link to="/signup?role=teacher" className="ac-link">Join as Teacher <ArrowRight size={16} /></Link>
                         </div>
                         <div className="audience-card">
                             <div className="ac-icon"><Building2 size={28} /></div>
                             <h3>Employers</h3>
                             <p>Hire pre-vetted talent with zero risk.</p>
-                            <Link to="/register?role=employer" className="ac-link">Post a Job <ArrowRight size={16} /></Link>
+                            <Link to="/signup?role=employer" className="ac-link">Post a Job <ArrowRight size={16} /></Link>
                         </div>
                     </div>
                 </div>
@@ -195,7 +179,7 @@ const Home = () => {
                         <h2>Ready to work with verified professionals?</h2>
                         <p>Join the platform built on trust, transparency, and technical excellence.</p>
                         <div className="cta-buttons">
-                            <Link to="/register" className="btn btn-white">Get Started</Link>
+                            <Link to="/signup" className="btn btn-white">Get Started</Link>
                             <Link to="/contact" className="btn btn-link">Contact Sales</Link>
                         </div>
                     </div>

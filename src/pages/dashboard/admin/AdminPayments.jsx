@@ -1,108 +1,77 @@
 import React, { useEffect, useState } from 'react';
-import { paymentService } from '../../../services/paymentService';
-import { CheckCircle, XCircle } from 'lucide-react';
+import { adminService } from '../../../services/adminService';
+import { Loader2, CreditCard, Banknote } from 'lucide-react';
+import '../../admin/admin.css';
 
 const AdminPayments = () => {
-  const [requests, setRequests] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const load = async () => {
-    setLoading(true);
-    try {
-      const res = await paymentService.getPendingBankRequests();
-      setRequests(res.results || []);
-    } catch (err) {
-      console.error('Failed to load pending payments', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const load = async () => {
+      try {
+        const data = await adminService.getTransactions({ limit: 20 });
+        setTransactions(data.transactions || []);
+      } catch {
+        setTransactions([]);
+      } finally {
+        setLoading(false);
+      }
+    };
     load();
   }, []);
 
-  const verify = async (id) => {
-    try {
-      await paymentService.verifyBankRequest(id);
-      await load();
-    } catch (err) {
-      console.error('Verify failed', err);
-      alert('Verify failed');
-    }
-  };
-
-  const reject = async (id) => {
-    try {
-      await paymentService.rejectBankRequest(id);
-      await load();
-    } catch (err) {
-      console.error('Reject failed', err);
-      alert('Reject failed');
-    }
-  };
+  if (loading) {
+    return (
+      <div className="dashboard-page">
+        <div className="flex-center" style={{ minHeight: '40vh' }}>
+          <Loader2 className="animate-spin text-primary-600" size={32} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="dashboard-page">
-      <div className="dashboard-page-header">
+      <div className="page-header">
         <div>
-          <h1 className="page-title">Pending Bank Payments</h1>
-          <p className="page-description">Review receipts and verify or reject.</p>
+          <h1>Admin Payments</h1>
+          <p>Recent platform transactions</p>
         </div>
       </div>
 
       <div className="card">
-        <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ borderBottom: '1px solid var(--gray-200)' }}>
-              <th style={{ padding: '1rem' }}>Date</th>
-              <th style={{ padding: '1rem' }}>User</th>
-              <th style={{ padding: '1rem' }}>Order</th>
-              <th style={{ padding: '1rem' }}>Amount</th>
-              <th style={{ padding: '1rem' }}>Txn Ref</th>
-              <th style={{ padding: '1rem' }}>Receipt</th>
-              <th style={{ padding: '1rem' }}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
-              <tr>
-                <td style={{ padding: '1rem' }} colSpan={7}>Loading...</td>
+        {transactions.length === 0 ? (
+          <div className="panel-empty">
+            <CreditCard size={64} />
+            <h3>No transactions</h3>
+            <p>No recent payment activity</p>
+          </div>
+        ) : (
+          <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr style={{ borderBottom: '1px solid var(--gray-200)' }}>
+                <th style={{ padding: '1rem' }}>Date</th>
+                <th style={{ padding: '1rem' }}>Type</th>
+                <th style={{ padding: '1rem' }}>Amount</th>
+                <th style={{ padding: '1rem' }}>Status</th>
               </tr>
-            ) : requests.length === 0 ? (
-              <tr>
-                <td style={{ padding: '1rem' }} colSpan={7}>No pending requests.</td>
-              </tr>
-            ) : (
-              requests.map((r) => (
-                <tr key={r._id} style={{ borderBottom: '1px solid var(--gray-100)' }}>
-                  <td style={{ padding: '1rem', color: 'var(--gray-600)' }}>
-                    {new Date(r.createdAt).toLocaleString()}
+            </thead>
+            <tbody>
+              {transactions.map(tx => (
+                <tr key={tx._id} style={{ borderBottom: '1px solid var(--gray-100)' }}>
+                  <td style={{ padding: '1rem' }}>{new Date(tx.createdAt).toLocaleString()}</td>
+                  <td style={{ padding: '1rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                    {tx.type === 'bank' ? <Banknote size={16} /> : <CreditCard size={16} />}
+                    {tx.type || 'card'}
                   </td>
-                  <td style={{ padding: '1rem' }}>
-                    {r.userId?.name} <div style={{ color: 'var(--gray-500)', fontSize: '0.8rem' }}>{r.userId?.email}</div>
-                  </td>
-                  <td style={{ padding: '1rem' }}>{r.orderId?._id}</td>
-                  <td style={{ padding: '1rem', fontWeight: 600 }}>${(r.amount / 100).toFixed(2)}</td>
-                  <td style={{ padding: '1rem' }}>{r.txnRef}</td>
-                  <td style={{ padding: '1rem' }}>
-                    <a href={r.receiptImage} target="_blank" rel="noreferrer">View</a>
-                  </td>
-                  <td style={{ padding: '1rem' }}>
-                    <div style={{ display: 'flex', gap: '0.5rem' }}>
-                      <button className="btn btn-primary" onClick={() => verify(r._id)} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <CheckCircle size={18} /> Verify
-                      </button>
-                      <button className="btn btn-secondary" onClick={() => reject(r._id)} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <XCircle size={18} /> Reject
-                      </button>
-                    </div>
-                  </td>
+                  <td style={{ padding: '1rem', fontWeight: 600 }}>${(tx.amount / 100).toFixed(2)}</td>
+                  <td style={{ padding: '1rem' }}><span className="tag">{tx.status || 'succeeded'}</span></td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

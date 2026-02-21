@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { CreditCard, Download, Banknote } from 'lucide-react';
-import { paymentService } from '../../../services/paymentService';
+import { walletService } from '../../../services/walletService';
 
 const EmployerPayments = () => {
     const [methods, setMethods] = useState([]);
@@ -17,10 +17,9 @@ const EmployerPayments = () => {
 
     const loadData = async () => {
         try {
-            const m = await paymentService.listPaymentMethods();
-            setMethods(m.results || []);
-            const inv = await paymentService.getInvoices();
-            setInvoices(inv.results || []);
+            setMethods([]);
+            const tx = await walletService.getTransactions({ limit: 10 });
+            setInvoices(tx.transactions || tx.results || []);
         } catch (err) {
             console.error('Load payments data failed', err);
         }
@@ -34,12 +33,11 @@ const EmployerPayments = () => {
         if (!pmId) return alert('Enter Stripe paymentMethodId (e.g. pm_...)');
         setAdding(true);
         try {
-            await paymentService.addPaymentMethod(pmId);
             setPmId('');
             await loadData();
-            alert('Payment method added');
+            alert('Payment method action not available in this build.');
         } catch (err) {
-            alert('Failed to add method');
+            alert('Action failed');
             console.error(err);
         } finally {
             setAdding(false);
@@ -49,14 +47,8 @@ const EmployerPayments = () => {
     const handlePayNow = async () => {
         setPaying(true);
         try {
-            const intent = await paymentService.createIntent({
-                amount: amountDue,
-                currency: 'usd',
-                userId: user._id
-            });
-            const confirm = await paymentService.confirmPayment(intent.paymentIntentId);
             await loadData();
-            alert('Payment succeeded');
+            alert('Payment processing not available in this build.');
         } catch (err) {
             alert('Payment failed');
             console.error(err);
@@ -166,7 +158,6 @@ const EmployerPayments = () => {
                                 type="number"
                                 placeholder="Amount (in cents e.g. 45000)"
                                 defaultValue={amountDue}
-                                onChange={(e) => {}}
                                 disabled
                             />
                             <input
@@ -180,16 +171,11 @@ const EmployerPayments = () => {
                                 onClick={async () => {
                                     try {
                                         setBankSubmitting(true);
-                                        await paymentService.submitBankRequest({
-                                            orderId,
-                                            amount: amountDue,
-                                            txnRef,
-                                            receiptFile
-                                        });
+                                        await new Promise(r => setTimeout(r, 500));
                                         setOrderId('');
                                         setTxnRef('');
                                         setReceiptFile(null);
-                                        alert('Bank payment request submitted. We will verify it soon.');
+                                        alert('Bank payment request submission not available in this build.');
                                     } catch (err) {
                                         alert('Failed to submit request');
                                         console.error(err);

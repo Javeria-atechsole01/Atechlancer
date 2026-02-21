@@ -1,5 +1,6 @@
 import React from 'react';
-import { CheckCircle, Clock, FileText, AlertCircle } from 'lucide-react';
+import { CheckCircle, Clock, AlertCircle } from 'lucide-react';
+import './student.css';
 
 const StudentSubmissions = () => {
     const submissions = [
@@ -29,6 +30,15 @@ const StudentSubmissions = () => {
         }
     ];
 
+    const getStatusIcon = (status) => {
+        switch (status) {
+            case 'Reviewed': return <CheckCircle size={20} className="submission-status-icon reviewed" />;
+            case 'Pending Review': return <Clock size={20} className="submission-status-icon pending" />;
+            case 'Changes Requested': return <AlertCircle size={20} className="submission-status-icon requested" />;
+            default: return null;
+        }
+    };
+
     return (
         <div className="dashboard-page">
             <div className="dashboard-page-header">
@@ -39,41 +49,30 @@ const StudentSubmissions = () => {
             </div>
 
             <div className="card">
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
-                    {submissions.map((sub, index) => (
-                        <div key={sub.id} style={{
-                            display: 'flex',
-                            gap: '1rem',
-                            padding: '1.5rem',
-                            borderBottom: index !== submissions.length - 1 ? '1px solid var(--gray-100)' : 'none',
-                            alignItems: 'flex-start'
-                        }}>
-                            <div style={{
-                                marginTop: '0.25rem',
-                                color: sub.status === 'Reviewed' ? 'var(--accent-500)' :
-                                    sub.status === 'Pending Review' ? '#eab308' : '#ef4444'
-                            }}>
-                                {sub.status === 'Reviewed' ? <CheckCircle size={20} /> :
-                                    sub.status === 'Pending Review' ? <Clock size={20} /> : <AlertCircle size={20} />}
-                            </div>
+                <div className="submission-list">
+                    {submissions.map((sub) => (
+                        <div key={sub.id} className="submission-item">
+                            {getStatusIcon(sub.status)}
 
-                            <div style={{ flex: 1 }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                                    <h3 style={{ fontSize: '1rem', fontWeight: '600', color: 'var(--brand-navy)' }}>{sub.title}</h3>
-                                    <span style={{ fontSize: '0.875rem', color: 'var(--gray-500)' }}>{sub.submittedDate}</span>
+                            <div className="submission-content">
+                                <div className="submission-meta-row">
+                                    <h3 className="item-title m-0">{sub.title}</h3>
+                                    <span className="text-muted text-sm">{sub.submittedDate}</span>
                                 </div>
 
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                                    <span className={`tag ${sub.status === 'Reviewed' ? 'tag-verification' : ''}`} style={{ margin: 0 }}>
+                                <div className="submission-tags-row">
+                                    <span className={`tag ${sub.status === 'Reviewed' ? 'tag-verification' : 'tag-gray'}`}>
                                         {sub.status}
                                     </span>
-                                    {sub.grade && <span style={{ fontWeight: 'bold', color: 'var(--brand-navy)' }}>Grade: {sub.grade}</span>}
+                                    {sub.grade && (
+                                        <span className="font-bold text-navy">Grade: {sub.grade}</span>
+                                    )}
                                 </div>
 
                                 {sub.feedback && (
-                                    <p style={{ fontSize: '0.875rem', color: 'var(--gray-600)', backgroundColor: 'var(--gray-50)', padding: '0.75rem', borderRadius: 'var(--radius-md)', marginTop: '0.5rem' }}>
-                                        <span style={{ fontWeight: '600' }}>Feedback:</span> {sub.feedback}
-                                    </p>
+                                    <div className="submission-feedback">
+                                        <b>Feedback:</b> {sub.feedback}
+                                    </div>
                                 )}
                             </div>
                         </div>

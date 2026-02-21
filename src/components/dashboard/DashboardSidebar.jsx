@@ -11,7 +11,8 @@ import {
     BookOpen,
     Users,
     MessageSquare,
-    LogOut
+    LogOut,
+    PlayCircle
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -44,6 +45,7 @@ const DashboardSidebar = ({ isOpen, role }) => {
                     { name: 'Profile & Skills', icon: <User />, path: `/dashboard/student/profile` },
                     { name: 'Projects (FYP)', icon: <FileText />, path: `/dashboard/student/projects` },
                     { name: 'Assignments', icon: <BookOpen />, path: `/dashboard/student/assignments` },
+                    { name: 'Enrolled Courses', icon: <PlayCircle />, path: `/my-courses` },
                     { name: 'Submissions', icon: <CheckCircle />, path: `/dashboard/student/submissions` },
                     { name: 'Payments', icon: <CreditCard />, path: `/dashboard/student/payments` },
                     { name: 'Applications', icon: <Briefcase />, path: `/dashboard/student/applications` },
@@ -92,7 +94,7 @@ const DashboardSidebar = ({ isOpen, role }) => {
             {/* Overlay for mobile */}
             {isOpen && (
                 <div
-                    className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+                    className="overlay lg-hidden"
                     onClick={() => { }} // Should toggle close in parent
                 ></div>
             )}

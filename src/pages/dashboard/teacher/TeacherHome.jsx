@@ -1,6 +1,8 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const TeacherHome = () => {
+    const navigate = useNavigate();
     return (
         <div className="dashboard-page">
             <div className="dashboard-page-header">
@@ -8,7 +10,11 @@ const TeacherHome = () => {
                     <h1 className="page-title">Teacher Dashboard</h1>
                     <p className="page-description">Track your courses and student progress.</p>
                 </div>
-                <button className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}>
+                <button
+                    className="btn btn-primary"
+                    style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}
+                    onClick={() => navigate('/dashboard/teacher/courses?new=1')}
+                >
                     + Upload Course
                 </button>
             </div>

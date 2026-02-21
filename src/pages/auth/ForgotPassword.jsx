@@ -23,7 +23,7 @@ const ForgotPassword = () => {
             await authService.requestPasswordReset(email);
             setStatus('success');
             setMessage('Password reset link has been sent to your email.');
-        } catch (err) {
+        } catch {
             setStatus('error');
             setMessage('Failed to request password reset. Please try again.');
         } finally {

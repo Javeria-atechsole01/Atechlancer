@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { authService } from '../../services/authService';
 import { Mail, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
-import { useAuth } from '../../context/AuthContext';
 import './auth.css';
 
 const EmailVerification = () => {
@@ -15,9 +14,7 @@ const EmailVerification = () => {
     const [message, setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     
-    // In case we want to auto-login after verification
-    const { login } = useAuth(); // Note: This might be tricky if we don't have password. 
-                                 // Usually we redirect to login or auto-login with token returned from verify API.
+    
 
     const email = state?.email || 'your email';
 

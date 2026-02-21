@@ -1,4 +1,5 @@
 import React from 'react';
+import './student.css';
 
 const StudentPayments = () => {
     const transactions = [
@@ -14,46 +15,34 @@ const StudentPayments = () => {
                     <h1 className="page-title">Payment History</h1>
                     <p className="page-description">View your earnings and potential expenses.</p>
                 </div>
-                <button className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}>
+                <button className="btn btn-primary">
                     Withdraw Funds
                 </button>
             </div>
 
-            <div className="card">
-                <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse' }}>
+            <div className="card dashboard-table-wrapper">
+                <table className="dashboard-table">
                     <thead>
-                        <tr style={{ borderBottom: '1px solid var(--gray-200)' }}>
-                            <th style={{ padding: '1rem', color: 'var(--gray-500)', fontSize: '0.875rem' }}>Reference ID</th>
-                            <th style={{ padding: '1rem', color: 'var(--gray-500)', fontSize: '0.875rem' }}>Date</th>
-                            <th style={{ padding: '1rem', color: 'var(--gray-500)', fontSize: '0.875rem' }}>Description</th>
-                            <th style={{ padding: '1rem', color: 'var(--gray-500)', fontSize: '0.875rem' }}>Status</th>
-                            <th style={{ padding: '1rem', color: 'var(--gray-500)', fontSize: '0.875rem', textAlign: 'right' }}>Amount</th>
+                        <tr>
+                            <th>Reference ID</th>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th className="text-right">Amount</th>
                         </tr>
                     </thead>
                     <tbody>
                         {transactions.map(txn => (
-                            <tr key={txn.id} style={{ borderBottom: '1px solid var(--gray-50)' }}>
-                                <td style={{ padding: '1rem', fontFamily: 'monospace', color: 'var(--gray-600)' }}>{txn.id}</td>
-                                <td style={{ padding: '1rem', color: 'var(--gray-900)' }}>{txn.date}</td>
-                                <td style={{ padding: '1rem', color: 'var(--gray-700)' }}>{txn.description}</td>
-                                <td style={{ padding: '1rem' }}>
-                                    <span style={{
-                                        color: 'var(--accent-text)',
-                                        backgroundColor: 'var(--accent-bg)',
-                                        padding: '0.25rem 0.5rem',
-                                        borderRadius: '4px',
-                                        fontSize: '0.75rem',
-                                        fontWeight: '600'
-                                    }}>
+                            <tr key={txn.id}>
+                                <td className="text-mono-gray">{txn.id}</td>
+                                <td>{txn.date}</td>
+                                <td className="item-meta">{txn.description}</td>
+                                <td>
+                                    <span className="tag tag-verification">
                                         {txn.status}
                                     </span>
                                 </td>
-                                <td style={{
-                                    padding: '1rem',
-                                    textAlign: 'right',
-                                    fontWeight: 'bold',
-                                    color: txn.amount.startsWith('+') ? 'var(--accent-500)' : '#ef4444'
-                                }}>
+                                <td className={`text-right ${txn.amount.startsWith('+') ? 'text-amount-pos' : 'text-amount-neg'}`}>
                                     {txn.amount}
                                 </td>
                             </tr>

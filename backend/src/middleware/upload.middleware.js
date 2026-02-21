@@ -25,6 +25,44 @@ const documentStorage = new CloudinaryStorage({
   }
 });
 
+// Configure storage for Gig Images
+const gigImageStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'gig_images',
+    allowed_formats: ['jpg', 'png', 'jpeg'],
+    transformation: [{ width: 1200, height: 800, crop: 'limit' }]
+  }
+});
+
+// Configure storage for Order Deliveries (multiple file types)
+const deliveryStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'order_deliveries',
+    resource_type: 'raw',
+    allowed_formats: ['zip', 'pdf', 'doc', 'docx', 'txt', 'png', 'jpg', 'jpeg'],
+    use_filename: true,
+    unique_filename: true
+  }
+});
+
+// Configure storage for Message Attachments (images/videos/documents)
+const messageAttachmentStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'message_attachments',
+    resource_type: 'raw',
+    allowed_formats: [
+      'png', 'jpg', 'jpeg', 'gif', 'webp',
+      'mp4', 'mov', 'avi',
+      'pdf', 'doc', 'docx', 'ppt', 'pptx', 'xlsx', 'zip', 'txt'
+    ],
+    use_filename: true,
+    unique_filename: true
+  }
+});
+
 // Initialize Multer for Photos
 const uploadPhoto = multer({
   storage: photoStorage,
@@ -39,47 +77,25 @@ const uploadDocument = multer({
   fileFilter: fileFilter
 });
 
-// Storage for Gig Images
-const gigImageStorage = new CloudinaryStorage({
-  cloudinary,
-  params: {
-    folder: 'gig_images',
-    allowed_formats: ['jpg', 'png', 'jpeg']
-  }
-});
-
+// Initialize Multer for Gig Images
 const uploadGigImages = multer({
   storage: gigImageStorage,
-  limits: { fileSize: 5 * 1024 * 1024 }
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB per image
+  fileFilter: fileFilter
 });
 
-// Storage for Deliveries
-const deliveryStorage = new CloudinaryStorage({
-  cloudinary,
-  params: {
-    folder: 'deliveries',
-    resource_type: 'raw',
-    allowed_formats: ['pdf']
-  }
-});
-
+// Initialize Multer for Deliveries
 const uploadDelivery = multer({
   storage: deliveryStorage,
-  limits: { fileSize: 20 * 1024 * 1024 }
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB total per file
+  fileFilter: fileFilter
 });
 
-// Storage for Bank Transfer Receipts (images)
-const receiptStorage = new CloudinaryStorage({
-  cloudinary,
-  params: {
-    folder: 'payment_receipts',
-    allowed_formats: ['jpg', 'png', 'jpeg']
-  }
-});
-
-const uploadReceipt = multer({
-  storage: receiptStorage,
-  limits: { fileSize: 10 * 1024 * 1024 }
+// Initialize Multer for Message Attachments
+const uploadMessageAttachments = multer({
+  storage: messageAttachmentStorage,
+  limits: { fileSize: 50 * 1024 * 1024 },
+  fileFilter: fileFilter
 });
 
 module.exports = {
@@ -87,5 +103,5 @@ module.exports = {
   uploadDocument,
   uploadGigImages,
   uploadDelivery,
-  uploadReceipt
+  uploadMessageAttachments
 };

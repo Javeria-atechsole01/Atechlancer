@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const projectController = require('../controllers/project.controller');
-const { authenticateUser, authorizeRoles } = require('../middleware/auth.middleware');
+const { authenticateUser } = require('../middleware/auth.middleware');
+const { authorizeRoles } = require('../middleware/role.middleware');
 
 // Public Routes
 router.get('/', projectController.getProjects); // Public Hub

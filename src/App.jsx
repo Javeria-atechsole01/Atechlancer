@@ -7,20 +7,42 @@ import About from './pages/About';
 import HowItWorks from './pages/HowItWorks';
 import Pricing from './pages/Pricing';
 import Contact from './pages/Contact';
+import WhyAtechlancer from './pages/WhyAtechlancer';
 import FAQ from './pages/FAQ';
 import Signup from './pages/auth/Signup';
 import Login from './pages/auth/Login';
 import EmailVerification from './pages/auth/EmailVerification';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import ResetPassword from './pages/auth/ResetPassword';
+import CourseListing from './pages/courses/CourseListing';
+import CoursePreview from './pages/courses/CoursePreview';
+import MyCourses from './pages/courses/MyCourses';
+import CoursePlayer from './pages/courses/CoursePlayer';
+import Certificate from './pages/courses/Certificate';
 import ProtectedRoute from './components/ProtectedRoute';
 import Gigs from './pages/Gigs';
 import GigDetails from './pages/GigDetails';
 import Orders from './pages/Orders';
 import OrderDetails from './pages/OrderDetails';
+import ContactSeller from './pages/ContactSeller';
+import Conversation from './pages/messages/Conversation';
 import ProjectHub from './pages/ProjectHub';
 import ProjectDetails from './pages/ProjectDetails';
 import StudentPostProject from './pages/dashboard/student/StudentPostProject';
+import AssignmentLanding from './pages/assignments/AssignmentLanding';
+import AssignmentFeed from './pages/assignments/AssignmentFeed';
+import AssignmentDetails from './pages/assignments/AssignmentDetails';
+import PostAssignment from './pages/dashboard/student/PostAssignment';
+import SubmissionUpload from './pages/assignments/SubmissionUpload';
+import NotificationsPage from './pages/notifications/NotificationsPage';
+import ChatPage from './pages/chat/ChatPage';
+import WalletPage from './pages/wallet/WalletPage';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import UserManagement from './pages/admin/UserManagement';
+import VerificationPanel from './pages/admin/VerificationPanel';
+import ContentModeration from './pages/admin/ContentModeration';
+import Analytics from './pages/admin/Analytics';
+import VerificationPage from './pages/verification/VerificationPage';
 
 // Dashboard Imports
 // Dashboard Imports
@@ -61,9 +83,9 @@ import EmployerPayments from './pages/dashboard/employer/EmployerPayments';
 import AdminPayments from './pages/dashboard/admin/AdminPayments';
 import EmployerApplications from './pages/dashboard/employer/EmployerApplications';
 
+import ApplyJob from './pages/ApplyJob';
 import Jobs from './pages/Jobs';
 import JobDetails from './pages/JobDetails';
-import ApplyJob from './pages/ApplyJob';
 
 import { AuthProvider } from './context/AuthContext';
 import { SearchProvider } from './context/SearchContext';
@@ -76,13 +98,21 @@ function App() {
           <Routes>
             {/* Public Website Routes */}
             <Route path="/" element={<Layout><Home /></Layout>} />
+            <Route path="/why-atechlancer" element={<Layout><WhyAtechlancer /></Layout>} />
             <Route path="/about" element={<Layout><About /></Layout>} />
             <Route path="/how-it-works" element={<Layout><HowItWorks /></Layout>} />
             <Route path="/pricing" element={<Layout><Pricing /></Layout>} />
             <Route path="/contact" element={<Layout><Contact /></Layout>} />
             <Route path="/faq" element={<Layout><FAQ /></Layout>} />
+            <Route path="/courses" element={<Layout><CourseListing /></Layout>} />
+            <Route path="/courses/:id" element={<Layout><CoursePreview /></Layout>} />
+            <Route path="/my-courses" element={<ProtectedRoute><Layout><MyCourses /></Layout></ProtectedRoute>} />
+            <Route path="/my-courses/:courseId/lesson/:lessonId" element={<ProtectedRoute><CoursePlayer /></ProtectedRoute>} />
+            <Route path="/certificate/:enrollmentId" element={<ProtectedRoute><Certificate /></ProtectedRoute>} />
             <Route path="/gigs" element={<Layout><Gigs /></Layout>} />
             <Route path="/gigs/:id" element={<Layout><GigDetails /></Layout>} />
+            <Route path="/gigs/:id/contact" element={<ProtectedRoute><Layout><ContactSeller /></Layout></ProtectedRoute>} />
+            <Route path="/messages/:userId" element={<ProtectedRoute><Layout><Conversation /></Layout></ProtectedRoute>} />
             <Route path="/jobs" element={<Layout><Jobs /></Layout>} />
             <Route path="/jobs/:id" element={<Layout><JobDetails /></Layout>} />
             <Route path="/jobs/:id/apply" element={<Layout><ApplyJob /></Layout>} />
@@ -93,13 +123,78 @@ function App() {
             <Route path="/reset-password" element={<Layout><ResetPassword /></Layout>} />
             <Route path="/orders" element={<ProtectedRoute><Layout><Orders /></Layout></ProtectedRoute>} />
             <Route path="/orders/:id" element={<ProtectedRoute><Layout><OrderDetails /></Layout></ProtectedRoute>} />
-            <Route path="/jobs" element={<Layout><Jobs /></Layout>} />
-            <Route path="/jobs/:id" element={<Layout><JobDetails /></Layout>} />
             <Route path="/projects" element={<Layout><ProjectHub /></Layout>} />
             <Route path="/projects/:id" element={<Layout><ProjectDetails /></Layout>} />
+          
+            {/* Assignment Marketplace Routes */}
+            <Route path="/assignments" element={<Layout><AssignmentLanding /></Layout>} />
+            <Route path="/assignments/feed" element={<Layout><AssignmentFeed /></Layout>} />
+            <Route path="/assignments/:id" element={<Layout><AssignmentDetails /></Layout>} />
+            <Route path="/assignments/:id/submit" element={<Layout><SubmissionUpload /></Layout>} />
+
+            {/* Notifications */}
+            <Route path="/notifications" element={
+              <ProtectedRoute>
+                <Layout><NotificationsPage /></Layout>
+              </ProtectedRoute>
+            } />
+
+            {/* Chat */}
+            <Route path="/chat" element={
+              <ProtectedRoute>
+                <Layout><ChatPage /></Layout>
+              </ProtectedRoute>
+            } />
+            <Route path="/chat/:conversationId" element={
+              <ProtectedRoute>
+                <Layout><ChatPage /></Layout>
+              </ProtectedRoute>
+            } />
+
+            {/* Wallet */}
+            <Route path="/wallet" element={
+              <ProtectedRoute>
+                <Layout><WalletPage /></Layout>
+              </ProtectedRoute>
+            } />
+
+            {/* Admin Routes */}
+            <Route path="/admin" element={
+              <ProtectedRoute>
+                <Layout><AdminDashboard /></Layout>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/users" element={
+              <ProtectedRoute>
+                <Layout><UserManagement /></Layout>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/verifications" element={
+              <ProtectedRoute>
+                <Layout><VerificationPanel /></Layout>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/reports" element={
+              <ProtectedRoute>
+                <Layout><ContentModeration /></Layout>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/analytics" element={
+              <ProtectedRoute>
+                <Layout><Analytics /></Layout>
+              </ProtectedRoute>
+            } />
+
+            {/* Verification */}
+            <Route path="/verification" element={
+              <ProtectedRoute>
+                <Layout><VerificationPage /></Layout>
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard/student/post-assignment" element={<ProtectedRoute><Layout><PostAssignment /></Layout></ProtectedRoute>} />
 
             {/* Project Upload Route */}
-            <Route path="/dashboard/student/projects/new" element={<Layout><StudentPostProject /></Layout>} />
+            <Route path="/dashboard/student/projects/new" element={<ProtectedRoute><Layout><StudentPostProject /></Layout></ProtectedRoute>} />
 
 
             {/* Public Profile View (Shared) */}

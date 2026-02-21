@@ -34,6 +34,7 @@ const Login = () => {
         }
 
         setIsLoading(true);
+
         login(formData.email, formData.password)
             .then(({ user }) => {
                 switch (user.role) {
@@ -62,7 +63,43 @@ const Login = () => {
             .finally(() => {
                 setIsLoading(false);
             });
+
+
+        try {
+            const data = await login(formData.email, formData.password);
+
+            // Redirect based on role
+            const user = data.user;
+            switch (user.role) {
+                case 'employer':
+                    navigate('/dashboard/employer');
+                    break;
+                case 'teacher':
+                    navigate('/dashboard/teacher');
+                    break;
+                case 'freelancer':
+                    navigate('/dashboard/freelancer');
+                    break;
+                case 'student':
+                    navigate('/dashboard/student');
+                    break;
+                case 'admin':
+                    navigate('/dashboard/admin');
+                    break;
+                default:
+                    navigate('/');
+            }
+
+        } catch (err) {
+            console.error("Login Error:", err);
+            setError(err.message || 'Login failed.');
+        } finally {
+            setIsLoading(false);
+        }
+
     };
+
+    console.log("Login component rendering...");
 
     return (
         <div className="auth-page">

@@ -1,60 +1,74 @@
 import React, { useEffect, useState } from 'react';
 import { applicationService } from '../../../services/applicationService';
+import { Loader2 } from 'lucide-react';
+import './student.css';
 
 const StudentApplications = () => {
-  const [apps, setApps] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [applications, setApplications] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const load = async () => {
-    setLoading(true);
-    try {
-      const res = await applicationService.myApplications();
-      setApps(res.results || []);
-    } catch (err) {
-      console.error('Failed to load applications', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const data = await applicationService.myApplications();
+        setApplications(data.results || data || []);
+      } catch {
+        setApplications([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, []);
 
-  useEffect(() => { load(); }, []);
+  if (loading) {
+    return (
+      <div className="dashboard-page">
+        <div className="flex-center" style={{ minHeight: '40vh' }}>
+          <Loader2 className="animate-spin text-primary-600" size={32} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="dashboard-page">
       <div className="dashboard-page-header">
         <div>
-          <h1 className="page-title">My Applications</h1>
-          <p className="page-description">Your job applications and statuses.</p>
+          <h1 className="page-title">My Job Applications</h1>
+          <p className="page-description">Track your submitted applications and statuses.</p>
         </div>
       </div>
 
       <div className="card">
-        <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ borderBottom: '1px solid var(--gray-200)' }}>
-              <th style={{ padding: '1rem' }}>Date</th>
-              <th style={{ padding: '1rem' }}>Job</th>
-              <th style={{ padding: '1rem' }}>Budget</th>
-              <th style={{ padding: '1rem' }}>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
-              <tr><td style={{ padding: '1rem' }} colSpan={4}>Loading...</td></tr>
-            ) : apps.length === 0 ? (
-              <tr><td style={{ padding: '1rem' }} colSpan={4}>No applications yet.</td></tr>
-            ) : apps.map(a => (
-              <tr key={a._id} style={{ borderBottom: '1px solid var(--gray-100)' }}>
-                <td style={{ padding: '1rem', color: 'var(--gray-600)' }}>{new Date(a.createdAt).toLocaleString()}</td>
-                <td style={{ padding: '1rem', fontWeight: 600, color: 'var(--brand-navy)' }}>{a.jobId?.title}</td>
-                <td style={{ padding: '1rem' }}>${a.jobId?.budget}</td>
-                <td style={{ padding: '1rem' }}>
-                  <span className="tag">{a.status}</span>
-                </td>
+        {applications.length === 0 ? (
+          <div className="empty-placeholder-box">No applications yet.</div>
+        ) : (
+          <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr style={{ borderBottom: '1px solid var(--gray-200)' }}>
+                <th style={{ padding: '1rem' }}>Job</th>
+                <th style={{ padding: '1rem' }}>Expected Rate</th>
+                <th style={{ padding: '1rem' }}>Status</th>
+                <th style={{ padding: '1rem' }}>Applied On</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {applications.map(app => (
+                <tr key={app._id} style={{ borderBottom: '1px solid var(--gray-100)' }}>
+                  <td style={{ padding: '1rem', fontWeight: 600 }}>{app.jobId?.title || 'Job'}</td>
+                  <td style={{ padding: '1rem' }}>{app.expectedRate ? `$${app.expectedRate}` : '-'}</td>
+                  <td style={{ padding: '1rem' }}>
+                    <span className="tag">{app.status || 'submitted'}</span>
+                  </td>
+                  <td style={{ padding: '1rem' }}>
+                    {app.createdAt ? new Date(app.createdAt).toLocaleDateString() : '-'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

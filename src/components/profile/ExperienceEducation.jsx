@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, Calendar, Briefcase, GraduationCap, Edit2 } from 'lucide-react';
+import { Plus, Trash2, Calendar, Briefcase, GraduationCap } from 'lucide-react';
+import './profile-components.css';
 
 export const EducationSection = ({ education = [], onUpdate, isOwnProfile }) => {
     const [isAdding, setIsAdding] = useState(false);
@@ -16,123 +17,74 @@ export const EducationSection = ({ education = [], onUpdate, isOwnProfile }) => 
     };
 
     const handleDelete = async (index) => {
-        if (window.confirm('Are you sure?')) {
+        if (window.confirm('Are you sure you want to delete this education entry?')) {
             const newEdu = education.filter((_, i) => i !== index);
             await onUpdate({ education: newEdu });
         }
     };
 
-    const cardStyle = {
-        backgroundColor: '#fff',
-        border: '1px solid #e5e7eb',
-        borderRadius: '12px',
-        padding: '24px',
-        marginBottom: '24px',
-        boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
-    };
-
-    const headerStyle = {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: '24px',
-        borderBottom: '1px solid #f3f4f6',
-        paddingBottom: '16px'
-    };
-
-    const btnStyle = {
-        display: 'flex',
-        alignItems: 'center',
-        gap: '6px',
-        padding: '6px 12px',
-        border: '1px solid #d1d5db',
-        borderRadius: '6px',
-        backgroundColor: '#fff',
-        color: '#374151',
-        fontSize: '14px',
-        fontWeight: '500',
-        cursor: 'pointer'
-    };
-
-    const inputStyle = {
-        width: '100%',
-        padding: '8px 12px',
-        borderRadius: '6px',
-        border: '1px solid #d1d5db',
-        fontSize: '15px',
-        outline: 'none'
-    };
-
-    const labelStyle = {
-        display: 'block',
-        fontSize: '13px',
-        color: '#6b7280',
-        marginBottom: '4px',
-        fontWeight: '500'
-    };
-
     return (
-        <div style={cardStyle}>
-            <div style={headerStyle}>
-                <h3 className="card-title" style={{ fontSize: '18px', margin: 0 }}>Education</h3>
+        <div className="profile-card">
+            <div className="profile-section-header">
+                <h3 className="profile-section-title">Education</h3>
                 {isOwnProfile && !isAdding && (
-                    <button onClick={() => setIsAdding(true)} style={btnStyle}>
+                    <button onClick={() => setIsAdding(true)} className="btn btn-secondary btn-sm flex-row-gap gap-sm">
                         <Plus size={14} /> Add Education
                     </button>
                 )}
             </div>
 
             {isAdding && (
-                <form onSubmit={handleSubmit} style={{ marginBottom: '24px', padding: '16px', backgroundColor: '#f9fafb', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
-                        <div style={{ gridColumn: '1 / -1' }}>
-                            <label style={labelStyle}>Institution</label>
-                            <input required style={inputStyle} value={formData.institution} onChange={e => setFormData({ ...formData, institution: e.target.value })} placeholder="e.g. Harvard University" />
+                <form onSubmit={handleSubmit} className="banner banner-gray mb-lg">
+                    <div className="profile-form-grid">
+                        <div className="profile-form-full">
+                            <label className="profile-label">Institution</label>
+                            <input required className="search-input w-full" value={formData.institution} onChange={e => setFormData({ ...formData, institution: e.target.value })} placeholder="e.g. Harvard University" />
                         </div>
                         <div>
-                            <label style={labelStyle}>Degree</label>
-                            <input required style={inputStyle} value={formData.degree} onChange={e => setFormData({ ...formData, degree: e.target.value })} placeholder="e.g. Bachelor's" />
+                            <label className="profile-label">Degree</label>
+                            <input required className="search-input w-full" value={formData.degree} onChange={e => setFormData({ ...formData, degree: e.target.value })} placeholder="e.g. Bachelor's" />
                         </div>
                         <div>
-                            <label style={labelStyle}>Field of Study</label>
-                            <input required style={inputStyle} value={formData.fieldOfStudy} onChange={e => setFormData({ ...formData, fieldOfStudy: e.target.value })} placeholder="e.g. Computer Science" />
+                            <label className="profile-label">Field of Study</label>
+                            <input required className="search-input w-full" value={formData.fieldOfStudy} onChange={e => setFormData({ ...formData, fieldOfStudy: e.target.value })} placeholder="e.g. Computer Science" />
                         </div>
                         <div>
-                            <label style={labelStyle}>Start Year</label>
-                            <input required style={inputStyle} value={formData.startYear} onChange={e => setFormData({ ...formData, startYear: e.target.value })} placeholder="YYYY" />
+                            <label className="profile-label">Start Year</label>
+                            <input required className="search-input w-full" value={formData.startYear} onChange={e => setFormData({ ...formData, startYear: e.target.value })} placeholder="YYYY" />
                         </div>
                         <div>
-                            <label style={labelStyle}>End Year</label>
-                            <input required style={inputStyle} value={formData.endYear} onChange={e => setFormData({ ...formData, endYear: e.target.value })} placeholder="YYYY or Present" />
+                            <label className="profile-label">End Year</label>
+                            <input required className="search-input w-full" value={formData.endYear} onChange={e => setFormData({ ...formData, endYear: e.target.value })} placeholder="YYYY or Present" />
                         </div>
                     </div>
 
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
-                        <button type="button" onClick={() => setIsAdding(false)} style={{ ...btnStyle, border: 'none' }}>Cancel</button>
-                        <button type="submit" style={{ ...btnStyle, backgroundColor: '#111827', color: '#fff', border: '1px solid #111827' }}>Save</button>
+                    <div className="flex-row-gap gap-sm mt-lg" style={{ justifyContent: 'flex-end' }}>
+                        <button type="button" onClick={() => setIsAdding(false)} className="btn btn-ghost btn-sm">Cancel</button>
+                        <button type="submit" className="btn btn-primary btn-sm">Save</button>
                     </div>
                 </form>
             )}
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            <div className="profile-list-stack">
                 {education.map((edu, index) => (
-                    <div key={index} style={{ display: 'flex', gap: '16px', position: 'relative' }} className="group">
-                        <div style={{ marginTop: '4px', color: '#d1d5db' }}><GraduationCap size={24} /></div>
-                        <div style={{ flex: 1 }}>
-                            <h4 style={{ fontSize: '16px', fontWeight: '600', color: '#111827', margin: 0 }}>{edu.institution}</h4>
-                            <p style={{ fontSize: '15px', color: '#4b5563', margin: '2px 0' }}>{edu.degree}, {edu.fieldOfStudy}</p>
-                            <p style={{ fontSize: '13px', color: '#6b7280', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
+                    <div key={index} className="profile-item-row group">
+                        <div className="profile-item-icon"><GraduationCap size={24} /></div>
+                        <div className="profile-item-body">
+                            <h4 className="profile-item-title-h4">{edu.institution}</h4>
+                            <p className="profile-item-subtitle">{edu.degree}, {edu.fieldOfStudy}</p>
+                            <p className="profile-item-meta">
                                 <Calendar size={12} /> {edu.startYear} - {edu.endYear}
                             </p>
                         </div>
                         {isOwnProfile && (
-                            <button onClick={() => handleDelete(index)} style={{ border: 'none', background: 'none', cursor: 'pointer', color: '#9ca3af' }} className="hover:text-red-500">
+                            <button onClick={() => handleDelete(index)} className="btn-icon btn-ghost btn-sm hover:text-red-500">
                                 <Trash2 size={16} />
                             </button>
                         )}
                     </div>
                 ))}
-                {education.length === 0 && !isAdding && <p style={{ color: '#9ca3af', fontSize: '14px', fontStyle: 'italic' }}>No education history added.</p>}
+                {education.length === 0 && !isAdding && <p className="text-muted text-sm italic">No education history added.</p>}
             </div>
         </div>
     );
@@ -153,125 +105,77 @@ export const ExperienceSection = ({ experience = [], onUpdate, isOwnProfile }) =
     };
 
     const handleDelete = async (index) => {
-        if (window.confirm('Are you sure?')) {
+        if (window.confirm('Are you sure you want to delete this experience entry?')) {
             const newExp = experience.filter((_, i) => i !== index);
             await onUpdate({ experience: newExp });
         }
     };
 
-    const cardStyle = {
-        backgroundColor: '#fff',
-        border: '1px solid #e5e7eb',
-        borderRadius: '12px',
-        padding: '24px',
-        marginBottom: '24px',
-        boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
-    };
-
-    const headerStyle = {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: '24px',
-        borderBottom: '1px solid #f3f4f6',
-        paddingBottom: '16px'
-    };
-
-    const btnStyle = {
-        display: 'flex',
-        alignItems: 'center',
-        gap: '6px',
-        padding: '6px 12px',
-        border: '1px solid #d1d5db',
-        borderRadius: '6px',
-        backgroundColor: '#fff',
-        color: '#374151',
-        fontSize: '14px',
-        fontWeight: '500',
-        cursor: 'pointer'
-    };
-
-    const inputStyle = {
-        width: '100%',
-        padding: '8px 12px',
-        borderRadius: '6px',
-        border: '1px solid #d1d5db',
-        fontSize: '15px',
-        outline: 'none'
-    };
-
-    const labelStyle = {
-        display: 'block',
-        fontSize: '13px',
-        color: '#6b7280',
-        marginBottom: '4px',
-        fontWeight: '500'
-    };
-
     return (
-        <div style={cardStyle}>
-            <div style={headerStyle}>
-                <h3 className="card-title" style={{ fontSize: '18px', margin: 0 }}>Experience</h3>
+        <div className="profile-card">
+            <div className="profile-section-header">
+                <h3 className="profile-section-title">Experience</h3>
                 {isOwnProfile && !isAdding && (
-                    <button onClick={() => setIsAdding(true)} style={btnStyle}>
+                    <button onClick={() => setIsAdding(true)} className="btn btn-secondary btn-sm flex-row-gap gap-sm">
                         <Plus size={14} /> Add Experience
                     </button>
                 )}
             </div>
 
             {isAdding && (
-                <form onSubmit={handleSubmit} style={{ marginBottom: '24px', padding: '16px', backgroundColor: '#f9fafb', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
-                        <div style={{ gridColumn: '1 / -1' }}>
-                            <label style={labelStyle}>Job Title</label>
-                            <input required style={inputStyle} value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} placeholder="e.g. Senior Frontend Developer" />
+                <form onSubmit={handleSubmit} className="banner banner-gray mb-lg">
+                    <div className="profile-form-grid">
+                        <div className="profile-form-full">
+                            <label className="profile-label">Job Title</label>
+                            <input required className="search-input w-full" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} placeholder="e.g. Senior Frontend Developer" />
                         </div>
-                        <div style={{ gridColumn: '1 / -1' }}>
-                            <label style={labelStyle}>Company / Organization</label>
-                            <input required style={inputStyle} value={formData.company} onChange={e => setFormData({ ...formData, company: e.target.value })} placeholder="e.g. TechCorp Inc." />
-                        </div>
-                        <div>
-                            <label style={labelStyle}>Start Year</label>
-                            <input required style={inputStyle} value={formData.startYear} onChange={e => setFormData({ ...formData, startYear: e.target.value })} placeholder="YYYY" />
+                        <div className="profile-form-full">
+                            <label className="profile-label">Company / Organization</label>
+                            <input required className="search-input w-full" value={formData.company} onChange={e => setFormData({ ...formData, company: e.target.value })} placeholder="e.g. TechCorp Inc." />
                         </div>
                         <div>
-                            <label style={labelStyle}>End Year</label>
-                            <input required style={inputStyle} value={formData.endYear} onChange={e => setFormData({ ...formData, endYear: e.target.value })} placeholder="YYYY or Present" />
+                            <label className="profile-label">Start Year</label>
+                            <input required className="search-input w-full" value={formData.startYear} onChange={e => setFormData({ ...formData, startYear: e.target.value })} placeholder="YYYY" />
                         </div>
-                        <div style={{ gridColumn: '1 / -1' }}>
-                            <label style={labelStyle}>Description (Optional)</label>
-                            <textarea style={{ ...inputStyle, resize: 'vertical' }} rows="3" value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })} placeholder="Describe your responsibilities..." />
+                        <div>
+                            <label className="profile-label">End Year</label>
+                            <input required className="search-input w-full" value={formData.endYear} onChange={e => setFormData({ ...formData, endYear: e.target.value })} placeholder="YYYY or Present" />
+                        </div>
+                        <div className="profile-form-full">
+                            <label className="profile-label">Job Description</label>
+                            <textarea className="search-input w-full textarea-experience-height" rows="3" value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })} placeholder="Describe your responsibilities..." />
                         </div>
                     </div>
 
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
-                        <button type="button" onClick={() => setIsAdding(false)} style={{ ...btnStyle, border: 'none' }}>Cancel</button>
-                        <button type="submit" style={{ ...btnStyle, backgroundColor: '#111827', color: '#fff', border: '1px solid #111827' }}>Save</button>
+                    <div className="actions-right">
+                        <button type="button" onClick={() => setIsAdding(false)} className="btn btn-ghost btn-sm">Cancel</button>
+                        <button type="submit" className="btn btn-primary btn-sm">Save</button>
                     </div>
                 </form>
             )}
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            <div className="profile-list-stack">
                 {experience.map((exp, index) => (
-                    <div key={index} style={{ display: 'flex', gap: '16px', position: 'relative' }} className="group">
-                        <div style={{ marginTop: '4px', color: '#d1d5db' }}><Briefcase size={24} /></div>
-                        <div style={{ flex: 1 }}>
-                            <h4 style={{ fontSize: '16px', fontWeight: '600', color: '#111827', margin: 0 }}>{exp.title}</h4>
-                            <p style={{ fontSize: '15px', color: '#4b5563', margin: '2px 0' }}>{exp.company}</p>
-                            <p style={{ fontSize: '13px', color: '#6b7280', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
+                    <div key={index} className="profile-item-row group">
+                        <div className="profile-item-icon"><Briefcase size={24} /></div>
+                        <div className="profile-item-body">
+                            <h4 className="profile-item-title-h4">{exp.title}</h4>
+                            <p className="profile-item-subtitle">{exp.company}</p>
+                            <p className="profile-item-meta">
                                 <Calendar size={12} /> {exp.startYear} - {exp.endYear}
                             </p>
-                            {exp.description && <p style={{ fontSize: '14px', color: '#374151', marginTop: '8px', lineHeight: '1.5' }}>{exp.description}</p>}
+                            {exp.description && <p className="profile-item-desc">{exp.description}</p>}
                         </div>
                         {isOwnProfile && (
-                            <button onClick={() => handleDelete(index)} style={{ border: 'none', background: 'none', cursor: 'pointer', color: '#9ca3af' }} className="hover:text-red-500">
+                            <button onClick={() => handleDelete(index)} className="btn-icon btn-ghost btn-sm hover:text-red-500">
                                 <Trash2 size={16} />
                             </button>
                         )}
                     </div>
                 ))}
-                {experience.length === 0 && !isAdding && <p style={{ color: '#9ca3af', fontSize: '14px', fontStyle: 'italic' }}>No experience added yet.</p>}
+                {experience.length === 0 && !isAdding && <p className="text-muted text-sm italic">No experience added yet.</p>}
             </div>
         </div>
     );
 };
+

@@ -27,17 +27,4 @@ router.patch('/applications/:id/status', authenticateUser, authorizeRoles('emplo
 // Employer dashboard summary
 router.get('/employer/applications/summary', authenticateUser, authorizeRoles('employer'), getEmployerSummary);
 
-const applicationController = require('../controllers/application.controller');
-const { authenticateUser, authorizeRoles } = require('../middleware/auth.middleware');
-
-// Apply to a job (Any authenticated user can apply?? Usually freelancers/students)
-router.post('/apply', authenticateUser, applicationController.applyToJob);
-
-// Employer: Get applications for a specific job
-router.get('/job/:jobId', authenticateUser, authorizeRoles('employer', 'admin'), applicationController.getJobApplications);
-
-// Employer: Update status
-router.patch('/:id/status', authenticateUser, authorizeRoles('employer', 'admin'), applicationController.updateApplicationStatus);
-
-
 module.exports = router;

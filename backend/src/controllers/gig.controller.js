@@ -5,8 +5,8 @@ exports.createGig = async (req, res) => {
   try {
     const { title, description, price, category, images, tags, deliveryTime, revisions, features, faqs } = req.body;
 
-    // Default status: 'active' if admin, else 'pending_approval'
-    const status = req.user.role === 'admin' ? 'active' : 'pending_approval';
+    // Default status: make new gigs visible publicly
+    const status = 'active';
 
     const gig = await Gig.create({
       sellerId: req.user.userId,
@@ -24,6 +24,7 @@ exports.createGig = async (req, res) => {
     });
     res.status(201).json(gig);
   } catch (err) {
+    console.error(err);
     res.status(400).json({ message: 'Failed to create gig' });
   }
 };
@@ -37,7 +38,8 @@ exports.updateGig = async (req, res) => {
     );
     if (!gig) return res.status(404).json({ message: 'Gig not found' });
     res.json(gig);
-  } catch {
+  } catch (err) {
+    console.error(err);
     res.status(400).json({ message: 'Failed to update gig' });
   }
 };
@@ -50,7 +52,8 @@ exports.deleteGig = async (req, res) => {
     });
     if (!gig) return res.status(404).json({ message: 'Gig not found' });
     res.json({ success: true });
-  } catch {
+  } catch (err) {
+    console.error(err);
     res.status(400).json({ message: 'Failed to delete gig' });
   }
 };
@@ -59,7 +62,8 @@ exports.getMyGigs = async (req, res) => {
   try {
     const gigs = await Gig.find({ sellerId: req.user.userId }).sort({ createdAt: -1 });
     res.json(gigs);
-  } catch {
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ message: 'Failed to fetch gigs' });
   }
 };
@@ -70,6 +74,7 @@ exports.getGigById = async (req, res) => {
     if (!gig) return res.status(404).json({ message: 'Gig not found' });
     res.json(gig);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: 'Failed to fetch gig' });
   }
 };
@@ -77,27 +82,28 @@ exports.getGigById = async (req, res) => {
 exports.uploadGigCover = async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
-    
+
     const gig = await Gig.findOne({ _id: req.params.id, sellerId: req.user.userId });
     if (!gig) return res.status(404).json({ message: 'Gig not found' });
-    
+
     // Add new image to the beginning (cover)
     gig.images.unshift(req.file.path);
     await gig.save();
-    
-    res.json(gig);
+
+    res.json({ cover: gig.images[0] });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: 'Failed to upload image' });
   }
 };
 
 const buildGigQuery = (queryParams) => {
-  const { 
-    search, 
-    category, 
-    minPrice, 
-    maxPrice, 
-    status 
+  const {
+    search,
+    category,
+    minPrice,
+    maxPrice,
+    status
   } = queryParams;
 
   const query = {};
@@ -114,7 +120,8 @@ const buildGigQuery = (queryParams) => {
 
   // 2. Category Filter
   if (category) {
-    query.category = category;
+    const catRegex = new RegExp(category, 'i');
+    query.category = catRegex;
   }
 
   // 3. Price Range Filter
@@ -136,10 +143,10 @@ const buildGigQuery = (queryParams) => {
 
 exports.getGigs = async (req, res) => {
   try {
-    const { 
-      sort = 'latest', 
-      page = 1, 
-      limit = 10 
+    const {
+      sort = 'latest',
+      page = 1,
+      limit = 10
     } = req.query;
 
     const query = buildGigQuery(req.query);

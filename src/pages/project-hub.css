@@ -1,0 +1,250 @@
+/* Project Hub Styles */
+.project-hub-page {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+}
+
+.hub-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.hub-header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--primary-900);
+    margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+    .hub-header h1 {
+        font-size: 3rem;
+    }
+}
+
+.hub-header p {
+    font-size: 1.125rem;
+    color: var(--gray-500);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Controls: Filters + Search */
+.hub-controls {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+@media (min-width: 768px) {
+    .hub-controls {
+        flex-direction: row;
+    }
+}
+
+.filter-pills {
+    display: flex;
+    overflow-x: auto;
+    gap: 0.75rem;
+    width: 100%;
+    padding-bottom: 0.5rem;
+}
+
+@media (min-width: 768px) {
+    .filter-pills {
+        width: auto;
+    }
+}
+
+.filter-pill {
+    padding: 0.5rem 1.25rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    white-space: nowrap;
+    border: 1px solid var(--gray-200);
+    background: white;
+    color: var(--gray-600);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.filter-pill:hover {
+    background: var(--gray-50);
+}
+
+.filter-pill.active {
+    background: var(--primary-900);
+    border-color: var(--primary-900);
+    color: white;
+    box-shadow: var(--shadow-md);
+}
+
+.search-wrap {
+    position: relative;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .search-wrap {
+        width: 300px;
+    }
+}
+
+.search-wrap .search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray-400);
+}
+
+.search-wrap input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.75rem;
+    border-radius: 9999px;
+    border: 1px solid var(--gray-200);
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.search-wrap input:focus {
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 3px rgba(36, 62, 86, 0.05);
+}
+
+/* Grid Layout */
+.project-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    .project-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .project-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Project Card */
+.project-hub-card {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.project-hub-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--primary-100);
+}
+
+.card-thumb {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    background: var(--gray-100);
+}
+
+.card-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.project-hub-card:hover .card-thumb img {
+    transform: scale(1.05);
+}
+
+.card-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.project-hub-card:hover .card-overlay {
+    opacity: 1;
+}
+
+.view-btn-text {
+    color: white;
+    font-weight: 700;
+    border: 2px solid white;
+    padding: 0.5rem 1.25rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-meta-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.category-label {
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--primary-600);
+    letter-spacing: 0.05em;
+}
+
+.interaction-stats {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--gray-400);
+    font-size: 0.75rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.project-title-link {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--primary-900);
+    margin-bottom: 0.25rem;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.2s;
+}
+
+.project-hub-card:hover .project-title-link {
+    color: var(--primary-600);
+}
+
+.author-text {
+    font-size: 0.8125rem;
+    color: var(--gray-500);
+}
