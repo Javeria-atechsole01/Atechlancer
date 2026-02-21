@@ -4,6 +4,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { jobService } from '../services/jobService';
+import { chatService } from '../services/chatService';
 import { Loader2, DollarSign, Clock, MapPin, Briefcase, Calendar, CheckCircle, ChevronLeft, Share2 } from 'lucide-react';
 import './job-details.css';
 
@@ -41,6 +42,26 @@ const JobDetails = () => {
     } catch (err) {
       console.error('Failed to delete job', err);
       alert('Failed to delete job');
+    }
+  };
+
+  const handleContactEmployer = async () => {
+    if (!user || !user._id) {
+      navigate('/login', { state: { from: `/jobs/${id}` } });
+      return;
+    }
+
+    try {
+      // setProcessing(true); // Add processing state if needed
+      const conversation = await chatService.getOrCreateConversation(job.employerId._id, {
+        type: 'job',
+        id: job._id,
+        title: job.title
+      });
+      navigate(`/chat/${conversation._id}`);
+    } catch (err) {
+      console.error('Failed to start conversation', err);
+      alert('Failed to start conversation. Please try again.');
     }
   };
 
@@ -174,6 +195,15 @@ const JobDetails = () => {
             <button className="btn-full save-btn">
               Save Job
             </button>
+            {!isOwner && (
+              <button
+                onClick={handleContactEmployer}
+                className="btn-full"
+                style={{ marginTop: '0.75rem', background: 'white', border: '1px solid var(--primary-600)', color: 'var(--primary-600)' }}
+              >
+                Contact Employer
+              </button>
+            )}
           </div>
 
           <div className="employer-mini-card">

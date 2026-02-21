@@ -7,11 +7,196 @@ import {
 } from 'lucide-react';
 import './post-assignment.css';
 
+/** Step 1: Basics */
+const Step1 = ({ formData, handleChange }) => (
+    <div className="section-content">
+        <div className="form-group">
+            <label>Assignment Title</label>
+            <input
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                className="form-input"
+                placeholder="e.g. Advanced Algorithms - Sorting and Searching Project"
+            />
+        </div>
+
+        <div className="form-input-row">
+            <div className="form-group">
+                <label>Subject / Category</label>
+                <select name="subject" value={formData.subject} onChange={handleChange} className="form-input">
+                    <option>Computer Science</option>
+                    <option>Mathematics</option>
+                    <option>Physics</option>
+                    <option>Business & Finance</option>
+                    <option>Engineering</option>
+                    <option>Humanities</option>
+                </select>
+            </div>
+            <div className="form-group">
+                <label>Academic Level</label>
+                <select name="academicLevel" value={formData.academicLevel} onChange={handleChange} className="form-input">
+                    <option>High School</option>
+                    <option>Undergraduate</option>
+                    <option>Graduate</option>
+                    <option>Doctorate</option>
+                    <option>Professional</option>
+                </select>
+            </div>
+        </div>
+
+        <div className="form-input-row">
+            <div className="form-group">
+                <label>Deadline</label>
+                <div className="input-icon-wrapper">
+                    <Clock className="input-icon-left" size={16} />
+                    <input
+                        type="date"
+                        name="deadline"
+                        value={formData.deadline}
+                        onChange={handleChange}
+                        className="form-input input-with-left-icon"
+                    />
+                </div>
+            </div>
+            <div className="form-group">
+                <label>Budget Range ($)</label>
+                <div className="budget-inputs">
+                    <input type="number" name="budget.min" value={formData.budget.min} onChange={handleChange} placeholder="Min" className="form-input" />
+                    <input type="number" name="budget.max" value={formData.budget.max} onChange={handleChange} placeholder="Max" className="form-input" />
+                </div>
+            </div>
+        </div>
+    </div>
+);
+
+/** Step 2: Details & Files */
+const Step2 = ({ formData, handleChange }) => (
+    <div className="section-content">
+        <div className="form-group">
+            <label>Detailed Description</label>
+            <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                className="form-input textarea-tall"
+                placeholder="Describe your assignment requirements in detail..."
+            />
+        </div>
+
+        <div className="upload-box">
+            <Upload className="upload-box-icon" size={40} />
+            <p className="upload-box-title">Upload Assignment Files</p>
+            <p className="upload-box-hint">PDF, DOCX, ZIP, or Images (Max 20MB)</p>
+            <input type="file" className="hidden" multiple />
+        </div>
+
+        <div className="tip-box">
+            <AlertCircle className="text-primary-600" size={20} />
+            <p>
+                <strong>Clarity Tip:</strong> Clear instructions lead to better solutions.
+            </p>
+        </div>
+    </div>
+);
+
+/** Step 3: Preferences */
+const Step3 = ({ formData, handlePreferenceChange }) => (
+    <div className="section-content">
+        <div className="form-group">
+            <label>Preferred Expert Level</label>
+            <div className="expert-level-grid">
+                {['entry', 'mid', 'expert'].map(level => (
+                    <label key={level} className={`level-card ${formData.preferences.freelancerLevel === level ? 'active' : ''}`}>
+                        <input type="radio" name="prefLevel" checked={formData.preferences.freelancerLevel === level} onChange={() => handlePreferenceChange('freelancerLevel', level)} className="hidden" />
+                        <div className="level-name">{level}</div>
+                        <div className="level-desc">
+                            {level === 'entry' && 'Standard guidance'}
+                            {level === 'mid' && 'Professional analysis'}
+                            {level === 'expert' && 'Specialized dissertation level'}
+                        </div>
+                    </label>
+                ))}
+            </div>
+        </div>
+
+        <div className="form-group">
+            <label>Language Requirements</label>
+            <select
+                name="prefLang"
+                value={formData.preferences.language}
+                onChange={(e) => handlePreferenceChange('language', e.target.value)}
+                className="form-input w-max-400"
+            >
+                <option>English</option>
+                <option>Spanish</option>
+                <option>French</option>
+                <option>German</option>
+            </select>
+        </div>
+
+        <div className="guarantee-box">
+            <label className="checkbox-label">
+                <input
+                    type="checkbox"
+                    checked={formData.preferences.plagiarismFree}
+                    onChange={(e) => handlePreferenceChange('plagiarismFree', e.target.checked)}
+                    className="custom-checkbox"
+                />
+                <div className="checkbox-text">
+                    <div className="text-bold">Strict Plagiarism-Free Guarantee</div>
+                    <div className="text-muted">By checking this, you mandate a unique solution with supporting similarity reports.</div>
+                </div>
+            </label>
+        </div>
+    </div>
+);
+
+/** Step 4: Review */
+const Step4 = ({ formData }) => (
+    <div className="review-section">
+        <div className="review-box">
+            <div className="review-header">
+                <div>
+                    <h2 className="review-title">{formData.title || 'Assignment Title'}</h2>
+                    <div className="review-badge-row">
+                        <span className="badge">{formData.subject}</span>
+                        <span className="badge">{formData.academicLevel}</span>
+                    </div>
+                </div>
+                <div className="review-budget">
+                    <div className="budget-val">${formData.budget.min || 0} - ${formData.budget.max || 0}</div>
+                    <div className="budget-lbl">Budget Range</div>
+                </div>
+            </div>
+
+            <div className="review-details-grid">
+                <div>
+                    <div className="review-label">Deadline</div>
+                    <div className="review-value-row">
+                        <Clock size={16} /> {formData.deadline || 'Not set'}
+                    </div>
+                </div>
+                <div>
+                    <div className="review-label">Level</div>
+                    <div className="review-value-row">
+                        <CheckCircle size={16} className="text-accent-500" /> {formData.preferences.freelancerLevel}
+                    </div>
+                </div>
+            </div>
+
+            <div className="review-desc-section">
+                <p className="review-desc-title">Description:</p>
+                <p className="review-desc-text">{formData.description || 'No description provided.'}</p>
+            </div>
+        </div>
+    </div>
+);
+
 const PostAssignment = () => {
     const navigate = useNavigate();
     const { user, loading: authLoading } = useAuth();
 
-    // All hooks must be declared before any conditional returns
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -85,192 +270,6 @@ const PostAssignment = () => {
         }
     };
 
-    /** Step 1: Basics */
-    const Step1 = () => (
-        <div className="section-content">
-            <div className="form-group">
-                <label>Assignment Title</label>
-                <input
-                    name="title"
-                    value={formData.title}
-                    onChange={handleChange}
-                    className="form-input"
-                    placeholder="e.g. Advanced Algorithms - Sorting and Searching Project"
-                />
-            </div>
-
-            <div className="form-input-row">
-                <div className="form-group">
-                    <label>Subject / Category</label>
-                    <select name="subject" value={formData.subject} onChange={handleChange} className="form-input">
-                        <option>Computer Science</option>
-                        <option>Mathematics</option>
-                        <option>Physics</option>
-                        <option>Business & Finance</option>
-                        <option>Engineering</option>
-                        <option>Humanities</option>
-                    </select>
-                </div>
-                <div className="form-group">
-                    <label>Academic Level</label>
-                    <select name="academicLevel" value={formData.academicLevel} onChange={handleChange} className="form-input">
-                        <option>High School</option>
-                        <option>Undergraduate</option>
-                        <option>Graduate</option>
-                        <option>Doctorate</option>
-                        <option>Professional</option>
-                    </select>
-                </div>
-            </div>
-
-            <div className="form-input-row">
-                <div className="form-group">
-                    <label>Deadline</label>
-                    <div className="input-icon-wrapper">
-                        <Clock className="input-icon-left" size={16} />
-                        <input
-                            type="date"
-                            name="deadline"
-                            value={formData.deadline}
-                            onChange={handleChange}
-                            className="form-input input-with-left-icon"
-                        />
-                    </div>
-                </div>
-                <div className="form-group">
-                    <label>Budget Range ($)</label>
-                    <div className="budget-inputs">
-                        <input type="number" name="budget.min" value={formData.budget.min} onChange={handleChange} placeholder="Min" className="form-input" />
-                        <input type="number" name="budget.max" value={formData.budget.max} onChange={handleChange} placeholder="Max" className="form-input" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-
-    /** Step 2: Details & Files */
-    const Step2 = () => (
-        <div className="section-content">
-            <div className="form-group">
-                <label>Detailed Description</label>
-                <textarea
-                    name="description"
-                    value={formData.description}
-                    onChange={handleChange}
-                    className="form-input textarea-tall"
-                    placeholder="Describe your assignment requirements in detail..."
-                />
-            </div>
-
-            <div className="upload-box">
-                <Upload className="upload-box-icon" size={40} />
-                <p className="upload-box-title">Upload Assignment Files</p>
-                <p className="upload-box-hint">PDF, DOCX, ZIP, or Images (Max 20MB)</p>
-                <input type="file" className="hidden" multiple />
-            </div>
-
-            <div className="tip-box">
-                <AlertCircle className="text-primary-600" size={20} />
-                <p>
-                    <strong>Clarity Tip:</strong> Clear instructions lead to better solutions.
-                </p>
-            </div>
-        </div>
-    );
-
-    /** Step 3: Preferences */
-    const Step3 = () => (
-        <div className="section-content">
-            <div className="form-group">
-                <label>Preferred Expert Level</label>
-                <div className="expert-level-grid">
-                    {['entry', 'mid', 'expert'].map(level => (
-                        <label key={level} className={`level-card ${formData.preferences.freelancerLevel === level ? 'active' : ''}`}>
-                            <input type="radio" name="prefLevel" checked={formData.preferences.freelancerLevel === level} onChange={() => handlePreferenceChange('freelancerLevel', level)} className="hidden" />
-                            <div className="level-name">{level}</div>
-                            <div className="level-desc">
-                                {level === 'entry' && 'Standard guidance'}
-                                {level === 'mid' && 'Professional analysis'}
-                                {level === 'expert' && 'Specialized dissertation level'}
-                            </div>
-                        </label>
-                    ))}
-                </div>
-            </div>
-
-            <div className="form-group">
-                <label>Language Requirements</label>
-                <select
-                    name="prefLang"
-                    value={formData.preferences.language}
-                    onChange={(e) => handlePreferenceChange('language', e.target.value)}
-                    className="form-input w-max-400"
-                >
-                    <option>English</option>
-                    <option>Spanish</option>
-                    <option>French</option>
-                    <option>German</option>
-                </select>
-            </div>
-
-            <div className="guarantee-box">
-                <label className="checkbox-label">
-                    <input
-                        type="checkbox"
-                        checked={formData.preferences.plagiarismFree}
-                        onChange={(e) => handlePreferenceChange('plagiarismFree', e.target.checked)}
-                        className="custom-checkbox"
-                    />
-                    <div className="checkbox-text">
-                        <div className="text-bold">Strict Plagiarism-Free Guarantee</div>
-                        <div className="text-muted">By checking this, you mandate a unique solution with supporting similarity reports.</div>
-                    </div>
-                </label>
-            </div>
-        </div>
-    );
-
-    /** Step 4: Review */
-    const Step4 = () => (
-        <div className="review-section">
-            <div className="review-box">
-                <div className="review-header">
-                    <div>
-                        <h2 className="review-title">{formData.title || 'Assignment Title'}</h2>
-                        <div className="review-badge-row">
-                            <span className="badge">{formData.subject}</span>
-                            <span className="badge">{formData.academicLevel}</span>
-                        </div>
-                    </div>
-                    <div className="review-budget">
-                        <div className="budget-val">${formData.budget.min || 0} - ${formData.budget.max || 0}</div>
-                        <div className="budget-lbl">Budget Range</div>
-                    </div>
-                </div>
-
-                <div className="review-details-grid">
-                    <div>
-                        <div className="review-label">Deadline</div>
-                        <div className="review-value-row">
-                            <Clock size={16} /> {formData.deadline || 'Not set'}
-                        </div>
-                    </div>
-                    <div>
-                        <div className="review-label">Level</div>
-                        <div className="review-value-row">
-                            <CheckCircle size={16} className="text-accent-500" /> {formData.preferences.freelancerLevel}
-                        </div>
-                    </div>
-                </div>
-
-                <div className="review-desc-section">
-                    <p className="review-desc-title">Description:</p>
-                    <p className="review-desc-text">{formData.description || 'No description provided.'}</p>
-                </div>
-            </div>
-        </div>
-    );
-
     return (
         <div className="post-assignment-page">
             <div className="post-assignment-header">
@@ -299,10 +298,10 @@ const PostAssignment = () => {
             {/* Form Container */}
             <div className="form-card">
                 <div className="form-content-min-height">
-                    {step === 1 && <Step1 />}
-                    {step === 2 && <Step2 />}
-                    {step === 3 && <Step3 />}
-                    {step === 4 && <Step4 />}
+                    {step === 1 && <Step1 formData={formData} handleChange={handleChange} />}
+                    {step === 2 && <Step2 formData={formData} handleChange={handleChange} />}
+                    {step === 3 && <Step3 formData={formData} handlePreferenceChange={handlePreferenceChange} />}
+                    {step === 4 && <Step4 formData={formData} />}
                 </div>
 
                 <div className="form-actions">

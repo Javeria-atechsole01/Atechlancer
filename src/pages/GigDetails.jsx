@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { gigsService } from '../services/gigsService';
 import { ordersService } from '../services/ordersService';
 import { messagesService } from '../services/messagesService';
+import { chatService } from '../services/chatService';
 import {
   Star,
   Clock,
@@ -63,6 +64,23 @@ const GigDetails = () => {
     } finally {
       setProcessing(false);
       setShowRequirements(false);
+    }
+  };
+
+  const handleContactSeller = async () => {
+    try {
+      setProcessing(true);
+      const conversation = await chatService.getOrCreateConversation(gig.sellerId._id, {
+        type: 'gig',
+        id: gig._id,
+        title: gig.title
+      });
+      navigate(`/chat/${conversation._id}`);
+    } catch (err) {
+      console.error('Failed to start conversation', err);
+      alert('Failed to start conversation. Please try again.');
+    } finally {
+      setProcessing(false);
     }
   };
 
@@ -254,7 +272,12 @@ const GigDetails = () => {
               </button>
 
               <button
+<<<<<<< HEAD
                 onClick={() => navigate(`/gigs/${id}/contact`)}
+=======
+                onClick={handleContactSeller}
+                disabled={processing}
+>>>>>>> d16a396413059ad95322755a28c8b4e27f08a9bc
                 className="btn-contact"
               >
                 <MessageSquare size={18} /> Contact Seller
