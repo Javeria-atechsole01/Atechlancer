@@ -272,12 +272,8 @@ const GigDetails = () => {
               </button>
 
               <button
-<<<<<<< HEAD
-                onClick={() => navigate(`/gigs/${id}/contact`)}
-=======
                 onClick={handleContactSeller}
                 disabled={processing}
->>>>>>> d16a396413059ad95322755a28c8b4e27f08a9bc
                 className="btn-contact"
               >
                 <MessageSquare size={18} /> Contact Seller

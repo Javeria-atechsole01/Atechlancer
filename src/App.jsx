@@ -84,12 +84,9 @@ import AdminPayments from './pages/dashboard/admin/AdminPayments';
 import EmployerApplications from './pages/dashboard/employer/EmployerApplications';
 
 import ApplyJob from './pages/ApplyJob';
-<<<<<<< HEAD
 import Jobs from './pages/Jobs';
 import JobDetails from './pages/JobDetails';
-=======
 import DataSeeder from './components/debug/DataSeeder';
->>>>>>> d16a396413059ad95322755a28c8b4e27f08a9bc
 
 import { AuthProvider } from './context/AuthContext';
 import { SearchProvider } from './context/SearchContext';
@@ -129,7 +126,7 @@ function App() {
             <Route path="/orders/:id" element={<ProtectedRoute><Layout><OrderDetails /></Layout></ProtectedRoute>} />
             <Route path="/projects" element={<Layout><ProjectHub /></Layout>} />
             <Route path="/projects/:id" element={<Layout><ProjectDetails /></Layout>} />
-          
+
             {/* Assignment Marketplace Routes */}
             <Route path="/assignments" element={<Layout><AssignmentLanding /></Layout>} />
             <Route path="/assignments/feed" element={<Layout><AssignmentFeed /></Layout>} />

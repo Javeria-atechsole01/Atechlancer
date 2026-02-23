@@ -6,18 +6,6 @@ import './teacher.css';
 
 const TeacherProfile = () => {
     const { user } = useAuth();
-<<<<<<< HEAD
-
-    // Mock Profile State
-    const [profile] = useState({
-        title: 'Senior Computer Science Lecturer',
-        bio: 'Passionate educator with 10+ years of experience in teaching algorithms, data structures, and web development. Committed to mentoring the next generation of tech leaders.',
-        location: 'Lahore, Pakistan',
-        email: user?.email || 'teacher@example.com',
-        subjects: ['Computer Science', 'Mathematics', 'Software Engineering'],
-        qualifications: ['PhD in CS (UET)', 'MSc Artificial Intelligence'],
-        experience: '12 Years'
-=======
     const [loading, setLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
     const [profile, setProfile] = useState({
@@ -27,7 +15,6 @@ const TeacherProfile = () => {
         subjects: [],
         qualifications: [], // Mapped from education/certifications
         experience: ''
->>>>>>> d16a396413059ad95322755a28c8b4e27f08a9bc
     });
 
     // Form State

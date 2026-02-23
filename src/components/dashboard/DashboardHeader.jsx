@@ -1,10 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-<<<<<<< HEAD
 import { Bell, Search, Menu, ChevronDown, CheckCircle, RefreshCw } from 'lucide-react';
-import NotificationBell from '../notifications/NotificationBell';
-=======
-import { Search, Menu, ChevronDown, CheckCircle, RefreshCw } from 'lucide-react';
->>>>>>> d16a396413059ad95322755a28c8b4e27f08a9bc
 import { useSearch } from '../../context/SearchContext';
 import { useAuth } from '../../context/AuthContext';
 import NotificationBell from '../notifications/NotificationBell';
@@ -102,13 +97,9 @@ const DashboardHeader = ({ user, toggleSidebar }) => {
 
                 <div className="role-separator"></div>
 
-<<<<<<< HEAD
-                <NotificationBell />
-=======
                 <div className="dashboard-notification-wrapper">
                     <NotificationBell />
                 </div>
->>>>>>> d16a396413059ad95322755a28c8b4e27f08a9bc
 
                 <div className="user-profile">
                     <div className="user-avatar">
