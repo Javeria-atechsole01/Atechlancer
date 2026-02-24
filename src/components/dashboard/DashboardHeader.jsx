@@ -40,7 +40,7 @@ const DashboardHeader = ({ user, toggleSidebar }) => {
         }
     };
 
-    const roles = ['student', 'freelancer', 'teacher', 'employer'];
+    const roles = ['student', 'freelancer', 'teacher', 'employer', 'admin'];
 
     return (
         <header className="dashboard-header">

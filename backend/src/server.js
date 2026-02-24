@@ -20,6 +20,7 @@ const bidRoutes = require('./routes/bid.routes');
 const submissionRoutes = require('./routes/submission.routes');
 const courseRoutes = require('./routes/course.routes');
 const notificationRoutes = require('./routes/notification.routes');
+const walletRoutes = require('./routes/wallet.routes');
 
 // Validate environment variables
 try {
@@ -53,6 +54,7 @@ app.use('/api/bids', bidRoutes);
 app.use('/api/submissions', submissionRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/wallet', walletRoutes);
 
 // Base route
 app.get('/', (req, res) => {

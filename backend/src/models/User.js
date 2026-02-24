@@ -47,6 +47,16 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
+    status: {
+      type: String,
+      enum: ['active', 'suspended', 'banned'],
+      default: 'active'
+    },
+    adminRole: {
+      type: String,
+      enum: ['super', 'moderator', 'finance', 'verification'],
+      default: null
+    },
     // Stripe customer ID for payments
     stripeCustomerId: {
       type: String,

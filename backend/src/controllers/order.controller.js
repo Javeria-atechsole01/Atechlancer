@@ -70,8 +70,39 @@ exports.updateStatus = async (req, res) => {
     if (status === 'completed' && !isBuyer) return res.status(403).json({ message: 'Not allowed' });
     if (status === 'revision_requested' && !isBuyer) return res.status(403).json({ message: 'Not allowed' });
 
+    const oldStatus = order.status;
     order.status = status;
     await order.save();
+
+    // Release funds if completed
+    if (status === 'completed' && oldStatus !== 'completed') {
+      const Wallet = require('../models/Wallet');
+      const Transaction = require('../models/Transaction');
+
+      const amount = order.totalPrice;
+
+      // Update or create seller wallet
+      let wallet = await Wallet.findOne({ userId: order.sellerId });
+      if (!wallet) {
+        wallet = await Wallet.create({ userId: order.sellerId });
+      }
+
+      wallet.availableBalance += amount;
+      wallet.totalEarned += amount;
+      await wallet.save();
+
+      // Log transaction
+      await Transaction.create({
+        userId: order.sellerId,
+        amount: amount,
+        type: 'payment',
+        status: 'completed',
+        metadata: {
+          orderId: order._id
+        }
+      });
+    }
+
     res.json(order);
   } catch {
     res.status(400).json({ message: 'Failed to update status' });

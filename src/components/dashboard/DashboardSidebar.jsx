@@ -12,7 +12,11 @@ import {
     Users,
     MessageSquare,
     LogOut,
-    PlayCircle
+    PlayCircle,
+    Shield,
+    BarChart3,
+    AlertTriangle,
+    History
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -35,9 +39,19 @@ const DashboardSidebar = ({ isOpen, role }) => {
         switch (role) {
             case 'admin':
                 return [
-                    commonItems[0],
+                    { name: 'Dashboard', icon: <LayoutDashboard />, path: `/dashboard/admin/home` },
+                    { name: 'Users', icon: <Users />, path: `/dashboard/admin/users` },
+                    { name: 'Verification', icon: <CheckCircle />, path: `/dashboard/admin/verifications` },
+                    { name: 'Gigs & Services', icon: <Briefcase />, path: `/dashboard/admin/gigs` },
+                    { name: 'Jobs', icon: <Briefcase />, path: `/dashboard/admin/jobs` },
+                    { name: 'Assignments', icon: <BookOpen />, path: `/dashboard/admin/assignments` },
+                    { name: 'Courses', icon: <BookOpen />, path: `/dashboard/admin/courses` },
                     { name: 'Payments', icon: <CreditCard />, path: `/dashboard/admin/payments` },
-                    commonItems[1],
+                    { name: 'Reviews & Reports', icon: <MessageSquare />, path: `/dashboard/admin/reports` },
+                    { name: 'Moderation', icon: <Shield />, path: `/dashboard/admin/moderation` },
+                    { name: 'Analytics', icon: <BarChart3 />, path: `/dashboard/admin/analytics` },
+                    { name: 'Settings', icon: <Settings />, path: `/dashboard/admin/settings` },
+                    { name: 'Admin Logs', icon: <History />, path: `/dashboard/admin/logs` },
                 ];
             case 'student':
                 return [

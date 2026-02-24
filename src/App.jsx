@@ -43,6 +43,12 @@ import VerificationPanel from './pages/admin/VerificationPanel';
 import ContentModeration from './pages/admin/ContentModeration';
 import Analytics from './pages/admin/Analytics';
 import VerificationPage from './pages/verification/VerificationPage';
+import ContentManagement from './pages/dashboard/admin/ContentManagement';
+import FinancialManagement from './pages/dashboard/admin/FinancialManagement';
+import PlatformSettings from './pages/dashboard/admin/PlatformSettings';
+import LogHistory from './pages/dashboard/admin/LogHistory';
+import UserManagementPanel from './pages/dashboard/admin/UserManagementPanel';
+import AdminVerifications from './pages/dashboard/admin/AdminVerifications';
 
 // Dashboard Imports
 // Dashboard Imports
@@ -262,9 +268,20 @@ function App() {
 
             {/* Admin Dashboard */}
             <Route path="/dashboard/admin" element={<DashboardLayout role="admin" />}>
-              <Route index element={<Navigate to="payments" replace />} />
-              <Route path="payments" element={<AdminPayments />} />
-              <Route path="settings" element={<DashboardSettings />} />
+              <Route index element={<Navigate to="home" replace />} />
+              <Route path="home" element={<AdminDashboard />} />
+              <Route path="users" element={<UserManagementPanel />} />
+              <Route path="verifications" element={<AdminVerifications />} />
+              <Route path="gigs" element={<ContentManagement />} />
+              <Route path="jobs" element={<ContentManagement />} />
+              <Route path="assignments" element={<ContentManagement />} />
+              <Route path="courses" element={<ContentManagement />} />
+              <Route path="payments" element={<FinancialManagement />} />
+              <Route path="reports" element={<ContentModeration />} />
+              <Route path="moderation" element={<ContentModeration />} />
+              <Route path="analytics" element={<Analytics />} />
+              <Route path="settings" element={<PlatformSettings />} />
+              <Route path="logs" element={<LogHistory />} />
             </Route>
 
             {/* Fallback for /dashboard/unknown */}
