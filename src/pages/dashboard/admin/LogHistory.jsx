@@ -45,63 +45,107 @@ const LogHistory = () => {
 
     return (
         <div className="admin-page-container">
-            <header className="admin-page-header">
-                <div>
-                    <h1>System Logs</h1>
-                    <p>Track every administrative action performed on the platform</p>
-                </div>
-            </header>
+            <div className="admin-page-hero">
+                <h1>Platform Audit Trail</h1>
+                <p>Immutable record of all administrative actions and system-level events</p>
+            </div>
 
-            <div className="admin-table-container">
+            {/* Filter Bar */}
+            <div className="admin-filters-bar">
+                <div className="admin-search-box">
+                    <History size={20} />
+                    <input type="text" placeholder="Search logs by action, user, or entity..." />
+                </div>
+                <select className="admin-select">
+                    <option>All Event Types</option>
+                    <option>User Actions</option>
+                    <option>System Events</option>
+                    <option>Financial Logs</option>
+                </select>
+                <button className="admin-btn admin-btn-outline">
+                    <Filter size={18} />
+                    Advanced Filters
+                </button>
+            </div>
+
+            {/* Log List Area */}
+            <div className="admin-table-container card-glow" style={{ border: 'none', boxShadow: 'var(--admin-card-shadow)' }}>
                 {logs.length > 0 ? (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: '1rem' }}>
-                        {logs.map(log => (
-                            <div key={log._id} className="admin-card no-hover" style={{ padding: '1rem 1.5rem', display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
-                                <div style={{
-                                    width: '40px',
-                                    height: '40px',
-                                    borderRadius: '10px',
-                                    background: 'var(--admin-bg)',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    flexShrink: 0
-                                }}>
-                                    <Clock size={20} color="var(--primary-500)" />
-                                </div>
-                                <div style={{ flex: 1 }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                            <span style={{ fontWeight: 800, color: 'var(--admin-primary)' }}>{log.adminId?.name || 'System'}</span>
-                                            <span className={`admin-badge ${getActionColor(log.action) === 'text-success' ? 'success' : getActionColor(log.action) === 'text-error' ? 'danger' : 'info'}`}>
-                                                {log.action}
+                    <table className="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Operative</th>
+                                <th>Interaction / Action</th>
+                                <th>Target Entity</th>
+                                <th style={{ textAlign: 'right' }}>Audit Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {logs.map((log) => (
+                                <tr key={log._id}>
+                                    <td style={{ whiteSpace: 'nowrap' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            <Clock size={14} color="var(--gray-400)" />
+                                            <span style={{ fontWeight: 700, color: 'var(--gray-500)', fontSize: '0.875rem' }}>
+                                                {new Date(log.createdAt).toLocaleString()}
                                             </span>
                                         </div>
-                                        <span style={{ fontSize: '0.8rem', color: 'var(--gray-400)', fontWeight: 600 }}>
-                                            {new Date(log.createdAt).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}
-                                        </span>
-                                    </div>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--gray-600)', fontSize: '0.9rem' }}>
-                                        <span style={{ opacity: 0.6 }}>Modified</span>
-                                        <strong style={{ color: 'var(--admin-primary)' }}>{log.targetType}</strong>
-                                        <code style={{ background: 'var(--admin-bg)', padding: '2px 6px', borderRadius: '4px', fontSize: '0.75rem' }}>{log.targetId}</code>
-                                    </div>
-                                    {log.details && Object.keys(log.details).length > 0 && (
-                                        <div style={{ marginTop: '0.75rem', padding: '0.75rem', background: 'var(--admin-bg)', borderRadius: '8px', border: '1px solid var(--admin-card-border)' }}>
-                                            <pre style={{ margin: 0, fontSize: '0.75rem', color: 'var(--gray-600)', overflowX: 'auto' }}>
-                                                {JSON.stringify(log.details, null, 2)}
-                                            </pre>
+                                    </td>
+                                    <td>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                            <div style={{
+                                                width: '32px',
+                                                height: '32px',
+                                                borderRadius: '8px',
+                                                background: 'var(--admin-primary)',
+                                                color: 'white',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                fontWeight: 800,
+                                                fontSize: '0.8rem'
+                                            }}>
+                                                {log.adminId?.name?.charAt(0) || 'S'}
+                                            </div>
+                                            <span style={{ fontWeight: 700, color: 'var(--admin-primary)' }}>{log.adminId?.name || 'System'}</span>
                                         </div>
-                                    )}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                                    </td>
+                                    <td>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--admin-accent)' }}></div>
+                                            <span style={{ fontWeight: 700, color: 'var(--gray-700)' }}>{log.action}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span style={{
+                                            fontSize: '0.8rem',
+                                            background: '#f1f5f9',
+                                            padding: '0.4rem 0.75rem',
+                                            borderRadius: '8px',
+                                            fontWeight: 800,
+                                            color: 'var(--gray-600)',
+                                            border: '1px solid #e2e8f0'
+                                        }}>
+                                            {log.targetType?.toUpperCase()}: {log.targetId?.slice(-8).toUpperCase() || 'CORE'}
+                                        </span>
+                                    </td>
+                                    <td style={{ textAlign: 'right' }}>
+                                        <span className="admin-badge success" style={{ padding: '0.4rem 0.8rem', borderRadius: '8px', fontSize: '0.7rem' }}>
+                                            VERIFIED
+                                        </span>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 ) : (
-                    <div className="admin-empty-state">
-                        <History size={48} />
-                        <h3>Clean Trail</h3>
-                        <p>No administrative activity has been recorded yet.</p>
+                    <div className="admin-empty-state" style={{ padding: '8rem 2rem' }}>
+                        <div className="empty-icon-wrapper">
+                            <History size={48} />
+                        </div>
+                        <h3>Nexus records empty</h3>
+                        <p>No log entries found for the selected period.</p>
                     </div>
                 )}
             </div>

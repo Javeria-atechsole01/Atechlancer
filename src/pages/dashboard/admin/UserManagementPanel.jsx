@@ -63,48 +63,54 @@ const UserManagementPanel = () => {
 
     return (
         <div className="admin-page-container">
-            <header className="admin-page-header">
-                <div>
-                    <h1>User Management</h1>
-                    <p>Review and control user accounts across roles</p>
-                </div>
-            </header>
+            <div className="admin-page-hero">
+                <h1>User Management</h1>
+                <p>Maintain platform sovereignty by overseeing user accounts, roles, and access states</p>
+            </div>
 
             {/* Filters Bar */}
-            <div className="admin-filters-bar">
-                <div className="admin-search-box">
+            <div className="admin-filters-bar" style={{ marginBottom: '2rem' }}>
+                <div className="admin-search-box" style={{ maxWidth: '400px' }}>
                     <Search size={18} />
                     <input
                         type="text"
-                        placeholder="Search by name or email..."
+                        placeholder="Search users by name, email or ID..."
                         value={filters.search}
                         onChange={(e) => setFilters({ ...filters, search: e.target.value, page: 1 })}
                     />
                 </div>
 
-                <div style={{ display: 'flex', gap: '1rem' }}>
-                    <select
-                        className="admin-select"
-                        value={filters.role}
-                        onChange={(e) => setFilters({ ...filters, role: e.target.value, page: 1 })}
-                    >
-                        <option value="all">Every Role</option>
-                        <option value="student">Student</option>
-                        <option value="freelancer">Freelancer</option>
-                        <option value="teacher">Teacher</option>
-                        <option value="employer">Employer</option>
-                    </select>
+                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--gray-400)', textTransform: 'uppercase' }}>Role:</span>
+                        <select
+                            className="admin-select"
+                            value={filters.role}
+                            onChange={(e) => setFilters({ ...filters, role: e.target.value, page: 1 })}
+                            style={{ minWidth: '140px' }}
+                        >
+                            <option value="all">Every Role</option>
+                            <option value="student">Student</option>
+                            <option value="freelancer">Freelancer</option>
+                            <option value="teacher">Teacher</option>
+                            <option value="employer">Employer</option>
+                        </select>
+                    </div>
 
-                    <select
-                        className="admin-select"
-                        value={filters.status}
-                        onChange={(e) => setFilters({ ...filters, status: e.target.value, page: 1 })}
-                    >
-                        <option value="all">Any Status</option>
-                        <option value="active">Active</option>
-                        <option value="suspended">Suspended</option>
-                        <option value="banned">Banned</option>
-                    </select>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--gray-400)', textTransform: 'uppercase' }}>Status:</span>
+                        <select
+                            className="admin-select"
+                            value={filters.status}
+                            onChange={(e) => setFilters({ ...filters, status: e.target.value, page: 1 })}
+                            style={{ minWidth: '140px' }}
+                        >
+                            <option value="all">Any Status</option>
+                            <option value="active">Active</option>
+                            <option value="suspended">Suspended</option>
+                            <option value="banned">Banned</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
@@ -138,42 +144,46 @@ const UserManagementPanel = () => {
                                     <td>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                             <div style={{
-                                                width: '40px',
-                                                height: '40px',
-                                                borderRadius: '50%',
-                                                background: 'var(--primary-100)',
+                                                width: '42px',
+                                                height: '42px',
+                                                borderRadius: '12px',
+                                                background: 'linear-gradient(135deg, var(--primary-100) 0%, var(--primary-200) 100%)',
                                                 color: 'var(--primary-700)',
                                                 display: 'flex',
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
-                                                fontWeight: 700
+                                                fontWeight: 800,
+                                                fontSize: '1rem',
+                                                boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
                                             }}>
                                                 {u.name?.charAt(0)}
                                             </div>
                                             <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                                <span style={{ fontWeight: 700, color: 'var(--admin-primary)' }}>{u.name}</span>
-                                                <span style={{ fontSize: '0.8rem', color: 'var(--gray-500)' }}>{u.email}</span>
+                                                <span style={{ fontWeight: 800, color: 'var(--admin-primary)', fontSize: '0.95rem' }}>{u.name}</span>
+                                                <span style={{ fontSize: '0.8rem', color: 'var(--gray-400)', fontWeight: 600 }}>{u.email}</span>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
-                                        <span className={`admin-badge info`} style={{ textTransform: 'capitalize' }}>
+                                        <span className={`admin-badge info`} style={{ textTransform: 'capitalize', fontWeight: 700 }}>
                                             {u.role}
                                         </span>
                                     </td>
                                     <td>
-                                        <span className={`admin-badge ${u.status === 'active' ? 'success' : u.status === 'suspended' ? 'warning' : 'danger'}`}>
+                                        <span className={`admin-badge ${u.status === 'active' ? 'success' : u.status === 'suspended' ? 'warning' : 'danger'}`} style={{ fontWeight: 700 }}>
                                             {u.status}
                                         </span>
                                     </td>
-                                    <td>{new Date(u.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</td>
+                                    <td style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--gray-500)' }}>
+                                        {new Date(u.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                                    </td>
                                     <td>
                                         <div style={{ display: 'flex', gap: '0.5rem' }}>
                                             {u.status === 'active' ? (
                                                 <button
                                                     className="admin-icon-btn"
                                                     onClick={() => handleStatusChange(u._id, 'suspended')}
-                                                    title="Suspend"
+                                                    title="Suspend Account"
                                                 >
                                                     <Ban size={16} />
                                                 </button>
@@ -181,15 +191,15 @@ const UserManagementPanel = () => {
                                                 <button
                                                     className="admin-icon-btn"
                                                     onClick={() => handleStatusChange(u._id, 'active')}
-                                                    title="Activate"
+                                                    title="Reactivate Account"
                                                 >
-                                                    <CheckCircle size={16} color="#10b981" />
+                                                    <CheckCircle size={16} />
                                                 </button>
                                             )}
                                             <button
                                                 className="admin-icon-btn danger"
                                                 onClick={() => handleStatusChange(u._id, 'banned')}
-                                                title="Ban Account"
+                                                title="Hard Ban"
                                             >
                                                 <XCircle size={16} />
                                             </button>

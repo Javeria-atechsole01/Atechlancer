@@ -7,6 +7,10 @@ const Assignment = require('../models/Assignment');
 const Job = require('../models/Job');
 const Course = require('../models/Course');
 const AdminLog = require('../models/AdminLog');
+const CourseReview = require('../models/CourseReview');
+const User = require('../models/User');
+const Order = require('../models/Order');
+const Gig = require('../models/Gig');
 const { logAdminAction } = require('../utils/adminLogger');
 const mongoose = require('mongoose');
 
@@ -470,6 +474,33 @@ exports.getAdminLogs = async (req, res) => {
     res.json(logs);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching logs' });
+  }
+};
+
+// --- Review Management ---
+
+exports.getAllReviews = async (req, res) => {
+  try {
+    const reviews = await CourseReview.find()
+      .populate('userId', 'name email')
+      .populate('courseId', 'title')
+      .sort({ createdAt: -1 });
+    res.json(reviews);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching reviews' });
+  }
+};
+
+exports.deleteReview = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const review = await CourseReview.findByIdAndDelete(id);
+    if (!review) return res.status(404).json({ message: 'Review not found' });
+
+    await logAdminAction(req.user.userId, 'Delete Review', 'CourseReview', id, { comment: review.comment });
+    res.json({ message: 'Review deleted' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting review' });
   }
 };
 

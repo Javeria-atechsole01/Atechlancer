@@ -277,8 +277,8 @@ function App() {
               <Route path="assignments" element={<ContentManagement />} />
               <Route path="courses" element={<ContentManagement />} />
               <Route path="payments" element={<FinancialManagement />} />
-              <Route path="reports" element={<ContentModeration />} />
-              <Route path="moderation" element={<ContentModeration />} />
+              <Route path="reports" element={<ContentModeration defaultFilter="reviews" />} />
+              <Route path="moderation" element={<ContentModeration defaultFilter="pending" />} />
               <Route path="analytics" element={<Analytics />} />
               <Route path="settings" element={<PlatformSettings />} />
               <Route path="logs" element={<LogHistory />} />

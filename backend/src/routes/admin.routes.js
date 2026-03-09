@@ -50,4 +50,8 @@ router.patch('/settings', adminController.updateSetting);
 // Admin Logs
 router.get('/logs', adminController.getAdminLogs);
 
+// Review Management
+router.get('/reviews', adminController.getAllReviews);
+router.delete('/reviews/:id', adminController.deleteReview);
+
 module.exports = router;

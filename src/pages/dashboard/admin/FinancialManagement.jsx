@@ -54,12 +54,10 @@ const FinancialManagement = () => {
 
     return (
         <div className="admin-page-container">
-            <header className="admin-page-header">
-                <div>
-                    <h1>Financial Oversight</h1>
-                    <p>Manage platform revenue, payouts, and life-time commissions</p>
-                </div>
-            </header>
+            <div className="admin-page-hero">
+                <h1>Financial Oversight</h1>
+                <p>Strategic management of platform liquidity, partner payouts, and gross commissions</p>
+            </div>
 
             {/* KPI Cards */}
             <div className="admin-stats-grid">
@@ -117,46 +115,53 @@ const FinancialManagement = () => {
                                 {withdrawals.map(req => (
                                     <tr key={req._id}>
                                         <td>
-                                            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                                <span style={{ fontWeight: 700, color: 'var(--admin-primary)' }}>{req.userId?.name}</span>
-                                                <span style={{ fontSize: '0.8rem', color: 'var(--gray-500)' }}>{req.userId?.email}</span>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                                <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'var(--primary-100)', color: 'var(--primary-700)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.9rem' }}>
+                                                    {req.userId?.name?.charAt(0) || '?'}
+                                                </div>
+                                                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                                    <span style={{ fontWeight: 800, color: 'var(--admin-primary)', fontSize: '0.9rem' }}>{req.userId?.name}</span>
+                                                    <span style={{ fontSize: '0.75rem', color: 'var(--gray-400)', fontWeight: 600 }}>{req.userId?.email}</span>
+                                                </div>
                                             </div>
                                         </td>
                                         <td>
-                                            <div style={{ fontWeight: 800, color: 'var(--admin-primary)', fontSize: '1.1rem' }}>
-                                                ${Math.abs(req.amount).toFixed(2)}
+                                            <div style={{ fontWeight: 800, color: 'var(--admin-primary)', fontSize: '1.25rem', letterSpacing: '-0.02em' }}>
+                                                ${Math.abs(req.amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                             </div>
                                         </td>
                                         <td>
-                                            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                                <span className="admin-badge info" style={{ alignSelf: 'flex-start', marginBottom: '4px' }}>
-                                                    {req.metadata?.withdrawalMethod || 'Manual'}
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                                <span className="admin-badge info" style={{ alignSelf: 'flex-start', fontWeight: 700, fontSize: '0.7rem' }}>
+                                                    {req.metadata?.withdrawalMethod || 'STANDARD PAYOUT'}
                                                 </span>
-                                                <span style={{ fontSize: '0.75rem', color: 'var(--gray-500)', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                                <span style={{ fontSize: '0.75rem', color: 'var(--gray-500)', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontStyle: 'italic' }}>
                                                     {typeof req.metadata?.payoutDetails === 'object' ? JSON.stringify(req.metadata?.payoutDetails) : req.metadata?.payoutDetails}
                                                 </span>
                                             </div>
                                         </td>
-                                        <td>{new Date(req.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</td>
+                                        <td style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--gray-500)' }}>
+                                            {new Date(req.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                                        </td>
                                         <td>
                                             <div style={{ display: 'flex', gap: '0.5rem' }}>
                                                 <button
                                                     className="admin-btn"
-                                                    style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem', background: '#ecfdf5', color: '#059669', border: '1px solid #10b981' }}
+                                                    style={{ padding: '0.5rem 1rem', fontSize: '0.8125rem', background: '#ecfdf5', color: '#059669', border: '1px solid #10b981', fontWeight: 700, borderRadius: '10px' }}
                                                     onClick={() => handleWithdrawalAction(req._id, 'completed')}
                                                 >
-                                                    <CheckCircle size={14} style={{ marginRight: '4px' }} />
+                                                    <CheckCircle size={14} style={{ marginRight: '6px' }} />
                                                     Approve
                                                 </button>
                                                 <button
                                                     className="admin-btn admin-btn-outline"
-                                                    style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem', color: '#dc2626', borderColor: '#f87171' }}
+                                                    style={{ padding: '0.5rem 1rem', fontSize: '0.8125rem', color: '#dc2626', borderColor: '#f87171', fontWeight: 700, borderRadius: '10px' }}
                                                     onClick={() => {
                                                         const reason = window.prompt('Reason for rejection:');
                                                         if (reason) handleWithdrawalAction(req._id, 'failed', reason);
                                                     }}
                                                 >
-                                                    <XCircle size={14} style={{ marginRight: '4px' }} />
+                                                    <XCircle size={14} style={{ marginRight: '6px' }} />
                                                     Reject
                                                 </button>
                                             </div>

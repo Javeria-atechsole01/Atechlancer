@@ -342,5 +342,32 @@ export const adminService = {
             console.error('Error fetching admin logs:', error);
             throw error;
         }
+    },
+
+    // --- Review Management ---
+    getReviews: async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.get(`${API_URL}/admin/reviews`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching reviews:', error);
+            throw error;
+        }
+    },
+
+    deleteReview: async (id) => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.delete(`${API_URL}/admin/reviews/${id}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Error deleting review:', error);
+            throw error;
+        }
     }
 };
